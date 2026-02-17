@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:hajj_app/core/constants/app_routes.dart';
+import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 
 import '../../../../shared/widgets/directional_back_arrow.dart';
 
@@ -32,9 +33,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        const SnackBar(
-          content: Text('تم إرسال رابط الاستعادة إلى بريدك الإلكتروني'),
-        ),
+        SnackBar(content: Text('auth.forget.snackbar_sent'.tr(context))),
       );
   }
 
@@ -62,10 +61,14 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
   String? _validateEmail(String? value) {
     final text = (value ?? '').trim();
-    if (text.isEmpty) return 'البريد الإلكتروني مطلوب';
+    if (text.isEmpty) {
+      return 'auth.forget.validation_email_required'.tr(context);
+    }
 
     final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-    if (!emailRegex.hasMatch(text)) return 'صيغة البريد الإلكتروني غير صحيحة';
+    if (!emailRegex.hasMatch(text)) {
+      return 'auth.forget.validation_email_invalid'.tr(context);
+    }
 
     return null;
   }
@@ -80,7 +83,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
     );
 
     return InputDecoration(
-      hintText: 'example@hajj.sa',
+      hintText: 'auth.forget.email_hint'.tr(context),
       hintStyle: TextStyle(color: Color(0xff672146).withValues(alpha: .52)),
       hintTextDirection: TextDirection.ltr,
       isDense: true,
@@ -145,92 +148,93 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: DecoratedBox(
-          decoration: const BoxDecoration(
-            color: _ForgetPasswordPalette.pageBackground,
-          ),
-          child: SingleChildScrollView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Stack(
-              children: [
-                const Positioned.fill(
-                  child: IgnorePointer(
-                    child: Opacity(
-                      opacity: 0.2,
-                      child: CustomPaint(painter: _PatternPainter()),
-                    ),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
+          color: _ForgetPasswordPalette.pageBackground,
+        ),
+        child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: Stack(
+            children: [
+              const Positioned.fill(
+                child: IgnorePointer(
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: CustomPaint(painter: _PatternPainter()),
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _HeroHeader(
-                      height: heroHeight,
-                      isSent: _isSent,
-                      onBack: _handleBack,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        horizontalPadding,
-                        40,
-                        horizontalPadding,
-                        28,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _HeroHeader(
+                    height: heroHeight,
+                    isSent: _isSent,
+                    onBack: _handleBack,
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/background.png'),
+                        fit: BoxFit.cover,
                       ),
-                      child: Transform.translate(
-                        offset: Offset(0, -overlap),
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Column(
-                            children: [
-                              AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 280),
-                                switchInCurve: Curves.easeOut,
-                                switchOutCurve: Curves.easeOut,
-                                transitionBuilder: (child, animation) {
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: ScaleTransition(
-                                      scale: Tween<double>(
-                                        begin: 0.98,
-                                        end: 1,
-                                      ).animate(animation),
-                                      child: child,
+                    ),
+                    padding: EdgeInsets.fromLTRB(
+                      horizontalPadding,
+                      40,
+                      horizontalPadding,
+                      28,
+                    ),
+                    child: Transform.translate(
+                      offset: Offset(0, -overlap),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Column(
+                          children: [
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 280),
+                              switchInCurve: Curves.easeOut,
+                              switchOutCurve: Curves.easeOut,
+                              transitionBuilder: (child, animation) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                    scale: Tween<double>(
+                                      begin: 0.98,
+                                      end: 1,
+                                    ).animate(animation),
+                                    child: child,
+                                  ),
+                                );
+                              },
+                              child: _isSent
+                                  ? _SuccessCard(
+                                      key: const ValueKey('success-card'),
+                                      email: _emailCtrl.text.trim(),
+                                      onBackToLogin: _goToLogin,
+                                      onResend: _openEmailStep,
+                                    )
+                                  : _EmailCard(
+                                      key: const ValueKey('email-card'),
+                                      formKey: _formKey,
+                                      emailCtrl: _emailCtrl,
+                                      decoration: _emailDecoration(),
+                                      validateEmail: _validateEmail,
+                                      onSend: _canSend ? _sendResetLink : null,
                                     ),
-                                  );
-                                },
-                                child: _isSent
-                                    ? _SuccessCard(
-                                        key: const ValueKey('success-card'),
-                                        email: _emailCtrl.text.trim(),
-                                        onBackToLogin: _goToLogin,
-                                        onResend: _openEmailStep,
-                                      )
-                                    : _EmailCard(
-                                        key: const ValueKey('email-card'),
-                                        formKey: _formKey,
-                                        emailCtrl: _emailCtrl,
-                                        decoration: _emailDecoration(),
-                                        validateEmail: _validateEmail,
-                                        onSend: _canSend
-                                            ? _sendResetLink
-                                            : null, // <-- هنا
-                                      ),
-                              ),
-                              if (!_isSent) ...[
-                                const SizedBox(height: 14),
-                                const _SecurityNoteCard(),
-                              ],
+                            ),
+                            if (!_isSent) ...[
+                              const SizedBox(height: 14),
+                              const _SecurityNoteCard(),
                             ],
-                          ),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -280,7 +284,7 @@ class _HeroHeader extends StatelessWidget {
 
               Expanded(
                 child: Text(
-                  'استعادة كلمة المرور',
+                  'auth.forget.title'.tr(context),
                   textAlign: TextAlign.center,
                   style: textTheme.headlineSmall?.copyWith(
                     color: _ForgetPasswordPalette.heroTitle,
@@ -294,7 +298,9 @@ class _HeroHeader extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            isSent ? 'تم الإرسال بنجاح' : 'أدخل بريدك الإلكتروني',
+            isSent
+                ? 'auth.forget.header_sent'.tr(context)
+                : 'auth.forget.header_enter_email'.tr(context),
             textAlign: TextAlign.center,
             style: textTheme.titleSmall?.copyWith(
               color: _ForgetPasswordPalette.heroSubtitle,
@@ -347,7 +353,10 @@ class _StepProgress extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'الخطوة ${isSent ? 2 : 1} من 2',
+            'auth.forget.step_indicator'.tr(
+              context,
+              args: {'current': isSent ? 2 : 1, 'total': 2},
+            ),
             style: textTheme.bodySmall?.copyWith(
               color: _ForgetPasswordPalette.progressLabel,
               fontWeight: FontWeight.w600,
@@ -413,7 +422,7 @@ class _EmailCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'أدخل بريدك الإلكتروني',
+              'auth.forget.email_card_title'.tr(context),
               textAlign: TextAlign.center,
               style: textTheme.headlineSmall?.copyWith(
                 color: _ForgetPasswordPalette.primaryText,
@@ -424,7 +433,7 @@ class _EmailCard extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              'سنرسل لك رابط استعادة كلمة المرور',
+              'auth.forget.email_card_subtitle'.tr(context),
               textAlign: TextAlign.center,
               style: textTheme.titleSmall?.copyWith(
                 color: _ForgetPasswordPalette.secondaryText,
@@ -434,8 +443,8 @@ class _EmailCard extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'البريد الإلكتروني *',
-              textAlign: TextAlign.right,
+              'auth.forget.email_label'.tr(context),
+              textAlign: TextAlign.start,
               style: textTheme.titleSmall?.copyWith(
                 color: Color(0xff420023),
                 fontWeight: FontWeight.w600,
@@ -492,7 +501,7 @@ class _EmailCard extends StatelessWidget {
                       const Icon(Iconsax.send_2, size: 18, color: Colors.white),
                       const SizedBox(width: 8),
                       Text(
-                        'إرسال رابط الاستعادة',
+                        'auth.forget.send_button'.tr(context),
                         style: textTheme.titleMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
@@ -506,7 +515,7 @@ class _EmailCard extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'سيتم إرسال رابط آمن لتغيير كلمة المرور إلى بريدك الإلكتروني',
+              'auth.forget.send_helper'.tr(context),
               textAlign: TextAlign.center,
               style: textTheme.bodySmall?.copyWith(
                 color: _ForgetPasswordPalette.helperText,
@@ -552,7 +561,7 @@ class _SecurityNoteCard extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Text(
-                'نصيحة أمنية',
+                'auth.forget.security_note_title'.tr(context),
                 style: textTheme.titleSmall?.copyWith(
                   color: _ForgetPasswordPalette.noteTitle,
                   fontWeight: FontWeight.w500,
@@ -563,7 +572,7 @@ class _SecurityNoteCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'تأكد من إدخال بريدك الصحيح. في حال النسيان أو طلبات متعددة خلال وقت قصير، راجع البريد الإلكتروني (بما فيها البريد غير المرغوب) قبل طلب إعادة الإرسال.',
+            'auth.forget.security_note_body'.tr(context),
             style: textTheme.bodySmall?.copyWith(
               color: _ForgetPasswordPalette.noteBody,
               height: 1.45,
@@ -624,7 +633,7 @@ class _SuccessCard extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            'تم الإرسال بنجاح!',
+            'auth.forget.success_title'.tr(context),
             textAlign: TextAlign.center,
             style: textTheme.headlineSmall?.copyWith(
               color: _ForgetPasswordPalette.successTitle,
@@ -635,7 +644,7 @@ class _SuccessCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'تم إرسال رابط استعادة كلمة المرور',
+            'auth.forget.success_subtitle'.tr(context),
             textAlign: TextAlign.center,
             style: textTheme.titleSmall?.copyWith(
               color: Color(0xff672146),
@@ -669,7 +678,7 @@ class _SuccessCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'الخطوات التالية:',
+                      'auth.forget.next_steps'.tr(context),
                       style: textTheme.titleSmall?.copyWith(
                         color: Color(0xff420023),
                         fontWeight: FontWeight.w600,
@@ -679,18 +688,24 @@ class _SuccessCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                const _StepLine(number: 1, text: 'افتح بريدك الإلكتروني'),
-                const SizedBox(height: 7),
-                const _StepLine(
-                  number: 2,
-                  text: 'اضغط على الرابط المرفق في الرسالة',
+                _StepLine(
+                  number: 1,
+                  text: 'auth.forget.next_step_1'.tr(context),
                 ),
                 const SizedBox(height: 7),
-                const _StepLine(number: 3, text: 'قم بتعيين كلمة مرور جديدة'),
+                _StepLine(
+                  number: 2,
+                  text: 'auth.forget.next_step_2'.tr(context),
+                ),
                 const SizedBox(height: 7),
-                const _StepLine(
+                _StepLine(
+                  number: 3,
+                  text: 'auth.forget.next_step_3'.tr(context),
+                ),
+                const SizedBox(height: 7),
+                _StepLine(
                   number: 4,
-                  text: 'سجّل الدخول باستخدام كلمة المرور الجديدة',
+                  text: 'auth.forget.next_step_4'.tr(context),
                 ),
                 const SizedBox(height: 10),
                 Container(
@@ -704,21 +719,18 @@ class _SuccessCard extends StatelessWidget {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: 'مهم: ',
+                          text: 'auth.forget.important_label'.tr(context),
                           style: textTheme.bodySmall?.copyWith(
-                            color: _ForgetPasswordPalette
-                                .heroBottom, // <-- لون "مهم"
+                            color: _ForgetPasswordPalette.heroBottom,
                             fontWeight: FontWeight.w800,
-                            fontSize: 13, // <-- حجم "مهم"
+                            fontSize: 13,
                             height: 1.4,
                           ),
                         ),
                         TextSpan(
-                          text:
-                              'الرابط صالح لمدة 24 ساعة فقط. إذا لم تصلك الرسالة تحقق من مجلد البريد المزعج.',
+                          text: 'auth.forget.important_body'.tr(context),
                           style: textTheme.bodySmall?.copyWith(
-                            color: _ForgetPasswordPalette
-                                .heroBottom, // لون باقي النص
+                            color: _ForgetPasswordPalette.heroBottom,
                             fontWeight: FontWeight.w400,
                             fontSize: 12,
                             height: 1.4,
@@ -758,7 +770,7 @@ class _SuccessCard extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'العودة لتسجيل الدخول',
+                'auth.forget.back_to_login'.tr(context),
                 style: textTheme.titleMedium?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
@@ -777,7 +789,7 @@ class _SuccessCard extends StatelessWidget {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             child: Text(
-              'لم تستلم الرسالة؟ إعادة الإرسال',
+              'auth.forget.resend'.tr(context),
               style: textTheme.titleSmall?.copyWith(
                 color: _ForgetPasswordPalette.successLink,
                 fontWeight: FontWeight.w500,
@@ -824,7 +836,7 @@ class _StepLine extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             style: textTheme.bodySmall?.copyWith(
               color: Color(0xff672146),
               fontWeight: FontWeight.w400,

@@ -81,7 +81,7 @@ class AppTheme {
         fontWeight: FontWeight.w400,
       ),
       bodySmall: base.bodySmall?.copyWith(
-        color: cs.onSurface.withOpacity(0.8),
+        color: cs.onSurface.withValues(alpha: 0.8),
         fontWeight: FontWeight.w400,
       ),
 
@@ -90,11 +90,11 @@ class AppTheme {
         fontWeight: FontWeight.w600,
       ),
       labelMedium: base.labelMedium?.copyWith(
-        color: cs.onSurface.withOpacity(0.9),
+        color: cs.onSurface.withValues(alpha: 0.9),
         fontWeight: FontWeight.w600,
       ),
       labelSmall: base.labelSmall?.copyWith(
-        color: cs.onSurface.withOpacity(0.8),
+        color: cs.onSurface.withValues(alpha: 0.8),
         fontWeight: FontWeight.w600,
       ),
     );

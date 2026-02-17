@@ -93,7 +93,7 @@ class AppRouter {
         pageBuilder: (context, state) => fadeSlidePage(
           state: state,
           child: const ForgetPasswordView(),
-          direction: PageTransitionDirection.rightToLeft,
+          direction: PageTransitionDirection.bottomToTop,
         ),
       ),
 
@@ -103,7 +103,7 @@ class AppRouter {
         pageBuilder: (context, state) => fadeSlidePage(
           state: state,
           child: const HomeView(),
-          direction: PageTransitionDirection.rightToLeft,
+          direction: PageTransitionDirection.bottomToTop,
         ),
       ),
     ],

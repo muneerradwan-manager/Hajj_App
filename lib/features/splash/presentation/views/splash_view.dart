@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 
 import '../../../../core/constants/app_routes.dart';
 
@@ -136,7 +137,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       animation: _dotsController,
       builder: (context, child) {
         final progress = _dotsController.value;
-
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: _dotSpacing,
@@ -184,7 +184,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(color: Color(0xff00594F)),
+        decoration: BoxDecoration(
+          color: Color(0xff00594F),
+          image: DecorationImage(
+            image: AssetImage('assets/images/background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -208,7 +214,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   slide: _titleSlide,
                   fade: _titleFade,
                   child: Text(
-                    'بوابة الحاج',
+                    'app.title'.tr(context),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 30,
@@ -222,7 +228,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   slide: _subtitleSlide,
                   fade: _subtitleFade,
                   child: Text(
-                    'إدارة الحج والعمرة',
+                    'app.subtitle'.tr(context),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
@@ -242,7 +248,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   slide: _basmalaSlide,
                   fade: _basmalaFade,
                   child: Text(
-                    'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+                    'app.basmala'.tr(context),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,

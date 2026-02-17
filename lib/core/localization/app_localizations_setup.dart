@@ -114,18 +114,31 @@ class AppLocalizations {
 
   /// Load JSON file for the current locale
   Future<void> load() async {
+    _localizedStrings = await _loadLanguage(locale.languageCode);
+
+    if (_localizedStrings.isNotEmpty) return;
+
+    // Fallback to Arabic as the base language.
+    if (locale.languageCode != 'ar') {
+      _localizedStrings = await _loadLanguage('ar');
+    }
+
+    if (_localizedStrings.isEmpty) {
+      debugPrint(
+        '[AppLocalizations] No localization data found for ${locale.languageCode} and fallback ar',
+      );
+    }
+  }
+
+  Future<Map<String, dynamic>> _loadLanguage(String languageCode) async {
     try {
       final jsonString = await rootBundle.loadString(
-        'assets/lang/${locale.languageCode}.json',
+        'assets/lang/$languageCode.json',
       );
-      final Map<String, dynamic> jsonMap = json.decode(jsonString);
-      _localizedStrings = jsonMap;
+      return json.decode(jsonString) as Map<String, dynamic>;
     } catch (e) {
-      debugPrint(
-        '[AppLocalizations] Error loading locale ${locale.languageCode}: $e',
-      );
-      // Fallback to empty map
-      _localizedStrings = {};
+      debugPrint('[AppLocalizations] Error loading locale $languageCode: $e');
+      return {};
     }
   }
 
@@ -211,17 +224,8 @@ class AppLocalizationsSetup {
   /// List of supported language codes
   /// Add more language codes as you add JSON files
   static const List<String> supportedLanguageCodes = [
-    'en', // English
     'ar', // Arabic
-    'es', // Spanish
-    'fr', // French
-    'de', // German
-    'it', // Italian
-    'pt', // Portuguese
-    'ru', // Russian
-    'zh', // Chinese
-    'ja', // Japanese
-    'ko', // Korean
+    'en', // English
   ];
 
   /// List of supported locales

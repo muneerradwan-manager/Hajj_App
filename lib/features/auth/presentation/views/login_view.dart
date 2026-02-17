@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:hajj_app/core/constants/app_routes.dart';
+import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -50,8 +51,14 @@ class LoginPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Container(
+                          decoration: BoxDecoration(
+                            color: _LoginPalette.heroBackground,
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/background.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                           height: heroHeight,
-                          color: _LoginPalette.heroBackground,
                           padding: const EdgeInsets.symmetric(horizontal: 24),
                           child: _HeroSection(logoSize: logoSize),
                         ),
@@ -113,7 +120,7 @@ class _HeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          'مرحباً بك في بوابة الحاج',
+          'auth.login.hero_title'.tr(context),
           textAlign: TextAlign.center,
           style: textTheme.headlineSmall?.copyWith(
             color: _LoginPalette.heroTitle,
@@ -123,7 +130,7 @@ class _HeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'إدارة الحج والعمرة',
+          'app.subtitle'.tr(context),
           textAlign: TextAlign.center,
           style: textTheme.titleMedium?.copyWith(
             color: _LoginPalette.heroSubtitle,
@@ -155,10 +162,7 @@ class _LoginCard extends StatelessWidget {
           ),
         ],
       ),
-      child: const Directionality(
-        textDirection: TextDirection.rtl,
-        child: _LoginForm(),
-      ),
+      child: const _LoginForm(),
     );
   }
 }
@@ -188,7 +192,9 @@ class _LoginFormState extends State<_LoginForm> {
 
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(const SnackBar(content: Text('جاري تسجيل الدخول...')));
+      ..showSnackBar(
+        SnackBar(content: Text('auth.login.login_in_progress'.tr(context))),
+      );
   }
 
   InputDecoration _inputDecoration({
@@ -202,7 +208,6 @@ class _LoginFormState extends State<_LoginForm> {
 
     return InputDecoration(
       hintText: hint,
-      hintTextDirection: TextDirection.rtl,
       hintStyle: const TextStyle(
         color: _LoginPalette.inputHint,
         fontWeight: FontWeight.w500,
@@ -246,7 +251,7 @@ class _LoginFormState extends State<_LoginForm> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'تسجيل الدخول',
+            'auth.login.title'.tr(context),
             textAlign: TextAlign.center,
             style: textTheme.headlineSmall?.copyWith(
               color: _LoginPalette.primaryText,
@@ -256,7 +261,7 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           const SizedBox(height: 6),
           Text(
-            'الرجاء إدخال بياناتك للدخول إلى التطبيق',
+            'auth.login.description'.tr(context),
             textAlign: TextAlign.center,
             style: textTheme.titleSmall?.copyWith(
               color: _LoginPalette.secondaryText,
@@ -266,8 +271,8 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           const SizedBox(height: 16),
           Text(
-            'رقم الهاتف',
-            textAlign: TextAlign.right,
+            'auth.login.phone_label'.tr(context),
+            textAlign: TextAlign.start,
             style: textTheme.titleSmall?.copyWith(
               color: _LoginPalette.primaryText,
               fontWeight: FontWeight.w500,
@@ -279,9 +284,9 @@ class _LoginFormState extends State<_LoginForm> {
             controller: _phoneCtrl,
             keyboardType: TextInputType.phone,
             textInputAction: TextInputAction.next,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             decoration: _inputDecoration(
-              hint: 'ادخل رقمك',
+              hint: 'auth.login.phone_hint'.tr(context),
               trailingIcon: const Icon(
                 Iconsax.user,
                 color: _LoginPalette.inputIcon,
@@ -290,14 +295,14 @@ class _LoginFormState extends State<_LoginForm> {
             ),
             validator: (value) {
               final text = (value ?? '').trim();
-              if (text.isEmpty) return 'رقم الهاتف مطلوب';
+              if (text.isEmpty) return 'auth.login.phone_required'.tr(context);
               return null;
             },
           ),
           const SizedBox(height: 12),
           Text(
-            'كلمة المرور',
-            textAlign: TextAlign.right,
+            'auth.login.password_label'.tr(context),
+            textAlign: TextAlign.start,
             style: textTheme.titleSmall?.copyWith(
               color: _LoginPalette.primaryText,
               fontWeight: FontWeight.w500,
@@ -307,12 +312,12 @@ class _LoginFormState extends State<_LoginForm> {
           const SizedBox(height: 6),
           TextFormField(
             controller: _passCtrl,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             obscureText: _obscure,
             textInputAction: TextInputAction.done,
             onFieldSubmitted: (_) => _submit(),
             decoration: _inputDecoration(
-              hint: 'ادخل كلمة المرور',
+              hint: 'auth.login.password_hint'.tr(context),
               trailingIcon: IconButton(
                 onPressed: () => setState(() => _obscure = !_obscure),
                 splashRadius: 20,
@@ -325,14 +330,18 @@ class _LoginFormState extends State<_LoginForm> {
             ),
             validator: (value) {
               final text = value ?? '';
-              if (text.isEmpty) return 'كلمة المرور مطلوبة';
-              if (text.length < 6) return 'على الأقل 6 أحرف';
+              if (text.isEmpty) {
+                return 'auth.login.password_required'.tr(context);
+              }
+              if (text.length < 6) {
+                return 'auth.login.password_min_length'.tr(context);
+              }
               return null;
             },
           ),
           const SizedBox(height: 8),
           Align(
-            alignment: Alignment.centerRight,
+            alignment: AlignmentDirectional.centerStart,
             child: TextButton(
               onPressed: () => context.push(AppRoutes.forgetPasswordPath),
               style: TextButton.styleFrom(
@@ -351,7 +360,7 @@ class _LoginFormState extends State<_LoginForm> {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'نسيت كلمة المرور؟',
+                    'auth.login.forgot_password'.tr(context),
                     style: textTheme.titleSmall?.copyWith(
                       color: _LoginPalette.goldAction,
                       fontWeight: FontWeight.w600,
@@ -386,7 +395,7 @@ class _LoginFormState extends State<_LoginForm> {
                 ),
               ),
               child: Text(
-                'دخول',
+                'auth.login.login_button'.tr(context),
                 style: textTheme.titleMedium?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
@@ -412,7 +421,7 @@ class _LoginFormState extends State<_LoginForm> {
               ),
             ),
             child: Text(
-              'تسجيل حساب جديد',
+              'auth.login.create_account'.tr(context),
               style: textTheme.titleMedium?.copyWith(
                 color: _LoginPalette.goldAction,
                 fontWeight: FontWeight.w500,
@@ -428,7 +437,7 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           const SizedBox(height: 12),
           Text(
-            'بتسجيل دخولك، أنت توافق على الشروط والأحكام',
+            'auth.login.terms'.tr(context),
             textAlign: TextAlign.center,
             style: textTheme.bodySmall?.copyWith(
               color: _LoginPalette.termsText,
@@ -461,7 +470,7 @@ class _OrDivider extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: Text(
-            'أو',
+            'auth.login.or'.tr(context),
             style: textTheme.titleSmall?.copyWith(
               color: _LoginPalette.secondaryText,
               fontWeight: FontWeight.w700,

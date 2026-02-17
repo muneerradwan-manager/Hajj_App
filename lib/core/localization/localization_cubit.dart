@@ -137,6 +137,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'app_localizations_setup.dart';
 import 'localization_state.dart';
 
 /// Cubit for managing application localization
@@ -146,7 +147,7 @@ import 'localization_state.dart';
 class LocalizationCubit extends Cubit<LocalizationState> {
   static const String _localeKey = 'app_locale';
 
-  /// Creates a [LocalizationCubit] with English as the default locale
+  /// Creates a [LocalizationCubit] with Arabic as the default locale
   LocalizationCubit() : super(LocalizationState.initial());
 
   /// Changes the current locale and persists it to storage
@@ -173,13 +174,14 @@ class LocalizationCubit extends Cubit<LocalizationState> {
   /// Call this method during app initialization (before runApp) to restore
   /// the user's language preference.
   ///
-  /// If no saved locale exists, the current state (default English) is kept.
+  /// If no saved locale exists, the current state (default Arabic) is kept.
   Future<void> loadSavedLocale() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final languageCode = prefs.getString(_localeKey);
 
-      if (languageCode != null) {
+      if (languageCode != null &&
+          AppLocalizationsSetup.supportedLanguageCodes.contains(languageCode)) {
         final savedLocale = Locale(languageCode);
         emit(state.copyWith(locale: savedLocale));
         debugPrint('[LocalizationCubit] Loaded saved locale: $languageCode');

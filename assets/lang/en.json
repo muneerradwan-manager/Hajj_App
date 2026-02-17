@@ -1,1 +1,55 @@
-{}
+{
+  "app": {
+    "title": "Pilgrim Portal",
+    "subtitle": "Hajj and Umrah Management",
+    "basmala": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
+  },
+  "auth": {
+    "login": {
+      "hero_title": "Welcome to Pilgrim Portal",
+      "title": "Login",
+      "description": "Please enter your credentials to sign in",
+      "phone_label": "Phone Number",
+      "phone_hint": "Enter your number",
+      "phone_required": "Phone number is required",
+      "password_label": "Password",
+      "password_hint": "Enter your password",
+      "password_required": "Password is required",
+      "password_min_length": "At least 6 characters",
+      "forgot_password": "Forgot password?",
+      "login_button": "Login",
+      "create_account": "Create New Account",
+      "terms": "By logging in, you agree to the terms and conditions",
+      "or": "or",
+      "login_in_progress": "Signing in..."
+    },
+    "forget": {
+      "title": "Reset Password",
+      "header_sent": "Sent Successfully",
+      "header_enter_email": "Enter your email",
+      "step_indicator": "Step {current} of {total}",
+      "snackbar_sent": "A recovery link was sent to your email",
+      "validation_email_required": "Email is required",
+      "validation_email_invalid": "Invalid email format",
+      "email_hint": "example@hajj.sa",
+      "email_card_title": "Enter your email",
+      "email_card_subtitle": "We will send you a password recovery link",
+      "email_label": "Email *",
+      "send_button": "Send Recovery Link",
+      "send_helper": "A secure password reset link will be sent to your email",
+      "security_note_title": "Security Tip",
+      "security_note_body": "Make sure you entered the correct email. If you requested multiple times in a short period, check your inbox and spam folder before requesting again.",
+      "success_title": "Sent Successfully!",
+      "success_subtitle": "Password recovery link has been sent",
+      "next_steps": "Next steps:",
+      "next_step_1": "Open your email inbox",
+      "next_step_2": "Click the link in the message",
+      "next_step_3": "Set a new password",
+      "next_step_4": "Sign in with your new password",
+      "important_label": "Important: ",
+      "important_body": "The link is valid for 24 hours only. If you don't see it, check your spam folder.",
+      "back_to_login": "Back to Login",
+      "resend": "Didn't receive it? Resend"
+    }
+  }
+}

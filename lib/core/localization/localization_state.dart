@@ -31,24 +31,16 @@ class LocalizationState extends Equatable {
   final Locale locale;
 
   /// Creates a [LocalizationState] with the given [locale]
-  const LocalizationState({
-    required this.locale,
-  });
+  const LocalizationState({required this.locale});
 
-  /// Default state with English locale
+  /// Default state with Arabic locale
   factory LocalizationState.initial() {
-    return const LocalizationState(
-      locale: Locale('en'),
-    );
+    return const LocalizationState(locale: Locale('ar'));
   }
 
   /// Creates a copy of this state with the given fields replaced
-  LocalizationState copyWith({
-    Locale? locale,
-  }) {
-    return LocalizationState(
-      locale: locale ?? this.locale,
-    );
+  LocalizationState copyWith({Locale? locale}) {
+    return LocalizationState(locale: locale ?? this.locale);
   }
 
   @override
