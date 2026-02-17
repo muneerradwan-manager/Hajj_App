@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 
 import 'package:hajj_app/core/constants/app_routes.dart';
 
@@ -100,7 +101,6 @@ class _HeroSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final titleSize = (logoSize * 0.24).clamp(24.0, 28.0);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -117,8 +117,8 @@ class _HeroSection extends StatelessWidget {
           textAlign: TextAlign.center,
           style: textTheme.headlineSmall?.copyWith(
             color: _LoginPalette.heroTitle,
-            fontWeight: FontWeight.w700,
-            fontSize: titleSize,
+            fontWeight: FontWeight.w500,
+            fontSize: 24,
           ),
         ),
         const SizedBox(height: 4),
@@ -127,8 +127,8 @@ class _HeroSection extends StatelessWidget {
           textAlign: TextAlign.center,
           style: textTheme.titleMedium?.copyWith(
             color: _LoginPalette.heroSubtitle,
-            fontWeight: FontWeight.w500,
-            fontSize: 17,
+            fontWeight: FontWeight.w400,
+            fontSize: 16,
           ),
         ),
       ],
@@ -250,8 +250,8 @@ class _LoginFormState extends State<_LoginForm> {
             textAlign: TextAlign.center,
             style: textTheme.headlineSmall?.copyWith(
               color: _LoginPalette.primaryText,
-              fontWeight: FontWeight.w700,
-              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              fontSize: 24,
             ),
           ),
           const SizedBox(height: 6),
@@ -260,8 +260,8 @@ class _LoginFormState extends State<_LoginForm> {
             textAlign: TextAlign.center,
             style: textTheme.titleSmall?.copyWith(
               color: _LoginPalette.secondaryText,
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
             ),
           ),
           const SizedBox(height: 16),
@@ -270,7 +270,7 @@ class _LoginFormState extends State<_LoginForm> {
             textAlign: TextAlign.right,
             style: textTheme.titleSmall?.copyWith(
               color: _LoginPalette.primaryText,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w500,
               fontSize: 16,
             ),
           ),
@@ -283,7 +283,7 @@ class _LoginFormState extends State<_LoginForm> {
             decoration: _inputDecoration(
               hint: 'ادخل رقمك',
               trailingIcon: const Icon(
-                Icons.person_outline_rounded,
+                Iconsax.user,
                 color: _LoginPalette.inputIcon,
                 size: 22,
               ),
@@ -300,7 +300,7 @@ class _LoginFormState extends State<_LoginForm> {
             textAlign: TextAlign.right,
             style: textTheme.titleSmall?.copyWith(
               color: _LoginPalette.primaryText,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w500,
               fontSize: 16,
             ),
           ),
@@ -317,9 +317,7 @@ class _LoginFormState extends State<_LoginForm> {
                 onPressed: () => setState(() => _obscure = !_obscure),
                 splashRadius: 20,
                 icon: Icon(
-                  _obscure
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
+                  _obscure ? Iconsax.eye : Iconsax.eye_slash,
                   color: _LoginPalette.inputIcon,
                   size: 22,
                 ),
@@ -340,12 +338,18 @@ class _LoginFormState extends State<_LoginForm> {
               style: TextButton.styleFrom(
                 foregroundColor: _LoginPalette.goldAction,
                 minimumSize: const Size(0, 0),
-                padding: EdgeInsets.zero,
+                padding: EdgeInsets.all(5),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  const Icon(
+                    Iconsax.key,
+                    size: 17,
+                    color: _LoginPalette.goldAction,
+                  ),
+                  const SizedBox(width: 4),
                   Text(
                     'نسيت كلمة المرور؟',
                     style: textTheme.titleSmall?.copyWith(
@@ -353,12 +357,6 @@ class _LoginFormState extends State<_LoginForm> {
                       fontWeight: FontWeight.w600,
                       fontSize: 14.5,
                     ),
-                  ),
-                  const SizedBox(width: 4),
-                  const Icon(
-                    Icons.key_rounded,
-                    size: 17,
-                    color: _LoginPalette.goldAction,
                   ),
                 ],
               ),
@@ -391,7 +389,7 @@ class _LoginFormState extends State<_LoginForm> {
                 'دخول',
                 style: textTheme.titleMedium?.copyWith(
                   color: Colors.white,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w500,
                   fontSize: 18,
                 ),
               ),
@@ -417,8 +415,8 @@ class _LoginFormState extends State<_LoginForm> {
               'تسجيل حساب جديد',
               style: textTheme.titleMedium?.copyWith(
                 color: _LoginPalette.goldAction,
-                fontWeight: FontWeight.w600,
-                fontSize: 17,
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
               ),
             ),
           ),
@@ -434,8 +432,8 @@ class _LoginFormState extends State<_LoginForm> {
             textAlign: TextAlign.center,
             style: textTheme.bodySmall?.copyWith(
               color: _LoginPalette.termsText,
-              fontWeight: FontWeight.w600,
-              fontSize: 13.5,
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
             ),
           ),
         ],

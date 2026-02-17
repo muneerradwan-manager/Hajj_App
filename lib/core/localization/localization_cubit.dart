@@ -61,14 +61,14 @@
 //                ListTile(
 //                  title: Text('English'),
 //                  trailing: context.watch<LocalizationCubit>().state.locale.languageCode == 'en'
-//                      ? Icon(Icons.check, color: Colors.green)
+//                      ? Icon(Iconsax.check, color: Colors.green)
 //                      : null,
 //                  onTap: () => localizationCubit.changeLocale(Locale('en')),
 //                ),
 //                ListTile(
 //                  title: Text('العربية'),
 //                  trailing: context.watch<LocalizationCubit>().state.locale.languageCode == 'ar'
-//                      ? Icon(Icons.check, color: Colors.green)
+//                      ? Icon(Iconsax.check, color: Colors.green)
 //                      : null,
 //                  onTap: () => localizationCubit.changeLocale(Locale('ar')),
 //                ),
@@ -160,7 +160,9 @@ class LocalizationCubit extends Cubit<LocalizationState> {
     try {
       emit(state.copyWith(locale: locale));
       await _saveLocale(locale);
-      debugPrint('[LocalizationCubit] Locale changed to: ${locale.languageCode}');
+      debugPrint(
+        '[LocalizationCubit] Locale changed to: ${locale.languageCode}',
+      );
     } catch (e) {
       debugPrint('[LocalizationCubit] Error changing locale: $e');
     }

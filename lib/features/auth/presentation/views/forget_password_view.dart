@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 
 import 'package:hajj_app/core/constants/app_routes.dart';
 
@@ -112,7 +113,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
       suffixIcon: Padding(
         padding: EdgeInsets.only(left: 8, right: 6),
         child: Icon(
-          Icons.mail_outline_rounded,
+          Iconsax.sms,
           color: _ForgetPasswordPalette.inputIcon,
           size: 20,
         ),
@@ -407,11 +408,7 @@ class _EmailCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.mail_outline_rounded,
-                  color: Colors.white,
-                  size: 30,
-                ),
+                child: const Icon(Iconsax.sms, color: Colors.white, size: 30),
               ),
             ),
             const SizedBox(height: 12),
@@ -492,6 +489,8 @@ class _EmailCard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const Icon(Iconsax.send_2, size: 18, color: Colors.white),
+                      const SizedBox(width: 8),
                       Text(
                         'إرسال رابط الاستعادة',
                         style: textTheme.titleMedium?.copyWith(
@@ -499,12 +498,6 @@ class _EmailCard extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Icon(
-                        Icons.send_rounded,
-                        size: 18,
-                        color: Colors.white,
                       ),
                     ],
                   ),
@@ -537,7 +530,7 @@ class _SecurityNoteCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -553,7 +546,7 @@ class _SecurityNoteCard extends StatelessWidget {
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(
-                Icons.info_outline_rounded,
+                Iconsax.info_circle,
                 size: 17,
                 color: _ForgetPasswordPalette.noteTitle,
               ),
@@ -626,11 +619,7 @@ class _SuccessCard extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Icon(
-                Icons.check_rounded,
-                color: Colors.white,
-                size: 56,
-              ),
+              child: const Icon(Iconsax.check, color: Colors.white, size: 56),
             ),
           ),
           const SizedBox(height: 14),
