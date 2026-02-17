@@ -3,59 +3,109 @@ import 'package:flutter/material.dart';
 class AppColors {
   const AppColors._();
 
-  // =========================
-  // Brand (main): #002623
-  // =========================
+  // ---------------------------------------------------------------------------
+  // Core color tokens used across the app (7 colors)
+  // ---------------------------------------------------------------------------
+  static const Color green = Color(0xFF00594F);
+  static const Color gold = Color(0xFFC8B27F);
+  static const Color redPrimary = Color(0xFF6C1D35);
+  static const Color redSecondary = Color(0xFF7D3E4D);
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color black = Color(0xFF000000);
+  static const Color hintGrey = Color(0xFFC5CBC8);
 
-  // ---------- Light ----------
-  static const Color lightPrimary = Color(0xFF002623);            // #002623
-  static const Color lightPrimaryContainer = Color(0xFF9FE8DE);   // soft mint tint
-  static const Color lightSecondary = Color(0xFF1F4D47);          // deeper teal
-  static const Color lightSecondaryContainer = Color(0xFFBFECE6); // pale teal container
-  static const Color lightTertiary = Color(0xFF8A5A2B);           // warm accent (brownish-gold)
-  static const Color lightError = Color(0xFFBA1A1A);
-  static const Color lightErrorContainer = Color(0xFFFFDAD6);
+  // Supporting tones for accessible light/dark ColorScheme mapping.
+  static const Color _greenLight = Color(0xFF0B9D8D);
+  static const Color _greenDark = Color(0xFF2FAEA0);
+  static const Color _goldDark = Color(0xFFE3D5A8);
+  static const Color _lightSurfaceAlt = Color(0xFFF6F6F4);
+  static const Color _darkSurfaceAlt = Color(0xFF121212);
+  static const Color _darkSurfaceHigh = Color(0xFF1E1E1E);
+  static const Color _darkOutline = Color(0xFF9AA0A6);
 
-  static const Color lightBackground = Color(0xFFF6FFFD);         // near-white with green tint
-  static const Color lightSurface = Color(0xFFF6FFFD);
-  static const Color lightSurfaceVariant = Color(0xFFDCE5E3);     // light green-gray
+  static const ColorScheme lightColorScheme = ColorScheme(
+    brightness: Brightness.light,
+    primary: green,
+    onPrimary: white,
+    primaryContainer: _greenLight,
+    onPrimaryContainer: white,
+    secondary: gold,
+    onSecondary: black,
+    secondaryContainer: Color(0xFFF0E8D2),
+    onSecondaryContainer: black,
+    tertiary: redPrimary,
+    onTertiary: white,
+    tertiaryContainer: redSecondary,
+    onTertiaryContainer: white,
+    error: redPrimary,
+    onError: white,
+    errorContainer: redSecondary,
+    onErrorContainer: white,
+    surface: white,
+    onSurface: black,
+    surfaceDim: _lightSurfaceAlt,
+    surfaceBright: white,
+    surfaceContainerLowest: white,
+    surfaceContainerLow: Color(0xFFFBFBFB),
+    surfaceContainer: _lightSurfaceAlt,
+    surfaceContainerHigh: Color(0xFFF1F1F1),
+    surfaceContainerHighest: Color(0xFFE9E9E9),
+    onSurfaceVariant: black,
+    outline: hintGrey,
+    outlineVariant: Color(0xFFE0E2E4),
+    shadow: black,
+    scrim: black,
+    inverseSurface: black,
+    onInverseSurface: white,
+    inversePrimary: _greenDark,
+    surfaceTint: green,
+  );
 
-  static const Color lightOnPrimary = Color(0xFFFFFFFF);
-  static const Color lightOnSecondary = Color(0xFFFFFFFF);
-  static const Color lightOnBackground = Color(0xFF0F1B19);       // very dark green-gray
-  static const Color lightOnSurface = Color(0xFF0F1B19);
-  static const Color lightOnError = Color(0xFFFFFFFF);
+  static const ColorScheme darkColorScheme = ColorScheme(
+    brightness: Brightness.dark,
+    primary: _greenDark,
+    onPrimary: black,
+    primaryContainer: green,
+    onPrimaryContainer: white,
+    secondary: _goldDark,
+    onSecondary: black,
+    secondaryContainer: Color(0xFF6F643F),
+    onSecondaryContainer: white,
+    tertiary: Color(0xFFCB8CA3),
+    onTertiary: black,
+    tertiaryContainer: redPrimary,
+    onTertiaryContainer: white,
+    error: Color(0xFFCB8CA3),
+    onError: black,
+    errorContainer: redPrimary,
+    onErrorContainer: white,
+    surface: black,
+    onSurface: white,
+    surfaceDim: black,
+    surfaceBright: _darkSurfaceAlt,
+    surfaceContainerLowest: black,
+    surfaceContainerLow: Color(0xFF0E0E0E),
+    surfaceContainer: _darkSurfaceAlt,
+    surfaceContainerHigh: _darkSurfaceHigh,
+    surfaceContainerHighest: Color(0xFF2A2A2A),
+    onSurfaceVariant: white,
+    outline: _darkOutline,
+    outlineVariant: Color(0xFF3A3F44),
+    shadow: black,
+    scrim: black,
+    inverseSurface: white,
+    onInverseSurface: black,
+    inversePrimary: green,
+    surfaceTint: _greenDark,
+  );
+}
 
-  static const Color lightOutline = Color(0xFF6F7A78);
-  static const Color lightShadow = Color(0xFF000000);
-
-  static const Color lightInverseSurface = Color(0xFF1E2B29);
-  static const Color lightInversePrimary = Color(0xFF7FD0C7);
-  static const Color lightSurfaceTint = Color(0xFF002623);
-
-  // ---------- Dark ----------
-  static const Color darkPrimary = Color(0xFF002623);             // readable on dark bg
-  static const Color darkPrimaryContainer = Color(0xFF003B36);    // deep container
-  static const Color darkSecondary = Color(0xFF1F4D47);
-  static const Color darkSecondaryContainer = Color(0xFF123E39);
-  static const Color darkTertiary = Color(0xFFFFB77B);            // warm accent on dark
-  static const Color darkError = Color(0xFFFFB4AB);
-  static const Color darkErrorContainer = Color(0xFF93000A);
-
-  static const Color darkBackground = Color(0xFF0B1413);
-  static const Color darkSurface = Color(0xFF0B1413);
-  static const Color darkSurfaceVariant = Color(0xFF3F4947);      // dark green-gray
-
-  static const Color darkOnPrimary = Color(0xFF001311);
-  static const Color darkOnSecondary = Color(0xFF001311);
-  static const Color darkOnBackground = Color(0xFFE1EDEA);
-  static const Color darkOnSurface = Color(0xFFE1EDEA);
-  static const Color darkOnError = Color(0xFF690005);
-
-  static const Color darkOutline = Color(0xFF879391);
-  static const Color darkShadow = Color(0xFF000000);
-
-  static const Color darkInverseSurface = Color(0xFFE1EDEA);
-  static const Color darkInversePrimary = Color(0xFF002623);
-  static const Color darkSurfaceTint = Color(0xFF7FD0C7);
+extension AppColorSchemeX on ColorScheme {
+  Color get brandGreen => primary;
+  Color get brandGold => secondary;
+  Color get brandRed => error;
+  Color get brandRedAlt => errorContainer;
+  Color get appBackground => surface;
+  Color get appForeground => onSurface;
+  Color get hintText => outline;
 }

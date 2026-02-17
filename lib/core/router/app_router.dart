@@ -84,6 +84,7 @@ class AppRouter {
           state: state,
           child: const LoginPage(),
           direction: PageTransitionDirection.bottomToTop,
+          duration: Duration(seconds: 2),
         ),
       ),
 

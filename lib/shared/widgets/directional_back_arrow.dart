@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class DirectionalBackArrow extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -10,7 +10,7 @@ class DirectionalBackArrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
-    final iconData = isRtl ? Iconsax.arrow_right_1 : Iconsax.arrow_left;
+    final iconData = isRtl ? LucideIcons.arrowRight : LucideIcons.arrowLeft;
 
     return IconButton(
       onPressed: onPressed,

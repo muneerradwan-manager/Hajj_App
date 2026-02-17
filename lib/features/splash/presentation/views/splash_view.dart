@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 
+import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_routes.dart';
 
 class SplashPage extends StatefulWidget {
@@ -50,10 +51,10 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     _imageScale = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.00, 0.20, curve: Curves.easeOutBack),
+        curve: const Interval(0.00, 0.32, curve: Curves.easeInOutCubic),
       ),
     );
-    _imageFade = _fade(0.00, 0.20);
+    _imageFade = _fade(0.00, 0.32);
 
     _titleSlide = _slide(0.22, 0.36);
     _titleFade = _fade(0.22, 0.36);
@@ -186,10 +187,10 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       body: Container(
         decoration: BoxDecoration(
           color: Color(0xff00594F),
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.png'),
-            fit: BoxFit.cover,
-          ),
+          // image: DecorationImage(
+          //   image: AssetImage(AppImages.background),
+          //   fit: BoxFit.cover,
+          // ),
         ),
         child: Center(
           child: Padding(
@@ -203,9 +204,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   child: SizedBox(
                     height: 248,
                     width: 302,
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      fit: BoxFit.contain,
+                    child: Hero(
+                      tag: 'logo',
+                      child: Image.asset(AppImages.logo, fit: BoxFit.contain),
                     ),
                   ),
                 ),

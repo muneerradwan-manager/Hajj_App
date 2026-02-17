@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
 
 import 'package:hajj_app/core/constants/app_routes.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+import '../../../../core/constants/app_images.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SafeArea(
@@ -31,19 +35,19 @@ class LoginPage extends StatelessWidget {
             final logoSize = (viewportWidth * 0.30).clamp(90.0, 120.0);
 
             return DecoratedBox(
-              decoration: const BoxDecoration(
-                color: _LoginPalette.pageBackground,
-              ),
+              decoration: BoxDecoration(color: cs.surfaceDim),
               child: SingleChildScrollView(
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 child: Stack(
                   children: [
-                    const Positioned.fill(
-                      child: IgnorePointer(
-                        child: Opacity(
-                          opacity: 0.18,
-                          child: CustomPaint(painter: _PatternPainter()),
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(AppImages.background),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -51,18 +55,11 @@ class LoginPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Container(
-                          decoration: BoxDecoration(
-                            color: _LoginPalette.heroBackground,
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/background.png'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                          decoration: BoxDecoration(color: cs.primary),
                           height: heroHeight,
                           padding: const EdgeInsets.symmetric(horizontal: 24),
                           child: _HeroSection(logoSize: logoSize),
                         ),
-
                         TweenAnimationBuilder<double>(
                           tween: Tween(begin: 1.0, end: 0.0),
                           duration: const Duration(seconds: 2),
@@ -80,9 +77,9 @@ class LoginPage extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                               horizontal: horizontalPadding,
                             ),
-                            child: Align(
+                            child: const Align(
                               alignment: Alignment.topCenter,
-                              child: const _LoginCard(),
+                              child: _LoginCard(),
                             ),
                           ),
                         ),
@@ -107,6 +104,7 @@ class _HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
@@ -116,25 +114,28 @@ class _HeroSection extends StatelessWidget {
         SizedBox(
           width: logoSize,
           height: logoSize,
-          child: Image.asset('assets/images/logo.png', fit: BoxFit.contain),
+          child: Hero(
+            tag: 'logo',
+            child: Image.asset(AppImages.logo, fit: BoxFit.contain),
+          ),
         ),
         const SizedBox(height: 12),
         Text(
           'auth.login.hero_title'.tr(context),
           textAlign: TextAlign.center,
           style: textTheme.headlineSmall?.copyWith(
-            color: _LoginPalette.heroTitle,
+            color: cs.onPrimary,
             fontWeight: FontWeight.w500,
             fontSize: 24,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 12),
         Text(
           'app.subtitle'.tr(context),
           textAlign: TextAlign.center,
           style: textTheme.titleMedium?.copyWith(
-            color: _LoginPalette.heroSubtitle,
-            fontWeight: FontWeight.w400,
+            color: cs.onPrimary,
+            fontWeight: FontWeight.w500,
             fontSize: 16,
           ),
         ),
@@ -148,17 +149,20 @@ class _LoginCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 18),
       decoration: BoxDecoration(
-        color: _LoginPalette.cardBackground,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(28),
-        boxShadow: const [
+        border: Border.all(color: cs.outlineVariant),
+        boxShadow: [
           BoxShadow(
-            color: _LoginPalette.cardShadow,
+            color: cs.shadow.withValues(alpha: 0.18),
             blurRadius: 28,
-            offset: Offset(0, 14),
+            offset: const Offset(0, 14),
           ),
         ],
       ),
@@ -201,37 +205,33 @@ class _LoginFormState extends State<_LoginForm> {
     required String hint,
     required Widget trailingIcon,
   }) {
-    const border = OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      borderSide: BorderSide(color: _LoginPalette.inputBorder, width: 1.2),
+    final cs = Theme.of(context).colorScheme;
+
+    final border = OutlineInputBorder(
+      borderRadius: const BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: cs.outline, width: 1.2),
     );
 
     return InputDecoration(
       hintText: hint,
-      hintStyle: const TextStyle(
-        color: _LoginPalette.inputHint,
-        fontWeight: FontWeight.w500,
-      ),
+      hintStyle: TextStyle(color: cs.outline, fontWeight: FontWeight.w500),
       isDense: true,
       filled: true,
-      fillColor: Colors.white,
+      fillColor: cs.surface,
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
       border: border,
       enabledBorder: border,
-      focusedBorder: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(
-          color: _LoginPalette.inputFocusedBorder,
-          width: 1.4,
-        ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        borderSide: BorderSide(color: cs.primary, width: 1.4),
       ),
-      errorBorder: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(color: _LoginPalette.errorBorder, width: 1.2),
+      errorBorder: OutlineInputBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        borderSide: BorderSide(color: cs.error, width: 1.2),
       ),
-      focusedErrorBorder: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(color: _LoginPalette.errorBorder, width: 1.4),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        borderSide: BorderSide(color: cs.error, width: 1.4),
       ),
       suffixIcon: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -243,6 +243,7 @@ class _LoginFormState extends State<_LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     return Form(
@@ -254,7 +255,7 @@ class _LoginFormState extends State<_LoginForm> {
             'auth.login.title'.tr(context),
             textAlign: TextAlign.center,
             style: textTheme.headlineSmall?.copyWith(
-              color: _LoginPalette.primaryText,
+              color: cs.primary,
               fontWeight: FontWeight.w500,
               fontSize: 24,
             ),
@@ -264,7 +265,7 @@ class _LoginFormState extends State<_LoginForm> {
             'auth.login.description'.tr(context),
             textAlign: TextAlign.center,
             style: textTheme.titleSmall?.copyWith(
-              color: _LoginPalette.secondaryText,
+              color: cs.primary.withValues(alpha: 0.72),
               fontWeight: FontWeight.w400,
               fontSize: 14,
             ),
@@ -274,7 +275,7 @@ class _LoginFormState extends State<_LoginForm> {
             'auth.login.phone_label'.tr(context),
             textAlign: TextAlign.start,
             style: textTheme.titleSmall?.copyWith(
-              color: _LoginPalette.primaryText,
+              color: cs.primary,
               fontWeight: FontWeight.w500,
               fontSize: 16,
             ),
@@ -287,10 +288,11 @@ class _LoginFormState extends State<_LoginForm> {
             textAlign: TextAlign.start,
             decoration: _inputDecoration(
               hint: 'auth.login.phone_hint'.tr(context),
-              trailingIcon: const Icon(
-                Iconsax.user,
-                color: _LoginPalette.inputIcon,
-                size: 22,
+              trailingIcon: IconButton(
+                icon: Icon(LucideIcons.user),
+                color: cs.primary,
+                onPressed: null,
+                disabledColor: cs.primary,
               ),
             ),
             validator: (value) {
@@ -304,7 +306,7 @@ class _LoginFormState extends State<_LoginForm> {
             'auth.login.password_label'.tr(context),
             textAlign: TextAlign.start,
             style: textTheme.titleSmall?.copyWith(
-              color: _LoginPalette.primaryText,
+              color: cs.primary,
               fontWeight: FontWeight.w500,
               fontSize: 16,
             ),
@@ -322,8 +324,8 @@ class _LoginFormState extends State<_LoginForm> {
                 onPressed: () => setState(() => _obscure = !_obscure),
                 splashRadius: 20,
                 icon: Icon(
-                  _obscure ? Iconsax.eye : Iconsax.eye_slash,
-                  color: _LoginPalette.inputIcon,
+                  _obscure ? LucideIcons.eye : LucideIcons.eyeClosed,
+                  color: cs.primary,
                   size: 22,
                 ),
               ),
@@ -345,24 +347,20 @@ class _LoginFormState extends State<_LoginForm> {
             child: TextButton(
               onPressed: () => context.push(AppRoutes.forgetPasswordPath),
               style: TextButton.styleFrom(
-                foregroundColor: _LoginPalette.goldAction,
+                foregroundColor: cs.secondary,
                 minimumSize: const Size(0, 0),
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
-                    Iconsax.key,
-                    size: 17,
-                    color: _LoginPalette.goldAction,
-                  ),
+                  Icon(LucideIcons.keyRound, size: 17, color: cs.secondary),
                   const SizedBox(width: 4),
                   Text(
                     'auth.login.forgot_password'.tr(context),
                     style: textTheme.titleSmall?.copyWith(
-                      color: _LoginPalette.goldAction,
+                      color: cs.secondary,
                       fontWeight: FontWeight.w600,
                       fontSize: 14.5,
                     ),
@@ -375,11 +373,11 @@ class _LoginFormState extends State<_LoginForm> {
           DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: _LoginPalette.primaryButtonShadow,
+                  color: cs.shadow.withValues(alpha: 0.2),
                   blurRadius: 14,
-                  offset: Offset(0, 6),
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
@@ -388,8 +386,8 @@ class _LoginFormState extends State<_LoginForm> {
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),
                 elevation: 0,
-                backgroundColor: _LoginPalette.primaryButton,
-                foregroundColor: Colors.white,
+                backgroundColor: cs.primary,
+                foregroundColor: cs.onPrimary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -397,7 +395,7 @@ class _LoginFormState extends State<_LoginForm> {
               child: Text(
                 'auth.login.login_button'.tr(context),
                 style: textTheme.titleMedium?.copyWith(
-                  color: Colors.white,
+                  color: cs.onPrimary,
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
                 ),
@@ -411,11 +409,8 @@ class _LoginFormState extends State<_LoginForm> {
             onPressed: () {},
             style: OutlinedButton.styleFrom(
               minimumSize: const Size(double.infinity, 50),
-              foregroundColor: _LoginPalette.goldAction,
-              side: const BorderSide(
-                color: _LoginPalette.goldAction,
-                width: 1.2,
-              ),
+              foregroundColor: cs.secondary,
+              side: BorderSide(color: cs.secondary, width: 1.2),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -423,24 +418,20 @@ class _LoginFormState extends State<_LoginForm> {
             child: Text(
               'auth.login.create_account'.tr(context),
               style: textTheme.titleMedium?.copyWith(
-                color: _LoginPalette.goldAction,
+                color: cs.secondary,
                 fontWeight: FontWeight.w500,
                 fontSize: 18,
               ),
             ),
           ),
           const SizedBox(height: 18),
-          const Divider(
-            color: _LoginPalette.divider,
-            thickness: 1.1,
-            height: 1.1,
-          ),
+          Divider(color: cs.primary, thickness: 1.1, height: 1.1),
           const SizedBox(height: 12),
           Text(
             'auth.login.terms'.tr(context),
             textAlign: TextAlign.center,
             style: textTheme.bodySmall?.copyWith(
-              color: _LoginPalette.termsText,
+              color: cs.primary.withValues(alpha: 0.72),
               fontWeight: FontWeight.w400,
               fontSize: 12,
             ),
@@ -456,97 +447,25 @@ class _OrDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
     return Row(
       children: [
-        const Expanded(
-          child: Divider(
-            color: _LoginPalette.divider,
-            thickness: 1.1,
-            height: 1,
-          ),
-        ),
+        Expanded(child: Divider(color: cs.primary, thickness: 1.1, height: 1)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: Text(
             'auth.login.or'.tr(context),
             style: textTheme.titleSmall?.copyWith(
-              color: _LoginPalette.secondaryText,
+              color: cs.primary.withValues(alpha: 0.72),
               fontWeight: FontWeight.w700,
               fontSize: 16,
             ),
           ),
         ),
-        const Expanded(
-          child: Divider(
-            color: _LoginPalette.divider,
-            thickness: 1.1,
-            height: 1,
-          ),
-        ),
+        Expanded(child: Divider(color: cs.primary, thickness: 1.1, height: 1)),
       ],
     );
   }
-}
-
-class _PatternPainter extends CustomPainter {
-  const _PatternPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    const double tile = 82;
-    final stroke = Paint()
-      ..color = _LoginPalette.patternStroke
-      ..strokeWidth = 1
-      ..style = PaintingStyle.stroke;
-    final dot = Paint()
-      ..color = _LoginPalette.patternDot
-      ..style = PaintingStyle.fill;
-
-    for (double y = -tile; y <= size.height + tile; y += tile) {
-      for (double x = -tile; x <= size.width + tile; x += tile) {
-        final center = Offset(x + (tile / 2), y + (tile / 2));
-        final half = tile * 0.32;
-
-        final diamond = Path()
-          ..moveTo(center.dx, center.dy - half)
-          ..lineTo(center.dx + half, center.dy)
-          ..lineTo(center.dx, center.dy + half)
-          ..lineTo(center.dx - half, center.dy)
-          ..close();
-
-        canvas.drawPath(diamond, stroke);
-        canvas.drawCircle(center, tile * 0.08, dot);
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class _LoginPalette {
-  const _LoginPalette._();
-
-  static const Color heroBackground = Color(0xFF00594F);
-  static const Color pageBackground = Color(0xFFF6F6F4);
-  static const Color cardBackground = Color(0xFFFFFFFF);
-  static const Color cardShadow = Color(0x1F052E2A);
-  static const Color heroTitle = Color(0xFFF7FFFC);
-  static const Color heroSubtitle = Color(0xFFE3DDD2);
-  static const Color primaryText = Color(0xFF016258);
-  static const Color secondaryText = Color(0xFF409E95);
-  static const Color termsText = Color(0xFF1F8F85);
-  static const Color inputBorder = Color(0xFF7BC8C1);
-  static const Color inputFocusedBorder = Color(0xFF2BAA9E);
-  static const Color inputHint = Color(0xFFC5CBC8);
-  static const Color inputIcon = Color(0xFF22ACA0);
-  static const Color errorBorder = Color(0xFFBA1A1A);
-  static const Color primaryButton = Color(0xFF0B9D8D);
-  static const Color primaryButtonShadow = Color(0x33206B63);
-  static const Color divider = Color(0xFF8CCFC7);
-  static const Color goldAction = Color(0xFFC8B27F);
-  static const Color patternStroke = Color(0x408BAEAA);
-  static const Color patternDot = Color(0x208BAEAA);
 }
