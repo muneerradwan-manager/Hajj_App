@@ -24,7 +24,7 @@ class ForgetPasswordHeroHeader extends StatelessWidget {
 
     return Container(
       height: height + statusBarInset,
-      padding: EdgeInsets.fromLTRB(20, statusBarInset + 10, 20, 18),
+      padding: EdgeInsets.fromLTRB(20, 20, 20, 18),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -32,44 +32,43 @@ class ForgetPasswordHeroHeader extends StatelessWidget {
           colors: [cs.primaryContainer, cs.primary],
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              DirectionalBackArrow(onPressed: onBack, color: cs.onPrimary),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'auth.forget.title'.tr(context),
-                    textAlign: TextAlign.center,
-                    style: textTheme.headlineSmall?.copyWith(
-                      color: cs.onPrimary,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 24,
+      child: SafeArea(
+        bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                DirectionalBackArrow(onPressed: onBack, color: cs.onPrimary),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'auth.forget.title'.tr(context),
+                      textAlign: TextAlign.center,
+                      style: textTheme.headlineSmall?.copyWith(
+                        color: cs.onPrimary,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 7),
-                  Text(
-                    isSent
-                        ? 'auth.forget.header_sent'.tr(context)
-                        : 'auth.forget.header_enter_email'.tr(context),
-                    textAlign: TextAlign.center,
-                    style: textTheme.titleSmall?.copyWith(
-                      color: cs.secondary,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
+                    const SizedBox(height: 7),
+                    Text(
+                      isSent
+                          ? 'auth.forget.header_sent'.tr(context)
+                          : 'auth.forget.header_enter_email'.tr(context),
+                      textAlign: TextAlign.center,
+                      style: textTheme.titleSmall?.copyWith(
+                        color: cs.secondary,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          _ForgetPasswordStepProgress(isSent: isSent),
-        ],
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            _ForgetPasswordStepProgress(isSent: isSent),
+          ],
+        ),
       ),
     );
   }
@@ -117,8 +116,6 @@ class _ForgetPasswordStepProgress extends StatelessWidget {
             ),
             style: textTheme.bodySmall?.copyWith(
               color: cs.onPrimary.withValues(alpha: 0.88),
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
             ),
           ),
         ],
@@ -183,39 +180,27 @@ class ForgetPasswordEmailCard extends StatelessWidget {
             Text(
               'auth.forget.email_card_title'.tr(context),
               textAlign: TextAlign.center,
-              style: textTheme.headlineSmall?.copyWith(
-                color: cs.tertiary,
-                fontWeight: FontWeight.w500,
-                fontSize: 20,
-                height: 1.2,
-              ),
+              style: textTheme.titleLarge?.copyWith(color: cs.tertiary),
             ),
             const SizedBox(height: 6),
             Text(
               'auth.forget.email_card_subtitle'.tr(context),
               textAlign: TextAlign.center,
-              style: textTheme.titleSmall?.copyWith(
+              style: textTheme.bodyMedium?.copyWith(
                 color: cs.tertiary.withValues(alpha: 0.7),
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
               ),
             ),
             const SizedBox(height: 24),
             Text(
               'auth.forget.email_label'.tr(context),
               textAlign: TextAlign.start,
-              style: textTheme.titleSmall?.copyWith(
-                color: cs.tertiary,
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-              ),
+              style: textTheme.titleSmall?.copyWith(color: cs.tertiary),
             ),
             const SizedBox(height: 10),
             TextFormField(
               controller: emailCtrl,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.done,
-              textDirection: TextDirection.ltr,
               onFieldSubmitted: (_) => onSend?.call(),
               decoration: decoration,
               validator: validateEmail,
@@ -241,16 +226,6 @@ class ForgetPasswordEmailCard extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: onSend,
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
-                    elevation: 0,
-                    shadowColor: Colors.transparent,
-                    backgroundColor: Colors.transparent,
-                    foregroundColor: cs.onPrimary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -260,8 +235,6 @@ class ForgetPasswordEmailCard extends StatelessWidget {
                         'auth.forget.send_button'.tr(context),
                         style: textTheme.titleMedium?.copyWith(
                           color: cs.onPrimary,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
                         ),
                       ),
                     ],
@@ -273,11 +246,7 @@ class ForgetPasswordEmailCard extends StatelessWidget {
             Text(
               'auth.forget.send_helper'.tr(context),
               textAlign: TextAlign.center,
-              style: textTheme.bodySmall?.copyWith(
-                color: cs.outline,
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
-              ),
+              style: textTheme.bodySmall?.copyWith(color: cs.outline),
             ),
           ],
         ),
@@ -317,11 +286,7 @@ class ForgetPasswordSecurityNoteCard extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 'auth.forget.security_note_title'.tr(context),
-                style: textTheme.titleSmall?.copyWith(
-                  color: cs.error,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
+                style: textTheme.titleSmall?.copyWith(color: cs.error),
               ),
             ],
           ),
@@ -330,9 +295,6 @@ class ForgetPasswordSecurityNoteCard extends StatelessWidget {
             'auth.forget.security_note_body'.tr(context),
             style: textTheme.bodySmall?.copyWith(
               color: cs.error.withValues(alpha: 0.85),
-              height: 1.45,
-              fontWeight: FontWeight.w400,
-              fontSize: 12,
             ),
           ),
         ],
@@ -391,33 +353,19 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
           Text(
             'auth.forget.success_title'.tr(context),
             textAlign: TextAlign.center,
-            style: textTheme.headlineSmall?.copyWith(
-              color: cs.error,
-              fontWeight: FontWeight.w500,
-              fontSize: 24,
-              height: 1.2,
-            ),
+            style: textTheme.headlineSmall?.copyWith(color: cs.error),
           ),
           const SizedBox(height: 10),
           Text(
             'auth.forget.success_subtitle'.tr(context),
             textAlign: TextAlign.center,
-            style: textTheme.titleSmall?.copyWith(
-              color: const Color(0xFF672146),
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-            ),
+            style: textTheme.titleSmall?.copyWith(color: cs.errorContainer),
           ),
           const SizedBox(height: 10),
           Text(
             email,
             textAlign: TextAlign.center,
-            textDirection: TextDirection.ltr,
-            style: textTheme.titleSmall?.copyWith(
-              color: cs.outline,
-              fontWeight: FontWeight.w600,
-              fontSize: 13,
-            ),
+            style: textTheme.titleSmall?.copyWith(color: cs.outline),
           ),
           const SizedBox(height: 14),
           Container(
@@ -435,10 +383,8 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
                   children: [
                     Text(
                       'auth.forget.next_steps'.tr(context),
-                      style: textTheme.titleSmall?.copyWith(
+                      style: textTheme.titleMedium?.copyWith(
                         color: cs.tertiary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
                       ),
                     ),
                   ],
@@ -476,20 +422,14 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: 'auth.forget.important_label'.tr(context),
-                          style: textTheme.bodySmall?.copyWith(
+                          style: textTheme.titleSmall?.copyWith(
                             color: cs.primary,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 13,
-                            height: 1.4,
                           ),
                         ),
                         TextSpan(
                           text: 'auth.forget.important_body'.tr(context),
                           style: textTheme.bodySmall?.copyWith(
                             color: cs.primary,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                            height: 1.4,
                           ),
                         ),
                       ],
@@ -512,42 +452,18 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
             ),
             child: ElevatedButton(
               onPressed: onBackToLogin,
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                elevation: 0,
-                shadowColor: Colors.transparent,
-                backgroundColor: Colors.transparent,
-                foregroundColor: cs.onPrimary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
               child: Text(
                 'auth.forget.back_to_login'.tr(context),
-                style: textTheme.titleMedium?.copyWith(
-                  color: cs.onPrimary,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
+                style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
               ),
             ),
           ),
           const SizedBox(height: 10),
           TextButton(
             onPressed: onResend,
-            style: TextButton.styleFrom(
-              foregroundColor: cs.primary,
-              minimumSize: const Size(0, 0),
-              padding: EdgeInsets.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
             child: Text(
               'auth.forget.resend'.tr(context),
-              style: textTheme.titleSmall?.copyWith(
-                color: cs.primary,
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-              ),
+              style: textTheme.titleSmall?.copyWith(color: cs.primary),
             ),
           ),
         ],
@@ -576,11 +492,7 @@ class _ForgetPasswordStepLine extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             '$number',
-            style: TextStyle(
-              color: cs.onPrimary,
-              fontWeight: FontWeight.w700,
-              fontSize: 11,
-            ),
+            style: textTheme.labelSmall?.copyWith(color: cs.onPrimary),
           ),
         ),
         const SizedBox(width: 8),
@@ -588,11 +500,7 @@ class _ForgetPasswordStepLine extends StatelessWidget {
           child: Text(
             text,
             textAlign: TextAlign.start,
-            style: textTheme.bodySmall?.copyWith(
-              color: cs.tertiary,
-              fontWeight: FontWeight.w400,
-              fontSize: 12,
-            ),
+            style: textTheme.bodySmall?.copyWith(color: cs.errorContainer),
           ),
         ),
       ],

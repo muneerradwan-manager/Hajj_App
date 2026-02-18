@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/constants/app_images.dart';
@@ -79,43 +80,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
     return null;
   }
 
-  InputDecoration _emailDecoration() {
-    final cs = Theme.of(context).colorScheme;
-    final border = OutlineInputBorder(
-      borderRadius: const BorderRadius.all(Radius.circular(11)),
-      borderSide: BorderSide(color: cs.outline, width: 1.15),
-    );
-
-    return InputDecoration(
-      hintText: 'auth.forget.email_hint'.tr(context),
-      hintStyle: TextStyle(color: cs.outline.withValues(alpha: 0.72)),
-      hintTextDirection: TextDirection.ltr,
-      isDense: true,
-      filled: true,
-      fillColor: cs.surface,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
-      border: border,
-      enabledBorder: border,
-      focusedBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(11)),
-        borderSide: BorderSide(color: cs.primary, width: 1.35),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(11)),
-        borderSide: BorderSide(color: cs.error, width: 1.2),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(11)),
-        borderSide: BorderSide(color: cs.error, width: 1.35),
-      ),
-      suffixIcon: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 6),
-        child: Icon(LucideIcons.mail, color: cs.secondary, size: 20),
-      ),
-      suffixIconConstraints: const BoxConstraints(minWidth: 42, minHeight: 40),
-    );
-  }
-
   bool get _canSend => _emailCtrl.text.trim().isNotEmpty;
 
   @override
@@ -134,31 +98,30 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: DecoratedBox(
-        decoration: BoxDecoration(color: cs.surfaceDim),
-        child: SingleChildScrollView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(AppImages.background),
-                      fit: BoxFit.cover,
-                    ),
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(AppImages.background),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ForgetPasswordHeroHeader(
-                    height: heroHeight,
-                    isSent: _isSent,
-                    onBack: _handleBack,
-                  ),
-                  Container(
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ForgetPasswordHeroHeader(
+                  height: heroHeight,
+                  isSent: _isSent,
+                  onBack: _handleBack,
+                ),
+                SafeArea(
+                  top: false,
+                  child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(AppImages.background),
@@ -204,7 +167,20 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                                       key: const ValueKey('email-card'),
                                       formKey: _formKey,
                                       emailCtrl: _emailCtrl,
-                                      decoration: _emailDecoration(),
+                                      decoration: InputDecoration(
+                                        hintText: 'auth.forget.email_hint'.tr(
+                                          context,
+                                        ),
+                                        hintStyle: TextStyle(
+                                          color: cs.outline.withValues(
+                                            alpha: 0.72,
+                                          ),
+                                        ),
+                                        suffixIcon: Icon(
+                                          LucideIcons.mail,
+                                          color: cs.brandGold,
+                                        ),
+                                      ),
                                       validateEmail: _validateEmail,
                                       onSend: _canSend ? _sendResetLink : null,
                                     ),
@@ -218,10 +194,10 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       ),
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

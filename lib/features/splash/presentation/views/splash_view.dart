@@ -146,6 +146,8 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -176,10 +178,8 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   child: Text(
                     'app.title'.tr(context),
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 30,
-                      color: Color(0xffFFFFFF),
-                      fontWeight: FontWeight.w700,
+                    style: textTheme.headlineLarge?.copyWith(
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -190,11 +190,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   child: Text(
                     'app.subtitle'.tr(context),
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Color(0xffE3DDD2),
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: textTheme.bodyLarge?.copyWith(color: cs.surfaceDim),
                   ),
                 ),
                 const SizedBox(height: 36),
@@ -216,11 +212,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   child: Text(
                     'app.basmala'.tr(context),
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Color(0xffE3DDD2),
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: textTheme.bodyLarge?.copyWith(color: cs.surfaceDim),
                   ),
                 ),
               ],

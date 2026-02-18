@@ -5,15 +5,15 @@ import 'package:hajj_app/core/constants/app_sizes.dart';
 ElevatedButtonThemeData buildAppElevatedButtonTheme(ColorScheme cs) {
   return ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      elevation: AppSizes.elevationSm,
       padding: const EdgeInsets.symmetric(
         horizontal: AppSizes.spacingLg,
         vertical: AppSizes.spacingMd,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadiusMd),
-      ),
-      minimumSize: const Size(64, 48),
+      minimumSize: const Size(double.infinity, 50),
+      elevation: 0,
+      backgroundColor: cs.primary,
+      foregroundColor: cs.onPrimary,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
     ),
   );
 }

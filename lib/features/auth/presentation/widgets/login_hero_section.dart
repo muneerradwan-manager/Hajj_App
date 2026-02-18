@@ -29,21 +29,13 @@ class LoginHeroSection extends StatelessWidget {
         Text(
           'auth.login.hero_title'.tr(context),
           textAlign: TextAlign.center,
-          style: textTheme.headlineSmall?.copyWith(
-            color: cs.onPrimary,
-            fontWeight: FontWeight.w500,
-            fontSize: 24,
-          ),
+          style: textTheme.headlineSmall?.copyWith(color: Colors.white),
         ),
         const SizedBox(height: 12),
         Text(
           'app.subtitle'.tr(context),
           textAlign: TextAlign.center,
-          style: textTheme.titleMedium?.copyWith(
-            color: cs.onPrimary,
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          ),
+          style: textTheme.bodyLarge?.copyWith(color: cs.surfaceDim),
         ),
       ],
     );

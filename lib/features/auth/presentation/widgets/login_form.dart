@@ -37,46 +37,6 @@ class _LoginFormState extends State<LoginForm> {
       );
   }
 
-  InputDecoration _inputDecoration({
-    required String hint,
-    required Widget trailingIcon,
-  }) {
-    final cs = Theme.of(context).colorScheme;
-
-    final border = OutlineInputBorder(
-      borderRadius: const BorderRadius.all(Radius.circular(10)),
-      borderSide: BorderSide(color: cs.outline, width: 1.2),
-    );
-
-    return InputDecoration(
-      hintText: hint,
-      hintStyle: TextStyle(color: cs.outline, fontWeight: FontWeight.w500),
-      isDense: true,
-      filled: true,
-      fillColor: cs.surface,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
-      border: border,
-      enabledBorder: border,
-      focusedBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(color: cs.primary, width: 1.4),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(color: cs.error, width: 1.2),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(color: cs.error, width: 1.4),
-      ),
-      suffixIcon: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6),
-        child: trailingIcon,
-      ),
-      suffixIconConstraints: const BoxConstraints(minWidth: 44, minHeight: 42),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -90,31 +50,21 @@ class _LoginFormState extends State<LoginForm> {
           Text(
             'auth.login.title'.tr(context),
             textAlign: TextAlign.center,
-            style: textTheme.headlineSmall?.copyWith(
-              color: cs.primary,
-              fontWeight: FontWeight.w500,
-              fontSize: 24,
-            ),
+            style: textTheme.headlineSmall?.copyWith(color: cs.primary),
           ),
           const SizedBox(height: 6),
           Text(
             'auth.login.description'.tr(context),
             textAlign: TextAlign.center,
-            style: textTheme.titleSmall?.copyWith(
+            style: textTheme.bodyMedium?.copyWith(
               color: cs.primary.withValues(alpha: 0.72),
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
             ),
           ),
           const SizedBox(height: 16),
           Text(
             'auth.login.phone_label'.tr(context),
             textAlign: TextAlign.start,
-            style: textTheme.titleSmall?.copyWith(
-              color: cs.primary,
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
+            style: textTheme.titleMedium?.copyWith(color: cs.primary),
           ),
           const SizedBox(height: 6),
           TextFormField(
@@ -122,9 +72,9 @@ class _LoginFormState extends State<LoginForm> {
             keyboardType: TextInputType.phone,
             textInputAction: TextInputAction.next,
             textAlign: TextAlign.start,
-            decoration: _inputDecoration(
-              hint: 'auth.login.phone_hint'.tr(context),
-              trailingIcon: IconButton(
+            decoration: InputDecoration(
+              hintText: 'auth.login.phone_hint'.tr(context),
+              suffixIcon: IconButton(
                 icon: const Icon(LucideIcons.user),
                 color: cs.primary,
                 onPressed: null,
@@ -141,11 +91,7 @@ class _LoginFormState extends State<LoginForm> {
           Text(
             'auth.login.password_label'.tr(context),
             textAlign: TextAlign.start,
-            style: textTheme.titleSmall?.copyWith(
-              color: cs.primary,
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
+            style: textTheme.titleMedium?.copyWith(color: cs.primary),
           ),
           const SizedBox(height: 6),
           TextFormField(
@@ -154,9 +100,9 @@ class _LoginFormState extends State<LoginForm> {
             obscureText: _obscure,
             textInputAction: TextInputAction.done,
             onFieldSubmitted: (_) => _submit(),
-            decoration: _inputDecoration(
-              hint: 'auth.login.password_hint'.tr(context),
-              trailingIcon: IconButton(
+            decoration: InputDecoration(
+              hintText: 'auth.login.password_hint'.tr(context),
+              suffixIcon: IconButton(
                 onPressed: () => setState(() => _obscure = !_obscure),
                 splashRadius: 20,
                 icon: Icon(
@@ -182,12 +128,6 @@ class _LoginFormState extends State<LoginForm> {
             alignment: AlignmentDirectional.centerStart,
             child: TextButton(
               onPressed: () => context.push(AppRoutes.forgetPasswordPath),
-              style: TextButton.styleFrom(
-                foregroundColor: cs.secondary,
-                minimumSize: const Size(0, 0),
-                padding: const EdgeInsets.all(5),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -195,11 +135,7 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(width: 4),
                   Text(
                     'auth.login.forgot_password'.tr(context),
-                    style: textTheme.titleSmall?.copyWith(
-                      color: cs.secondary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.5,
-                    ),
+                    style: textTheme.titleSmall?.copyWith(color: cs.secondary),
                   ),
                 ],
               ),
@@ -219,22 +155,9 @@ class _LoginFormState extends State<LoginForm> {
             ),
             child: ElevatedButton(
               onPressed: _submit,
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                elevation: 0,
-                backgroundColor: cs.primary,
-                foregroundColor: cs.onPrimary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-              ),
               child: Text(
                 'auth.login.login_button'.tr(context),
-                style: textTheme.titleMedium?.copyWith(
-                  color: cs.onPrimary,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                ),
+                style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
               ),
             ),
           ),
@@ -243,21 +166,9 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 20),
           OutlinedButton(
             onPressed: () {},
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 50),
-              foregroundColor: cs.secondary,
-              side: BorderSide(color: cs.secondary, width: 1.2),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-            ),
             child: Text(
               'auth.login.create_account'.tr(context),
-              style: textTheme.titleMedium?.copyWith(
-                color: cs.secondary,
-                fontWeight: FontWeight.w500,
-                fontSize: 18,
-              ),
+              style: textTheme.titleMedium?.copyWith(color: cs.secondary),
             ),
           ),
           const SizedBox(height: 18),
@@ -268,8 +179,6 @@ class _LoginFormState extends State<LoginForm> {
             textAlign: TextAlign.center,
             style: textTheme.bodySmall?.copyWith(
               color: cs.primary.withValues(alpha: 0.72),
-              fontWeight: FontWeight.w400,
-              fontSize: 12,
             ),
           ),
         ],

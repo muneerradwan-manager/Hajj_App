@@ -7,20 +7,20 @@ class AppColors {
   // Core color tokens used across the app (7 colors)
   // ---------------------------------------------------------------------------
   static const Color green = Color(0xFF00594F);
-  static const Color gold = Color(0xFFC8B27F);
-  static const Color redPrimary = Color(0xFF6C1D35);
-  static const Color redSecondary = Color(0xFF7D3E4D);
+  static const Color gold = Color(0xFFad9e6e);
+  static const Color redPrimary = Color(0xFF420023);
+  static const Color redSecondary = Color(0xFF672146);
   static const Color white = Color(0xFFFFFFFF);
-  static const Color black = Color(0xFF000000);
+  static const Color black = Color(0xFF021526);
   static const Color hintGrey = Color(0xFFC5CBC8);
 
   // Supporting tones for accessible light/dark ColorScheme mapping.
-  static const Color _greenLight = Color(0xFF0B9D8D);
-  static const Color _greenDark = Color(0xFF2FAEA0);
-  static const Color _goldDark = Color(0xFFE3D5A8);
-  static const Color _lightSurfaceAlt = Color(0xFFF6F6F4);
-  static const Color _darkSurfaceAlt = Color(0xFF121212);
-  static const Color _darkSurfaceHigh = Color(0xFF1E1E1E);
+  static const Color _greenLight = Color(0xFF006e5c);
+  static const Color _greenDark = Color(0xFF279e91);
+  static const Color _goldDark = Color(0xFFd9c89e);
+  static const Color _lightSurfaceAlt = Color(0xFFe3ddd2);
+  static const Color _darkSurfaceAlt = Color(0xFF021526);
+  static const Color _darkSurfaceHigh = Color(0xFF021526);
   static const Color _darkOutline = Color(0xFF9AA0A6);
 
   static const ColorScheme lightColorScheme = ColorScheme(

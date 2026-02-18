@@ -9,11 +9,10 @@ OutlinedButtonThemeData buildAppOutlinedButtonTheme(ColorScheme cs) {
         horizontal: AppSizes.spacingLg,
         vertical: AppSizes.spacingMd,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.borderRadiusMd),
-      ),
-      side: BorderSide(color: cs.outline),
-      minimumSize: const Size(64, 48),
+      minimumSize: const Size(double.infinity, 50),
+      foregroundColor: cs.secondary,
+      side: BorderSide(color: cs.secondary, width: 1.2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
     ),
   );
 }

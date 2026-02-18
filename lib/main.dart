@@ -49,7 +49,7 @@ class MainApp extends StatelessWidget {
                 builder: DevicePreview.appBuilder,
                 theme: AppTheme.lightTheme,
                 darkTheme: AppTheme.darkTheme,
-                themeMode: ThemeMode.light,
+                themeMode: themeState.themeMode,
                 locale: localizationState.locale,
                 supportedLocales: AppLocalizationsSetup.supportedLocales,
                 localizationsDelegates:
