@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/features/splash/presentation/widgets/splash_pulse_indicator.dart';
 
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_routes.dart';
@@ -41,42 +42,52 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 4200),
+      duration: const Duration(
+        milliseconds: 6500,
+      ), // Slightly longer total time
     );
+
     _dotsController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     );
 
-    _imageScale = Tween<double>(begin: 0, end: 1).animate(
+    // --- IMAGE ANIMATION: WIDER FADE WINDOW ---
+    _imageScale = Tween<double>(begin: 0.4, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.00, 0.32, curve: Curves.easeInOutCubic),
+        curve: const Interval(0.00, 0.50, curve: Curves.easeOutCubic),
       ),
     );
-    _imageFade = _fade(0.00, 0.32);
 
-    _titleSlide = _slide(0.22, 0.36);
-    _titleFade = _fade(0.22, 0.36);
+    // Image Fade now takes 50% of the entire duration to feel "breathable"
+    _imageFade = _fade(0.00, 0.50);
 
-    _subtitleSlide = _slide(0.40, 0.54);
-    _subtitleFade = _fade(0.40, 0.54);
+    // --- CONTENT: STAGGERED TO START AFTER IMAGE IS VISIBLE ---
+    _titleSlide = _slide(0.40, 0.60);
+    _titleFade = _fade(0.40, 0.60);
 
-    _dotsSlide = _slide(0.58, 0.70);
-    _dotsFade = _fade(0.58, 0.70);
+    _subtitleSlide = _slide(0.50, 0.70);
+    _subtitleFade = _fade(0.50, 0.70);
 
-    _basmalaSlide = _slide(0.88, 1.00);
-    _basmalaFade = _fade(0.88, 1.00);
+    _dotsSlide = _slide(0.60, 0.80);
+    _dotsFade = _fade(0.60, 0.80);
+
+    _basmalaSlide = _slide(0.80, 0.98);
+    _basmalaFade = _fade(0.80, 0.98);
 
     _controller.addListener(() {
-      if (!_isDotsAnimationStarted && _controller.value >= 0.58) {
+      if (!_isDotsAnimationStarted && _controller.value >= 0.60) {
+        if (!mounted) return;
         _isDotsAnimationStarted = true;
         _dotsController.repeat();
       }
     });
 
     _controller.forward();
-    _navigationTimer = Timer(const Duration(milliseconds: 5200), _goToLogin);
+
+    // Navigation starts after the sequence finishes
+    _navigationTimer = Timer(const Duration(milliseconds: 7000), _goToLogin);
   }
 
   void _goToLogin() {
@@ -90,6 +101,25 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     _dotsController.dispose();
     _controller.dispose();
     super.dispose();
+  }
+
+  Animation<Offset> _slide(double begin, double end) {
+    return Tween<Offset>(
+      begin: const Offset(0, 0.20),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(begin, end, curve: Curves.easeOutQuart),
+      ),
+    );
+  }
+
+  Animation<double> _fade(double begin, double end) {
+    return CurvedAnimation(
+      parent: _controller,
+      curve: Interval(begin, end, curve: Curves.easeInCubic),
+    );
   }
 
   Widget _slideFade({
@@ -114,84 +144,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     );
   }
 
-  Animation<Offset> _slide(double begin, double end) {
-    return Tween<Offset>(
-      begin: const Offset(0, 0.45),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Interval(begin, end, curve: Curves.easeOutCubic),
-      ),
-    );
-  }
-
-  Animation<double> _fade(double begin, double end) {
-    return CurvedAnimation(
-      parent: _controller,
-      curve: Interval(begin, end, curve: Curves.easeOut),
-    );
-  }
-
-  Widget _buildPulseIndicator() {
-    return AnimatedBuilder(
-      animation: _dotsController,
-      builder: (context, child) {
-        final progress = _dotsController.value;
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: _dotSpacing,
-          children: [
-            _pulseDot(0, progress),
-            _pulseDot(1, progress),
-            _pulseDot(2, progress),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _pulseDot(int index, double progress) {
-    final scale = _dotScale(index, progress);
-    final emphasis = ((scale - 1) / 0.45).clamp(0.0, 1.0);
-    final color = Color.lerp(
-      const Color(0x99E3DDD2),
-      const Color(0xffE3DDD2),
-      emphasis,
-    )!;
-
-    return Transform.scale(
-      scale: scale,
-      child: Container(
-        width: _dotSize,
-        height: _dotSize,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-      ),
-    );
-  }
-
-  double _dotScale(int index, double progress) {
-    final phase = (progress * 3) % 3;
-    var distance = (phase - index).abs();
-    if (distance > 1.5) {
-      distance = 3 - distance;
-    }
-
-    final activation = (1 - distance).clamp(0.0, 1.0);
-    return 1 + (0.45 * Curves.easeOut.transform(activation));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          color: Color(0xff00594F),
-          // image: DecorationImage(
-          //   image: AssetImage(AppImages.background),
-          //   fit: BoxFit.cover,
-          // ),
-        ),
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(color: Color(0xff00594F)),
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -217,7 +176,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   child: Text(
                     'app.title'.tr(context),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 30,
                       color: Color(0xffFFFFFF),
                       fontWeight: FontWeight.w700,
@@ -231,7 +190,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   child: Text(
                     'app.subtitle'.tr(context),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       color: Color(0xffE3DDD2),
                       fontWeight: FontWeight.w400,
@@ -242,7 +201,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                 _slideFade(
                   slide: _dotsSlide,
                   fade: _dotsFade,
-                  child: _buildPulseIndicator(),
+                  child: SplashPulseIndicator(
+                    animation: _dotsController,
+                    dotSize: _dotSize,
+                    dotSpacing: _dotSpacing,
+                    inactiveColor: const Color(0x99E3DDD2),
+                    activeColor: const Color(0xffE3DDD2),
+                  ),
                 ),
                 const SizedBox(height: 36),
                 _slideFade(
@@ -251,7 +216,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   child: Text(
                     'app.basmala'.tr(context),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       color: Color(0xffE3DDD2),
                       fontWeight: FontWeight.w400,

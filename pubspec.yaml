@@ -9,36 +9,48 @@ environment:
 dependencies:
   flutter:
     sdk: flutter 
-
   dio: ^5.9.1
   dartz: ^0.10.1
   get_it: ^9.2.0
   flutter_bloc: ^9.1.1
   equatable: ^2.0.8
-
   device_info_plus: ^12.3.0
   device_preview: ^1.3.1
-
   flutter_secure_storage: ^10.0.0
   shared_preferences: ^2.5.4
-
   go_router: ^17.1.0
-
-  syrian_dio: ^0.0.2
-
+  lucide_icons_flutter: ^3.1.9
+  flutter_dotenv: ^6.0.0
   flutter_localizations:
     sdk: flutter
-  google_fonts: ^8.0.1
-  lucide_icons_flutter: ^3.1.9
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter # Flutter’s built-in testing framework
-
-  flutter_lints: ^6.0.0 # Recommended lint rules to keep code clean and consistent
+    sdk: flutter 
+  flutter_lints: ^6.0.0 
 
 flutter:
-  uses-material-design: true # Enables Material icons and Material styling
+  uses-material-design: true 
   assets:
     - assets/images/
     - assets/lang/
+    
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo/Cairo-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Cairo/Cairo-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Cairo/Cairo-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Cairo/Cairo-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Cairo/Cairo-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Cairo/Cairo-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Cairo/Cairo-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Cairo/Cairo-Black.ttf
+          weight: 900
