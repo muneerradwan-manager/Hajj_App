@@ -142,30 +142,18 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           const SizedBox(height: 16),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(
-                  color: cs.shadow.withValues(alpha: 0.2),
-                  blurRadius: 14,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: ElevatedButton(
-              onPressed: _submit,
-              child: Text(
-                'auth.login.login_button'.tr(context),
-                style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
-              ),
+          ElevatedButton(
+            onPressed: _submit,
+            child: Text(
+              'auth.login.login_button'.tr(context),
+              style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
             ),
           ),
           const SizedBox(height: 20),
           const LoginOrDivider(),
           const SizedBox(height: 20),
           OutlinedButton(
-            onPressed: () {},
+            onPressed: () => context.push(AppRoutes.registerPath),
             child: Text(
               'auth.login.create_account'.tr(context),
               style: textTheme.titleMedium?.copyWith(color: cs.secondary),

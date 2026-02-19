@@ -202,7 +202,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                     dotSize: _dotSize,
                     dotSpacing: _dotSpacing,
                     inactiveColor: const Color(0x99E3DDD2),
-                    activeColor: const Color(0xffE3DDD2),
+                    activeColor: cs.surfaceDim,
                   ),
                 ),
                 const SizedBox(height: 36),

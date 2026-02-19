@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hajj_app/core/constants/app_routes.dart';
 import 'package:hajj_app/features/auth/presentation/views/forget_password_view.dart';
 import 'package:hajj_app/features/auth/presentation/views/login_view.dart';
+import 'package:hajj_app/features/auth/presentation/views/register_view.dart';
 import 'package:hajj_app/features/home/presentation/views/home_view.dart';
 import 'package:hajj_app/features/splash/presentation/views/splash_view.dart';
 
@@ -94,6 +95,16 @@ class AppRouter {
         pageBuilder: (context, state) => fadeSlidePage(
           state: state,
           child: const ForgetPasswordView(),
+          direction: PageTransitionDirection.bottomToTop,
+        ),
+      ),
+
+      GoRoute(
+        name: AppRoutes.registerName,
+        path: AppRoutes.registerPath,
+        pageBuilder: (context, state) => fadeSlidePage(
+          state: state,
+          child: const RegisterView(),
           direction: PageTransitionDirection.bottomToTop,
         ),
       ),
