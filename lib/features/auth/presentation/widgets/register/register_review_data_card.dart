@@ -71,7 +71,7 @@ class RegisterReviewDataCard extends StatelessWidget {
               'auth.register.review_subtitle'.tr(context),
               textAlign: TextAlign.center,
               style: textTheme.bodyMedium?.copyWith(
-                color: cs.primary.withValues(alpha: 0.7),
+                color: cs.primaryContainer,
               ),
             ),
             const SizedBox(height: 12),

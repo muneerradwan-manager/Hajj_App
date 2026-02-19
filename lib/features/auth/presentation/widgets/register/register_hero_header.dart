@@ -182,7 +182,7 @@ class RegisterStepProgress extends StatelessWidget {
               context,
               args: {'current': stepNumber, 'total': totalSteps},
             ),
-            style: TextStyle(color: Colors.white.withValues(alpha: .5)),
+            style: TextStyle(color: cs.outline),
           ),
         ],
       ),
@@ -210,10 +210,9 @@ class _AnimatedStepCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     final bg = isActive ? activeColor : (isDone ? doneColor : inactiveColor);
-    final textColor = isActive
-        ? Colors.black
-        : Colors.white.withValues(alpha: .5);
+    final textColor = isActive ? cs.onSurface : cs.outline;
 
     return AnimatedScale(
       duration: const Duration(milliseconds: 220),

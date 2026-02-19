@@ -18,7 +18,7 @@ class LoginOrDivider extends StatelessWidget {
           child: Text(
             'auth.login.or'.tr(context),
             style: textTheme.titleSmall?.copyWith(
-              color: cs.primary.withValues(alpha: 0.72),
+              color: cs.primaryContainer,
               fontWeight: FontWeight.w700,
               fontSize: 16,
             ),

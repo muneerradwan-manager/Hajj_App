@@ -65,9 +65,7 @@ class RegisterMainInfoCard extends StatelessWidget {
             Text(
               'auth.register.main_info_subtitle'.tr(context),
               textAlign: TextAlign.center,
-              style: textTheme.bodyMedium?.copyWith(
-                color: cs.primary.withValues(alpha: 0.7),
-              ),
+              style: textTheme.bodyMedium?.copyWith(color: cs.primaryContainer),
             ),
             const SizedBox(height: 24),
             Text(
@@ -83,7 +81,7 @@ class RegisterMainInfoCard extends StatelessWidget {
               onFieldSubmitted: (_) => onSend?.call(),
               decoration: InputDecoration(
                 hintText: 'auth.register.email_hint'.tr(context),
-                hintStyle: TextStyle(color: cs.outline.withValues(alpha: 0.72)),
+                hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.mail, color: cs.primary),
               ),
               validator: (value) {
@@ -112,7 +110,7 @@ class RegisterMainInfoCard extends StatelessWidget {
               onFieldSubmitted: (_) => onSend?.call(),
               decoration: InputDecoration(
                 hintText: 'auth.register.national_id_hint'.tr(context),
-                hintStyle: TextStyle(color: cs.outline.withValues(alpha: 0.72)),
+                hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.user, color: cs.primary),
               ),
               validator: (value) {
@@ -139,7 +137,7 @@ class RegisterMainInfoCard extends StatelessWidget {
               onFieldSubmitted: (_) => onSend?.call(),
               decoration: InputDecoration(
                 hintText: 'auth.register.phone_hint'.tr(context),
-                hintStyle: TextStyle(color: cs.outline.withValues(alpha: 0.72)),
+                hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.phone, color: cs.primary),
               ),
               validator: (value) {

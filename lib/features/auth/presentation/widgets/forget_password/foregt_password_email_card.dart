@@ -65,9 +65,7 @@ class ForgetPasswordEmailCard extends StatelessWidget {
             Text(
               'auth.forget.email_card_subtitle'.tr(context),
               textAlign: TextAlign.center,
-              style: textTheme.bodyMedium?.copyWith(
-                color: cs.tertiary.withValues(alpha: 0.7),
-              ),
+              style: textTheme.bodyMedium?.copyWith(color: cs.errorContainer),
             ),
             const SizedBox(height: 24),
             Text(

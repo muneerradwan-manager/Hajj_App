@@ -41,9 +41,7 @@ class ForgetPasswordSecurityNoteCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             'auth.forget.security_note_body'.tr(context),
-            style: textTheme.bodySmall?.copyWith(
-              color: cs.error.withValues(alpha: 0.85),
-            ),
+            style: textTheme.bodySmall?.copyWith(color: cs.errorContainer),
           ),
         ],
       ),

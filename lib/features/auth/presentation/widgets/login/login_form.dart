@@ -56,9 +56,7 @@ class _LoginFormState extends State<LoginForm> {
           Text(
             'auth.login.description'.tr(context),
             textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(
-              color: cs.primary.withValues(alpha: 0.72),
-            ),
+            style: textTheme.bodyMedium?.copyWith(color: cs.primaryContainer),
           ),
           const SizedBox(height: 16),
           Text(
@@ -165,9 +163,7 @@ class _LoginFormState extends State<LoginForm> {
           Text(
             'auth.login.terms'.tr(context),
             textAlign: TextAlign.center,
-            style: textTheme.bodySmall?.copyWith(
-              color: cs.primary.withValues(alpha: 0.72),
-            ),
+            style: textTheme.bodySmall?.copyWith(color: cs.primaryContainer),
           ),
         ],
       ),

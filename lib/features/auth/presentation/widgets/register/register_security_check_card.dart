@@ -69,7 +69,7 @@ class RegisterSecurityCheckCard extends StatelessWidget {
               'auth.register.security_subtitle'.tr(context),
               textAlign: TextAlign.center,
               style: textTheme.bodyMedium?.copyWith(
-                color: cs.primary.withValues(alpha: 0.7),
+                color: cs.primaryContainer,
               ),
             ),
             const SizedBox(height: 24),
@@ -86,7 +86,7 @@ class RegisterSecurityCheckCard extends StatelessWidget {
               onFieldSubmitted: (_) => onSend?.call(),
               decoration: InputDecoration(
                 hintText: 'auth.register.password_hint'.tr(context),
-                hintStyle: TextStyle(color: cs.outline.withValues(alpha: 0.72)),
+                hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.eye, color: cs.primary),
               ),
               validator: (value) {
@@ -114,7 +114,7 @@ class RegisterSecurityCheckCard extends StatelessWidget {
               onFieldSubmitted: (_) => onSend?.call(),
               decoration: InputDecoration(
                 hintText: 'auth.register.confirm_password_hint'.tr(context),
-                hintStyle: TextStyle(color: cs.outline.withValues(alpha: 0.72)),
+                hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.eye, color: cs.primary),
               ),
               validator: (value) {
@@ -140,7 +140,7 @@ class RegisterSecurityCheckCard extends StatelessWidget {
               onFieldSubmitted: (_) => onSend?.call(),
               decoration: InputDecoration(
                 hintText: 'auth.register.barcode_hint'.tr(context),
-                hintStyle: TextStyle(color: cs.outline.withValues(alpha: 0.72)),
+                hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.barcode, color: cs.primary),
               ),
               validator: (value) {

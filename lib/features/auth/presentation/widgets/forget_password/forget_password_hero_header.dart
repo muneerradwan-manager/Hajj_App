@@ -113,9 +113,7 @@ class _ForgetPasswordStepProgress extends StatelessWidget {
               context,
               args: {'current': isSent ? 2 : 1, 'total': 2},
             ),
-            style: textTheme.bodySmall?.copyWith(
-              color: cs.onPrimary.withValues(alpha: 0.88),
-            ),
+            style: textTheme.bodySmall?.copyWith(color: cs.onPrimary),
           ),
         ],
       ),

@@ -163,9 +163,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                                     hintText: 'auth.forget.email_hint'.tr(
                                       context,
                                     ),
-                                    hintStyle: TextStyle(
-                                      color: cs.outline.withValues(alpha: 0.72),
-                                    ),
+                                    hintStyle: TextStyle(color: cs.outline),
                                     suffixIcon: Icon(
                                       LucideIcons.mail,
                                       color: cs.brandGold,
