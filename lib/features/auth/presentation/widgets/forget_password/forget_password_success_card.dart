@@ -83,10 +83,10 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const CustomText(
+                    CustomText(
                       'auth.forget.next_steps',
                       type: CustomTextType.titleMedium,
                       color: CustomTextColor.red,
@@ -156,10 +156,10 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
             ),
             child: ElevatedButton(
               onPressed: onBackToLogin,
-              child: CustomText(
+              child: const CustomText(
                 'auth.forget.back_to_login',
                 type: CustomTextType.titleMedium,
-                style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
+                color: CustomTextColor.white,
               ),
             ),
           ),

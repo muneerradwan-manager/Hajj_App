@@ -110,5 +110,9 @@
       "success_important_body": "قد تحتاج إلى تأكيد البريد الإلكتروني قبل تفعيل جميع الميزات.",
       "go_to_login_button": "الذهاب لتسجيل الدخول"
     }
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "confirm_password_mismatch": "كلمتا المرور غير متطابقتين"
   }
 }

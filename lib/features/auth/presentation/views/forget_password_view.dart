@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:hajj_app/core/constants/app_images.dart';
 import 'package:hajj_app/core/constants/app_routes.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/core/validators/app_validators.dart';
 import 'package:hajj_app/features/auth/presentation/widgets/forget_password/forget_password_success_card.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 
@@ -72,17 +73,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
   }
 
   String? _validateEmail(String? value) {
-    final text = (value ?? '').trim();
-    if (text.isEmpty) {
-      return 'auth.forget.validation_email_required'.tr(context);
-    }
-
-    final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-    if (!emailRegex.hasMatch(text)) {
-      return 'auth.forget.validation_email_invalid'.tr(context);
-    }
-
-    return null;
+    return AppValidators.email(value, context);
   }
 
   bool get _canSend => _emailCtrl.text.trim().isNotEmpty;

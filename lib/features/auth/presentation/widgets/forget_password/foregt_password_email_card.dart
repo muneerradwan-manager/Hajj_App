@@ -22,7 +22,6 @@ class ForgetPasswordEmailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Container(
       width: double.infinity,
@@ -87,10 +86,10 @@ class ForgetPasswordEmailCard extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
-              label: CustomText(
+              label: const CustomText(
                 'auth.forget.send_button',
                 type: CustomTextType.titleMedium,
-                style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
+                color: CustomTextColor.white,
               ),
               onPressed: onSend,
               icon: Icon(LucideIcons.check, size: 18, color: cs.onPrimary),

@@ -83,7 +83,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                 ), // Color(0xffF9F8F6),
                 borderRadius: BorderRadius.circular(15),
               ),
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Column(
                 spacing: 10,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,7 +124,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                 ), // Color(0xffF9F8F6),
                 borderRadius: BorderRadius.circular(15),
               ),
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Column(
                 spacing: 10,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -165,7 +165,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                 ), // Color(0xffF9F8F6),
                 borderRadius: BorderRadius.circular(15),
               ),
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Column(
                 spacing: 10,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -206,7 +206,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                 ), // Color(0xffF9F8F6),
                 borderRadius: BorderRadius.circular(15),
               ),
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Column(
                 spacing: 10,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -247,7 +247,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                 ), // Color(0xffF9F8F6),
                 borderRadius: BorderRadius.circular(15),
               ),
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -319,12 +319,10 @@ class RegisterReviewDataCard extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: onSend,
-                    child: CustomText(
+                    child: const CustomText(
                       'auth.register.create_account_button',
                       type: CustomTextType.titleMedium,
-                      style: textTheme.titleMedium?.copyWith(
-                        color: cs.onPrimary,
-                      ),
+                      color: CustomTextColor.white,
                     ),
                   ),
                 ),

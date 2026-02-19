@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/core/validators/app_validators.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class RegisterMainInfoCard extends StatelessWidget {
@@ -23,7 +24,6 @@ class RegisterMainInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Container(
       width: double.infinity,
@@ -88,17 +88,7 @@ class RegisterMainInfoCard extends StatelessWidget {
                 hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.mail, color: cs.primary),
               ),
-              validator: (value) {
-                final text = (value ?? '').trim();
-                if (text.isEmpty) {
-                  return 'auth.register.validation_email_required'.tr(context);
-                }
-                final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-                if (!emailRegex.hasMatch(text)) {
-                  return 'auth.register.validation_email_invalid'.tr(context);
-                }
-                return null;
-              },
+              validator: (value) => AppValidators.email(value, context),
             ),
             const SizedBox(height: 24),
             const CustomText(
@@ -118,15 +108,7 @@ class RegisterMainInfoCard extends StatelessWidget {
                 hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.user, color: cs.primary),
               ),
-              validator: (value) {
-                final text = (value ?? '').trim();
-                if (text.isEmpty) {
-                  return 'auth.register.validation_national_id_required'.tr(
-                    context,
-                  );
-                }
-                return null;
-              },
+              validator: (value) => AppValidators.nationalId(value, context),
             ),
             const SizedBox(height: 24),
             const CustomText(
@@ -146,21 +128,15 @@ class RegisterMainInfoCard extends StatelessWidget {
                 hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.phone, color: cs.primary),
               ),
-              validator: (value) {
-                final text = (value ?? '').trim();
-                if (text.isEmpty) {
-                  return 'auth.register.validation_phone_required'.tr(context);
-                }
-                return null;
-              },
+              validator: (value) => AppValidators.phone(value, context),
             ),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: onSend,
-              child: CustomText(
+              child: const CustomText(
                 'auth.register.next_button',
                 type: CustomTextType.titleMedium,
-                style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
+                color: CustomTextColor.white,
               ),
             ),
           ],

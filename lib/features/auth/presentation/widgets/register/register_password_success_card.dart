@@ -71,10 +71,10 @@ class RegisterPasswordSuccessCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const CustomText(
+                    CustomText(
                       'auth.register.next_steps_title',
                       type: CustomTextType.titleMedium,
                       color: CustomTextColor.green,
@@ -143,10 +143,10 @@ class RegisterPasswordSuccessCard extends StatelessWidget {
             ),
             child: ElevatedButton(
               onPressed: onContinueToLogin,
-              child: CustomText(
+              child: const CustomText(
                 'auth.register.go_to_login_button',
                 type: CustomTextType.titleMedium,
-                style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
+                color: CustomTextColor.white,
               ),
             ),
           ),

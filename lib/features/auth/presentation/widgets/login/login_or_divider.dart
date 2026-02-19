@@ -12,9 +12,9 @@ class LoginOrDivider extends StatelessWidget {
     return Row(
       children: [
         Expanded(child: Divider(color: cs.primary, thickness: 1.1, height: 1)),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: const CustomText(
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 14),
+          child: CustomText(
             'auth.login.or',
             type: CustomTextType.titleSmall,
             color: CustomTextColor.lightGreen,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../../core/localization/app_localizations_setup.dart';
+import '../../../../../core/validators/app_validators.dart';
 import '../../../../../shared/widgets/custom_text.dart';
 
 class RegisterSecurityCheckCard extends StatefulWidget {
@@ -33,7 +34,6 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Container(
       width: double.infinity,
@@ -106,16 +106,7 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
                   ),
                 ),
               ),
-              validator: (value) {
-                final text = (value ?? '').trim();
-                if (text.isEmpty) {
-                  return 'auth.register.validation_password_required'.tr(
-                    context,
-                  );
-                }
-
-                return null;
-              },
+              validator: (value) => AppValidators.password(value, context),
             ),
             const SizedBox(height: 24),
             const CustomText(
@@ -144,14 +135,11 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
                   ),
                 ),
               ),
-              validator: (value) {
-                final text = (value ?? '').trim();
-                if (text.isEmpty) {
-                  return 'auth.register.validation_confirm_password_required'
-                      .tr(context);
-                }
-                return null;
-              },
+              validator: (value) => AppValidators.confirmPassword(
+                value,
+                context,
+                originalPassword: widget.passwordCtrl.text,
+              ),
             ),
             const SizedBox(height: 24),
             const CustomText(
@@ -171,15 +159,7 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
                 hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.barcode, color: cs.primary),
               ),
-              validator: (value) {
-                final text = (value ?? '').trim();
-                if (text.isEmpty) {
-                  return 'auth.register.validation_barcode_required'.tr(
-                    context,
-                  );
-                }
-                return null;
-              },
+              validator: (value) => AppValidators.barcode(value, context),
             ),
             const SizedBox(height: 10),
             const CustomText(
@@ -195,12 +175,10 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: widget.onSend,
-                    child: CustomText(
+                    child: const CustomText(
                       'auth.register.next_button',
                       type: CustomTextType.titleMedium,
-                      style: textTheme.titleMedium?.copyWith(
-                        color: cs.onPrimary,
-                      ),
+                      color: CustomTextColor.white,
                     ),
                   ),
                 ),

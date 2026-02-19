@@ -110,5 +110,9 @@
       "success_important_body": "You may need to verify your email before all features are activated.",
       "go_to_login_button": "Go to Login"
     }
+  },
+  "validation": {
+    "required": "This field is required",
+    "confirm_password_mismatch": "Passwords do not match"
   }
 }

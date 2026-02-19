@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/constants/app_routes.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/core/validators/app_validators.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 import 'login_or_divider.dart';
@@ -41,7 +42,6 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Form(
       key: _formKey,
@@ -83,11 +83,7 @@ class _LoginFormState extends State<LoginForm> {
                 disabledColor: cs.primary,
               ),
             ),
-            validator: (value) {
-              final text = (value ?? '').trim();
-              if (text.isEmpty) return 'auth.login.phone_required'.tr(context);
-              return null;
-            },
+            validator: (value) => AppValidators.phone(value, context),
           ),
           const SizedBox(height: 12),
           const CustomText(
@@ -115,16 +111,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
-            validator: (value) {
-              final text = value ?? '';
-              if (text.isEmpty) {
-                return 'auth.login.password_required'.tr(context);
-              }
-              if (text.length < 6) {
-                return 'auth.login.password_min_length'.tr(context);
-              }
-              return null;
-            },
+            validator: (value) => AppValidators.password(value, context),
           ),
           const SizedBox(height: 8),
           Align(
@@ -148,10 +135,10 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _submit,
-            child: CustomText(
+            child: const CustomText(
               'auth.login.login_button',
               type: CustomTextType.titleMedium,
-              style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
+              color: CustomTextColor.white,
             ),
           ),
           const SizedBox(height: 20),
