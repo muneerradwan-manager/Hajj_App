@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:hajj_app/core/constants/app_images.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class LoginHeroSection extends StatelessWidget {
   const LoginHeroSection({super.key, required this.logoSize});
@@ -10,9 +10,6 @@ class LoginHeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -26,16 +23,18 @@ class LoginHeroSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        Text(
-          'auth.login.hero_title'.tr(context),
+        const CustomText(
+          'auth.login.hero_title',
           textAlign: TextAlign.center,
-          style: textTheme.headlineSmall?.copyWith(color: Colors.white),
+          type: CustomTextType.headlineSmall,
+          color: CustomTextColor.white,
         ),
         const SizedBox(height: 12),
-        Text(
-          'app.subtitle'.tr(context),
+        const CustomText(
+          'app.subtitle',
           textAlign: TextAlign.center,
-          style: textTheme.bodyLarge?.copyWith(color: cs.surfaceDim),
+          type: CustomTextType.bodyLarge,
+          color: CustomTextColor.lightGold,
         ),
       ],
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class ForgetPasswordSecurityNoteCard extends StatelessWidget {
   const ForgetPasswordSecurityNoteCard({super.key});
@@ -9,7 +9,6 @@ class ForgetPasswordSecurityNoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Container(
       width: double.infinity,
@@ -32,16 +31,18 @@ class ForgetPasswordSecurityNoteCard extends StatelessWidget {
             children: [
               Icon(LucideIcons.info, size: 17, color: cs.error),
               const SizedBox(width: 4),
-              Text(
-                'auth.forget.security_note_title'.tr(context),
-                style: textTheme.titleSmall?.copyWith(color: cs.error),
+              const CustomText(
+                'auth.forget.security_note_title',
+                type: CustomTextType.titleSmall,
+                color: CustomTextColor.red,
               ),
             ],
           ),
           const SizedBox(height: 4),
-          Text(
-            'auth.forget.security_note_body'.tr(context),
-            style: textTheme.bodySmall?.copyWith(color: cs.errorContainer),
+          const CustomText(
+            'auth.forget.security_note_body',
+            type: CustomTextType.bodySmall,
+            color: CustomTextColor.lightRed,
           ),
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class ForgetPasswordEmailCard extends StatelessWidget {
   const ForgetPasswordEmailCard({
@@ -56,22 +56,25 @@ class ForgetPasswordEmailCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Text(
-              'auth.forget.email_card_title'.tr(context),
+            const CustomText(
+              'auth.forget.email_card_title',
               textAlign: TextAlign.center,
-              style: textTheme.titleLarge?.copyWith(color: cs.tertiary),
+              type: CustomTextType.titleLarge,
+              color: CustomTextColor.red,
             ),
             const SizedBox(height: 6),
-            Text(
-              'auth.forget.email_card_subtitle'.tr(context),
+            const CustomText(
+              'auth.forget.email_card_subtitle',
               textAlign: TextAlign.center,
-              style: textTheme.bodyMedium?.copyWith(color: cs.errorContainer),
+              type: CustomTextType.bodyMedium,
+              color: CustomTextColor.lightRed,
             ),
             const SizedBox(height: 24),
-            Text(
-              'auth.forget.email_label'.tr(context),
+            const CustomText(
+              'auth.forget.email_label',
               textAlign: TextAlign.start,
-              style: textTheme.titleSmall?.copyWith(color: cs.tertiary),
+              type: CustomTextType.titleSmall,
+              color: CustomTextColor.red,
             ),
             const SizedBox(height: 10),
             TextFormField(
@@ -84,18 +87,20 @@ class ForgetPasswordEmailCard extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
-              label: Text(
-                'auth.forget.send_button'.tr(context),
+              label: CustomText(
+                'auth.forget.send_button',
+                type: CustomTextType.titleMedium,
                 style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
               ),
               onPressed: onSend,
               icon: Icon(LucideIcons.check, size: 18, color: cs.onPrimary),
             ),
             const SizedBox(height: 20),
-            Text(
-              'auth.forget.send_helper'.tr(context),
+            const CustomText(
+              'auth.forget.send_helper',
               textAlign: TextAlign.center,
-              style: textTheme.bodySmall?.copyWith(color: cs.outline),
+              type: CustomTextType.bodySmall,
+              color: CustomTextColor.hint,
             ),
           ],
         ),

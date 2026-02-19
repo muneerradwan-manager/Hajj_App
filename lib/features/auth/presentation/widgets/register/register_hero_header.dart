@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 import 'package:hajj_app/shared/widgets/directional_back_arrow.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -20,7 +20,6 @@ class RegisterHeroHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
     final statusBarInset = MediaQuery.paddingOf(context).top;
     final subtitleKey = switch (stepNumber) {
       1 => 'auth.register.step_basic_info',
@@ -57,20 +56,19 @@ class RegisterHeroHeader extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'auth.register.hero_title'.tr(context),
+                        CustomText(
+                          'auth.register.hero_title',
                           textAlign: TextAlign.center,
-                          style: textTheme.headlineSmall?.copyWith(
-                            color: cs.onPrimary,
-                          ),
+                          type: CustomTextType.headlineSmall,
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(color: cs.onPrimary),
                         ),
                         const SizedBox(height: 7),
-                        Text(
-                          subtitleKey.tr(context),
+                        CustomText(
+                          subtitleKey,
                           textAlign: TextAlign.center,
-                          style: textTheme.titleSmall?.copyWith(
-                            color: cs.secondary,
-                          ),
+                          type: CustomTextType.titleSmall,
+                          color: CustomTextColor.gold,
                         ),
                       ],
                     ),
@@ -177,12 +175,11 @@ class RegisterStepProgress extends StatelessWidget {
               }
             }),
           ),
-          Text(
-            'auth.register.step_indicator'.tr(
-              context,
-              args: {'current': stepNumber, 'total': totalSteps},
-            ),
-            style: TextStyle(color: cs.outline),
+          CustomText(
+            'auth.register.step_indicator',
+            args: {'current': stepNumber, 'total': totalSteps},
+            type: CustomTextType.bodySmall,
+            color: CustomTextColor.hint,
           ),
         ],
       ),
@@ -244,7 +241,12 @@ class _AnimatedStepCircle extends StatelessWidget {
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
-            child: Text('$number', style: TextStyle(color: textColor)),
+            child: CustomText(
+              '$number',
+              type: CustomTextType.labelSmall,
+              style: TextStyle(color: textColor, fontWeight: FontWeight.w700),
+              translate: false,
+            ),
           ),
         ),
       ),

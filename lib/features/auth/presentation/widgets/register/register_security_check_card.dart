@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/localization/app_localizations_setup.dart';
+import '../../../../../shared/widgets/custom_text.dart';
 
-class RegisterSecurityCheckCard extends StatelessWidget {
+class RegisterSecurityCheckCard extends StatefulWidget {
   const RegisterSecurityCheckCard({
     super.key,
     required this.formKey,
@@ -23,6 +23,14 @@ class RegisterSecurityCheckCard extends StatelessWidget {
   final VoidCallback? onBack;
 
   @override
+  State<RegisterSecurityCheckCard> createState() =>
+      _RegisterSecurityCheckCardState();
+}
+
+class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
+  bool _obscure = true;
+  bool _obscureConfirm = true;
+  @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -36,7 +44,7 @@ class RegisterSecurityCheckCard extends StatelessWidget {
         border: Border.all(color: cs.outlineVariant),
       ),
       child: Form(
-        key: formKey,
+        key: widget.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -59,35 +67,44 @@ class RegisterSecurityCheckCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Text(
-              'auth.register.security_title'.tr(context),
+            const CustomText(
+              'auth.register.security_title',
               textAlign: TextAlign.center,
-              style: textTheme.titleLarge?.copyWith(color: cs.primary),
+              type: CustomTextType.titleLarge,
+              color: CustomTextColor.green,
             ),
             const SizedBox(height: 6),
-            Text(
-              'auth.register.security_subtitle'.tr(context),
+            const CustomText(
+              'auth.register.security_subtitle',
               textAlign: TextAlign.center,
-              style: textTheme.bodyMedium?.copyWith(
-                color: cs.primaryContainer,
-              ),
+              type: CustomTextType.bodyMedium,
+              color: CustomTextColor.lightGreen,
             ),
             const SizedBox(height: 24),
-            Text(
-              'auth.register.password_label'.tr(context),
+            const CustomText(
+              'auth.register.password_label',
               textAlign: TextAlign.start,
-              style: textTheme.titleSmall?.copyWith(color: cs.primary),
+              type: CustomTextType.titleSmall,
+              color: CustomTextColor.green,
             ),
             const SizedBox(height: 10),
             TextFormField(
-              controller: passwordCtrl,
+              controller: widget.passwordCtrl,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) => onSend?.call(),
+              onFieldSubmitted: (_) => widget.onSend?.call(),
               decoration: InputDecoration(
                 hintText: 'auth.register.password_hint'.tr(context),
                 hintStyle: TextStyle(color: cs.outline),
-                suffixIcon: Icon(LucideIcons.eye, color: cs.primary),
+                suffixIcon: IconButton(
+                  onPressed: () => setState(() => _obscure = !_obscure),
+                  splashRadius: 20,
+                  icon: Icon(
+                    _obscure ? LucideIcons.eye : LucideIcons.eyeClosed,
+                    color: cs.primary,
+                    size: 22,
+                  ),
+                ),
               ),
               validator: (value) {
                 final text = (value ?? '').trim();
@@ -101,21 +118,31 @@ class RegisterSecurityCheckCard extends StatelessWidget {
               },
             ),
             const SizedBox(height: 24),
-            Text(
-              'auth.register.confirm_password_label'.tr(context),
+            const CustomText(
+              'auth.register.confirm_password_label',
               textAlign: TextAlign.start,
-              style: textTheme.titleSmall?.copyWith(color: cs.primary),
+              type: CustomTextType.titleSmall,
+              color: CustomTextColor.green,
             ),
             const SizedBox(height: 10),
             TextFormField(
-              controller: confirmCtrl,
+              controller: widget.confirmCtrl,
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) => onSend?.call(),
+              onFieldSubmitted: (_) => widget.onSend?.call(),
               decoration: InputDecoration(
                 hintText: 'auth.register.confirm_password_hint'.tr(context),
                 hintStyle: TextStyle(color: cs.outline),
-                suffixIcon: Icon(LucideIcons.eye, color: cs.primary),
+                suffixIcon: IconButton(
+                  onPressed: () =>
+                      setState(() => _obscureConfirm = !_obscureConfirm),
+                  splashRadius: 20,
+                  icon: Icon(
+                    _obscureConfirm ? LucideIcons.eye : LucideIcons.eyeClosed,
+                    color: cs.primary,
+                    size: 22,
+                  ),
+                ),
               ),
               validator: (value) {
                 final text = (value ?? '').trim();
@@ -127,17 +154,18 @@ class RegisterSecurityCheckCard extends StatelessWidget {
               },
             ),
             const SizedBox(height: 24),
-            Text(
-              'auth.register.barcode_label'.tr(context),
+            const CustomText(
+              'auth.register.barcode_label',
               textAlign: TextAlign.start,
-              style: textTheme.titleSmall?.copyWith(color: cs.primary),
+              type: CustomTextType.titleSmall,
+              color: CustomTextColor.green,
             ),
             const SizedBox(height: 10),
             TextFormField(
-              controller: qrcodeCtrl,
+              controller: widget.qrcodeCtrl,
               keyboardType: TextInputType.phone,
               textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) => onSend?.call(),
+              onFieldSubmitted: (_) => widget.onSend?.call(),
               decoration: InputDecoration(
                 hintText: 'auth.register.barcode_hint'.tr(context),
                 hintStyle: TextStyle(color: cs.outline),
@@ -154,10 +182,11 @@ class RegisterSecurityCheckCard extends StatelessWidget {
               },
             ),
             const SizedBox(height: 10),
-            Text(
-              'auth.register.barcode_helper'.tr(context),
+            const CustomText(
+              'auth.register.barcode_helper',
               textAlign: TextAlign.start,
-              style: textTheme.bodySmall?.copyWith(color: cs.brandGold),
+              type: CustomTextType.bodySmall,
+              color: CustomTextColor.gold,
             ),
             const SizedBox(height: 30),
             Row(
@@ -165,9 +194,10 @@ class RegisterSecurityCheckCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: onSend,
-                    child: Text(
-                      'auth.register.next_button'.tr(context),
+                    onPressed: widget.onSend,
+                    child: CustomText(
+                      'auth.register.next_button',
+                      type: CustomTextType.titleMedium,
                       style: textTheme.titleMedium?.copyWith(
                         color: cs.onPrimary,
                       ),
@@ -179,10 +209,11 @@ class RegisterSecurityCheckCard extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: cs.primary),
                     ),
-                    onPressed: onBack,
-                    child: Text(
-                      'auth.register.back_button'.tr(context),
-                      style: textTheme.titleMedium?.copyWith(color: cs.primary),
+                    onPressed: widget.onBack,
+                    child: const CustomText(
+                      'auth.register.back_button',
+                      type: CustomTextType.titleMedium,
+                      color: CustomTextColor.green,
                     ),
                   ),
                 ),

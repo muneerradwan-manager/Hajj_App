@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:hajj_app/features/splash/presentation/widgets/splash_pulse_indicator.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_routes.dart';
@@ -147,7 +147,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -175,22 +174,22 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                 _slideFade(
                   slide: _titleSlide,
                   fade: _titleFade,
-                  child: Text(
-                    'app.title'.tr(context),
+                  child: const CustomText(
+                    'app.title',
                     textAlign: TextAlign.center,
-                    style: textTheme.headlineLarge?.copyWith(
-                      color: Colors.white,
-                    ),
+                    type: CustomTextType.headlineLarge,
+                    color: CustomTextColor.white,
                   ),
                 ),
                 const SizedBox(height: 18),
                 _slideFade(
                   slide: _subtitleSlide,
                   fade: _subtitleFade,
-                  child: Text(
-                    'app.subtitle'.tr(context),
+                  child: const CustomText(
+                    'app.subtitle',
                     textAlign: TextAlign.center,
-                    style: textTheme.bodyLarge?.copyWith(color: cs.surfaceDim),
+                    type: CustomTextType.bodyLarge,
+                    color: CustomTextColor.lightGold,
                   ),
                 ),
                 const SizedBox(height: 36),
@@ -209,10 +208,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                 _slideFade(
                   slide: _basmalaSlide,
                   fade: _basmalaFade,
-                  child: Text(
-                    'app.basmala'.tr(context),
+                  child: const CustomText(
+                    'app.basmala',
                     textAlign: TextAlign.center,
-                    style: textTheme.bodyLarge?.copyWith(color: cs.surfaceDim),
+                    type: CustomTextType.bodyLarge,
+                    color: CustomTextColor.lightGold,
                   ),
                 ),
               ],

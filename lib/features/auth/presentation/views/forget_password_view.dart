@@ -7,6 +7,7 @@ import 'package:hajj_app/core/constants/app_images.dart';
 import 'package:hajj_app/core/constants/app_routes.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:hajj_app/features/auth/presentation/widgets/forget_password/forget_password_success_card.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 import '../widgets/forget_password/foregt_password_email_card.dart';
 import '../widgets/forget_password/forget_password_hero_header.dart';
@@ -44,7 +45,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        SnackBar(content: Text('auth.forget.snackbar_sent'.tr(context))),
+        const SnackBar(content: CustomText('auth.forget.snackbar_sent')),
       );
   }
 

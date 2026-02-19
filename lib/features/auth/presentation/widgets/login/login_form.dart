@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/constants/app_routes.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 import 'login_or_divider.dart';
 
@@ -33,7 +34,7 @@ class _LoginFormState extends State<LoginForm> {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        SnackBar(content: Text('auth.login.login_in_progress'.tr(context))),
+        const SnackBar(content: CustomText('auth.login.login_in_progress')),
       );
   }
 
@@ -47,22 +48,25 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'auth.login.title'.tr(context),
+          const CustomText(
+            'auth.login.title',
             textAlign: TextAlign.center,
-            style: textTheme.headlineSmall?.copyWith(color: cs.primary),
+            type: CustomTextType.headlineSmall,
+            color: CustomTextColor.green,
           ),
           const SizedBox(height: 6),
-          Text(
-            'auth.login.description'.tr(context),
+          const CustomText(
+            'auth.login.description',
             textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(color: cs.primaryContainer),
+            type: CustomTextType.bodyMedium,
+            color: CustomTextColor.lightGreen,
           ),
           const SizedBox(height: 16),
-          Text(
-            'auth.login.phone_label'.tr(context),
+          const CustomText(
+            'auth.login.phone_label',
             textAlign: TextAlign.start,
-            style: textTheme.titleMedium?.copyWith(color: cs.primary),
+            type: CustomTextType.titleMedium,
+            color: CustomTextColor.green,
           ),
           const SizedBox(height: 6),
           TextFormField(
@@ -86,10 +90,11 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           const SizedBox(height: 12),
-          Text(
-            'auth.login.password_label'.tr(context),
+          const CustomText(
+            'auth.login.password_label',
             textAlign: TextAlign.start,
-            style: textTheme.titleMedium?.copyWith(color: cs.primary),
+            type: CustomTextType.titleMedium,
+            color: CustomTextColor.green,
           ),
           const SizedBox(height: 6),
           TextFormField(
@@ -131,9 +136,10 @@ class _LoginFormState extends State<LoginForm> {
                 children: [
                   Icon(LucideIcons.keyRound, size: 17, color: cs.secondary),
                   const SizedBox(width: 4),
-                  Text(
-                    'auth.login.forgot_password'.tr(context),
-                    style: textTheme.titleSmall?.copyWith(color: cs.secondary),
+                  const CustomText(
+                    'auth.login.forgot_password',
+                    type: CustomTextType.titleSmall,
+                    color: CustomTextColor.gold,
                   ),
                 ],
               ),
@@ -142,8 +148,9 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _submit,
-            child: Text(
-              'auth.login.login_button'.tr(context),
+            child: CustomText(
+              'auth.login.login_button',
+              type: CustomTextType.titleMedium,
               style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
             ),
           ),
@@ -152,18 +159,20 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 20),
           OutlinedButton(
             onPressed: () => context.push(AppRoutes.registerPath),
-            child: Text(
-              'auth.login.create_account'.tr(context),
-              style: textTheme.titleMedium?.copyWith(color: cs.secondary),
+            child: const CustomText(
+              'auth.login.create_account',
+              type: CustomTextType.titleMedium,
+              color: CustomTextColor.gold,
             ),
           ),
           const SizedBox(height: 18),
           Divider(color: cs.primary, thickness: 1.1, height: 1.1),
           const SizedBox(height: 12),
-          Text(
-            'auth.login.terms'.tr(context),
+          const CustomText(
+            'auth.login.terms',
             textAlign: TextAlign.center,
-            style: textTheme.bodySmall?.copyWith(color: cs.primaryContainer),
+            type: CustomTextType.bodySmall,
+            color: CustomTextColor.lightGreen,
           ),
         ],
       ),

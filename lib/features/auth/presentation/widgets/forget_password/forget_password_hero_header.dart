@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 import 'package:hajj_app/shared/widgets/directional_back_arrow.dart';
 
 class ForgetPasswordHeroHeader extends StatelessWidget {
@@ -18,7 +18,6 @@ class ForgetPasswordHeroHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
     final statusBarInset = MediaQuery.paddingOf(context).top;
 
     return Container(
@@ -43,22 +42,22 @@ class ForgetPasswordHeroHeader extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'auth.forget.title'.tr(context),
+                    CustomText(
+                      'auth.forget.title',
                       textAlign: TextAlign.center,
-                      style: textTheme.headlineSmall?.copyWith(
-                        color: cs.onPrimary,
-                      ),
+                      type: CustomTextType.headlineSmall,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.headlineSmall?.copyWith(color: cs.onPrimary),
                     ),
                     const SizedBox(height: 7),
-                    Text(
+                    CustomText(
                       isSent
-                          ? 'auth.forget.header_sent'.tr(context)
-                          : 'auth.forget.header_enter_email'.tr(context),
+                          ? 'auth.forget.header_sent'
+                          : 'auth.forget.header_enter_email',
                       textAlign: TextAlign.center,
-                      style: textTheme.titleSmall?.copyWith(
-                        color: cs.secondary,
-                      ),
+                      type: CustomTextType.titleSmall,
+                      color: CustomTextColor.gold,
                     ),
                   ],
                 ),
@@ -81,7 +80,6 @@ class _ForgetPasswordStepProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
@@ -108,12 +106,13 @@ class _ForgetPasswordStepProgress extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            'auth.forget.step_indicator'.tr(
+          CustomText(
+            'auth.forget.step_indicator',
+            args: {'current': isSent ? 2 : 1, 'total': 2},
+            type: CustomTextType.bodySmall,
+            style: Theme.of(
               context,
-              args: {'current': isSent ? 2 : 1, 'total': 2},
-            ),
-            style: textTheme.bodySmall?.copyWith(color: cs.onPrimary),
+            ).textTheme.bodySmall?.copyWith(color: cs.onPrimary),
           ),
         ],
       ),

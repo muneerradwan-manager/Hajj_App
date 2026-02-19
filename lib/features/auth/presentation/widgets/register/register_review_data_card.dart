@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class RegisterReviewDataCard extends StatelessWidget {
   const RegisterReviewDataCard({
@@ -61,18 +61,18 @@ class RegisterReviewDataCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Text(
-              'auth.register.review_title'.tr(context),
+            const CustomText(
+              'auth.register.review_title',
               textAlign: TextAlign.center,
-              style: textTheme.titleLarge?.copyWith(color: cs.primary),
+              type: CustomTextType.titleLarge,
+              color: CustomTextColor.green,
             ),
             const SizedBox(height: 6),
-            Text(
-              'auth.register.review_subtitle'.tr(context),
+            const CustomText(
+              'auth.register.review_subtitle',
               textAlign: TextAlign.center,
-              style: textTheme.bodyMedium?.copyWith(
-                color: cs.primaryContainer,
-              ),
+              type: CustomTextType.bodyMedium,
+              color: CustomTextColor.lightGreen,
             ),
             const SizedBox(height: 12),
             Container(
@@ -96,20 +96,21 @@ class RegisterReviewDataCard extends StatelessWidget {
                         LucideIcons.mail,
                         color: cs.primary.withValues(alpha: 0.7),
                       ),
-                      Text(
-                        'auth.register.review_email_label'.tr(context),
-                        style: textTheme.bodySmall?.copyWith(
-                          color: cs.brandGold,
-                        ),
+                      const CustomText(
+                        'auth.register.review_email_label',
+                        type: CustomTextType.bodySmall,
+                        color: CustomTextColor.gold,
                       ),
                     ],
                   ),
-                  Text(
+                  CustomText(
                     valueOrFallback(
                       'email',
                       'auth.register.review_placeholder_email',
                     ),
-                    style: textTheme.bodyLarge?.copyWith(color: cs.primary),
+                    type: CustomTextType.bodyLarge,
+                    color: CustomTextColor.green,
+                    translate: false,
                   ),
                 ],
               ),
@@ -136,20 +137,21 @@ class RegisterReviewDataCard extends StatelessWidget {
                         LucideIcons.user,
                         color: cs.primary.withValues(alpha: 0.7),
                       ),
-                      Text(
-                        'auth.register.review_national_id_label'.tr(context),
-                        style: textTheme.bodySmall?.copyWith(
-                          color: cs.brandGold,
-                        ),
+                      const CustomText(
+                        'auth.register.review_national_id_label',
+                        type: CustomTextType.bodySmall,
+                        color: CustomTextColor.gold,
                       ),
                     ],
                   ),
-                  Text(
+                  CustomText(
                     valueOrFallback(
                       'nationalId',
                       'auth.register.review_placeholder_national_id',
                     ),
-                    style: textTheme.bodyLarge?.copyWith(color: cs.primary),
+                    type: CustomTextType.bodyLarge,
+                    color: CustomTextColor.green,
+                    translate: false,
                   ),
                 ],
               ),
@@ -176,20 +178,21 @@ class RegisterReviewDataCard extends StatelessWidget {
                         LucideIcons.phone,
                         color: cs.primary.withValues(alpha: 0.7),
                       ),
-                      Text(
-                        'auth.register.review_phone_label'.tr(context),
-                        style: textTheme.bodySmall?.copyWith(
-                          color: cs.brandGold,
-                        ),
+                      const CustomText(
+                        'auth.register.review_phone_label',
+                        type: CustomTextType.bodySmall,
+                        color: CustomTextColor.gold,
                       ),
                     ],
                   ),
-                  Text(
+                  CustomText(
                     valueOrFallback(
                       'phone',
                       'auth.register.review_placeholder_phone',
                     ),
-                    style: textTheme.bodyLarge?.copyWith(color: cs.primary),
+                    type: CustomTextType.bodyLarge,
+                    color: CustomTextColor.green,
+                    translate: false,
                   ),
                 ],
               ),
@@ -216,20 +219,21 @@ class RegisterReviewDataCard extends StatelessWidget {
                         LucideIcons.barcode,
                         color: cs.primary.withValues(alpha: 0.7),
                       ),
-                      Text(
-                        'auth.register.review_barcode_label'.tr(context),
-                        style: textTheme.bodySmall?.copyWith(
-                          color: cs.brandGold,
-                        ),
+                      const CustomText(
+                        'auth.register.review_barcode_label',
+                        type: CustomTextType.bodySmall,
+                        color: CustomTextColor.gold,
                       ),
                     ],
                   ),
-                  Text(
+                  CustomText(
                     valueOrFallback(
                       'barcode',
                       'auth.register.review_placeholder_barcode',
                     ),
-                    style: textTheme.bodyLarge?.copyWith(color: cs.primary),
+                    type: CustomTextType.bodyLarge,
+                    color: CustomTextColor.green,
+                    translate: false,
                   ),
                 ],
               ),
@@ -259,20 +263,21 @@ class RegisterReviewDataCard extends StatelessWidget {
                             LucideIcons.lock,
                             color: cs.primary.withValues(alpha: 0.7),
                           ),
-                          Text(
-                            'auth.register.review_password_label'.tr(context),
-                            style: textTheme.bodySmall?.copyWith(
-                              color: cs.brandGold,
-                            ),
+                          const CustomText(
+                            'auth.register.review_password_label',
+                            type: CustomTextType.bodySmall,
+                            color: CustomTextColor.gold,
                           ),
                         ],
                       ),
-                      Text(
+                      CustomText(
                         valueOrFallback(
                           'password',
                           'auth.register.review_placeholder_password',
                         ),
-                        style: textTheme.bodyLarge?.copyWith(color: cs.primary),
+                        type: CustomTextType.bodyLarge,
+                        color: CustomTextColor.green,
+                        translate: false,
                       ),
                     ],
                   ),
@@ -314,8 +319,9 @@ class RegisterReviewDataCard extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: onSend,
-                    child: Text(
-                      'auth.register.create_account_button'.tr(context),
+                    child: CustomText(
+                      'auth.register.create_account_button',
+                      type: CustomTextType.titleMedium,
                       style: textTheme.titleMedium?.copyWith(
                         color: cs.onPrimary,
                       ),
@@ -328,9 +334,10 @@ class RegisterReviewDataCard extends StatelessWidget {
                       side: BorderSide(color: cs.primary),
                     ),
                     onPressed: onBack,
-                    child: Text(
-                      'auth.register.back_button'.tr(context),
-                      style: textTheme.titleMedium?.copyWith(color: cs.primary),
+                    child: const CustomText(
+                      'auth.register.back_button',
+                      type: CustomTextType.titleMedium,
+                      color: CustomTextColor.green,
                     ),
                   ),
                 ),

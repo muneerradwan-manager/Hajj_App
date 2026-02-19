@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class RegisterPasswordSuccessCard extends StatelessWidget {
   const RegisterPasswordSuccessCard({
@@ -46,16 +47,18 @@ class RegisterPasswordSuccessCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 14),
-          Text(
-            'auth.register.success_title'.tr(context),
+          const CustomText(
+            'auth.register.success_title',
             textAlign: TextAlign.center,
-            style: textTheme.headlineSmall?.copyWith(color: cs.primary),
+            type: CustomTextType.headlineSmall,
+            color: CustomTextColor.green,
           ),
           const SizedBox(height: 10),
-          Text(
-            'auth.register.success_subtitle'.tr(context),
+          const CustomText(
+            'auth.register.success_subtitle',
             textAlign: TextAlign.center,
-            style: textTheme.titleSmall?.copyWith(color: cs.primary),
+            type: CustomTextType.titleSmall,
+            color: CustomTextColor.green,
           ),
           const SizedBox(height: 14),
           Container(
@@ -71,9 +74,10 @@ class RegisterPasswordSuccessCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'auth.register.next_steps_title'.tr(context),
-                      style: textTheme.titleMedium?.copyWith(color: cs.primary),
+                    const CustomText(
+                      'auth.register.next_steps_title',
+                      type: CustomTextType.titleMedium,
+                      color: CustomTextColor.green,
                     ),
                   ],
                 ),
@@ -139,8 +143,9 @@ class RegisterPasswordSuccessCard extends StatelessWidget {
             ),
             child: ElevatedButton(
               onPressed: onContinueToLogin,
-              child: Text(
-                'auth.register.go_to_login_button'.tr(context),
+              child: CustomText(
+                'auth.register.go_to_login_button',
+                type: CustomTextType.titleMedium,
                 style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
               ),
             ),
@@ -169,17 +174,20 @@ class _RegisterStepLine extends StatelessWidget {
           height: 18,
           decoration: BoxDecoration(color: cs.primary, shape: BoxShape.circle),
           alignment: Alignment.center,
-          child: Text(
+          child: CustomText(
             '$number',
             style: textTheme.labelSmall?.copyWith(color: cs.onPrimary),
+            translate: false,
           ),
         ),
         const SizedBox(width: 8),
         Expanded(
-          child: Text(
+          child: CustomText(
             text,
             textAlign: TextAlign.start,
-            style: textTheme.bodySmall?.copyWith(color: cs.primaryContainer),
+            type: CustomTextType.bodySmall,
+            color: CustomTextColor.lightGreen,
+            translate: false,
           ),
         ),
       ],

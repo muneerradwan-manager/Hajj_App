@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class RegisterMainInfoCard extends StatelessWidget {
   const RegisterMainInfoCard({
@@ -56,22 +57,25 @@ class RegisterMainInfoCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Text(
-              'auth.register.main_info_title'.tr(context),
+            const CustomText(
+              'auth.register.main_info_title',
               textAlign: TextAlign.center,
-              style: textTheme.titleLarge?.copyWith(color: cs.primary),
+              type: CustomTextType.titleLarge,
+              color: CustomTextColor.green,
             ),
             const SizedBox(height: 6),
-            Text(
-              'auth.register.main_info_subtitle'.tr(context),
+            const CustomText(
+              'auth.register.main_info_subtitle',
               textAlign: TextAlign.center,
-              style: textTheme.bodyMedium?.copyWith(color: cs.primaryContainer),
+              type: CustomTextType.bodyMedium,
+              color: CustomTextColor.lightGreen,
             ),
             const SizedBox(height: 24),
-            Text(
-              'auth.register.email_label'.tr(context),
+            const CustomText(
+              'auth.register.email_label',
               textAlign: TextAlign.start,
-              style: textTheme.titleSmall?.copyWith(color: cs.primary),
+              type: CustomTextType.titleSmall,
+              color: CustomTextColor.green,
             ),
             const SizedBox(height: 10),
             TextFormField(
@@ -97,10 +101,11 @@ class RegisterMainInfoCard extends StatelessWidget {
               },
             ),
             const SizedBox(height: 24),
-            Text(
-              'auth.register.national_id_label'.tr(context),
+            const CustomText(
+              'auth.register.national_id_label',
               textAlign: TextAlign.start,
-              style: textTheme.titleSmall?.copyWith(color: cs.primary),
+              type: CustomTextType.titleSmall,
+              color: CustomTextColor.green,
             ),
             const SizedBox(height: 10),
             TextFormField(
@@ -124,10 +129,11 @@ class RegisterMainInfoCard extends StatelessWidget {
               },
             ),
             const SizedBox(height: 24),
-            Text(
-              'auth.register.phone_label'.tr(context),
+            const CustomText(
+              'auth.register.phone_label',
               textAlign: TextAlign.start,
-              style: textTheme.titleSmall?.copyWith(color: cs.primary),
+              type: CustomTextType.titleSmall,
+              color: CustomTextColor.green,
             ),
             const SizedBox(height: 10),
             TextFormField(
@@ -151,8 +157,9 @@ class RegisterMainInfoCard extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: onSend,
-              child: Text(
-                'auth.register.next_button'.tr(context),
+              child: CustomText(
+                'auth.register.next_button',
+                type: CustomTextType.titleMedium,
                 style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
               ),
             ),
