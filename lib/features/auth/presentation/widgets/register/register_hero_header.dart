@@ -266,10 +266,12 @@ class _AnimatedStepLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const lineFillAlignment = AlignmentDirectional.centerStart;
+
     return SizedBox(
       height: 10,
       child: Stack(
-        alignment: Alignment.centerLeft,
+        alignment: lineFillAlignment,
         children: [
           Container(
             height: 4,
@@ -281,6 +283,7 @@ class _AnimatedStepLine extends StatelessWidget {
           AnimatedFractionallySizedBox(
             duration: const Duration(milliseconds: 320),
             curve: Curves.easeInOut,
+            alignment: lineFillAlignment,
             widthFactor: filled ? 1.0 : 0.0,
             child: Container(
               height: 4,
