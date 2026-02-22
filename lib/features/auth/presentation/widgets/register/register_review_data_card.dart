@@ -3,7 +3,7 @@ import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 
-class RegisterReviewDataCard extends StatelessWidget {
+class RegisterReviewDataCard extends StatefulWidget {
   const RegisterReviewDataCard({
     super.key,
     required this.formKey,
@@ -26,6 +26,19 @@ class RegisterReviewDataCard extends StatelessWidget {
   final VoidCallback? onBack;
 
   @override
+  State<RegisterReviewDataCard> createState() => _RegisterReviewDataCardState();
+}
+
+class _RegisterReviewDataCardState extends State<RegisterReviewDataCard> {
+  bool _isPasswordVisible = false;
+
+  String _maskedPassword(String value) {
+    final normalized = value.trim();
+    if (normalized.isEmpty) return '';
+    return '*' * normalized.length;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -46,7 +59,7 @@ class RegisterReviewDataCard extends StatelessWidget {
         border: Border.all(color: cs.outlineVariant),
       ),
       child: Form(
-        key: formKey,
+        key: widget.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -113,7 +126,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                   ),
                   CustomText(
                     valueOrFallback(
-                      email,
+                      widget.email,
                       'auth.register.review_placeholder_email',
                     ),
                     type: CustomTextType.bodyLarge,
@@ -154,7 +167,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                   ),
                   CustomText(
                     valueOrFallback(
-                      nationalId,
+                      widget.nationalId,
                       'auth.register.review_placeholder_national_id',
                     ),
                     type: CustomTextType.bodyLarge,
@@ -195,7 +208,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                   ),
                   CustomText(
                     valueOrFallback(
-                      phone,
+                      widget.phone,
                       'auth.register.review_placeholder_phone',
                     ),
                     type: CustomTextType.bodyLarge,
@@ -236,7 +249,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                   ),
                   CustomText(
                     valueOrFallback(
-                      barcode,
+                      widget.barcode,
                       'auth.register.review_placeholder_barcode',
                     ),
                     type: CustomTextType.bodyLarge,
@@ -258,6 +271,7 @@ class RegisterReviewDataCard extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
                     spacing: 10,
@@ -280,7 +294,9 @@ class RegisterReviewDataCard extends StatelessWidget {
                       ),
                       CustomText(
                         valueOrFallback(
-                          password,
+                          _isPasswordVisible
+                              ? widget.password
+                              : _maskedPassword(widget.password),
                           'auth.register.review_placeholder_password',
                         ),
                         type: CustomTextType.bodyLarge,
@@ -289,9 +305,17 @@ class RegisterReviewDataCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Icon(
-                    LucideIcons.eye,
-                    color: cs.primary.withValues(alpha: 0.7),
+                  IconButton(
+                    onPressed: () => setState(
+                      () => _isPasswordVisible = !_isPasswordVisible,
+                    ),
+                    splashRadius: 20,
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? LucideIcons.eyeClosed
+                          : LucideIcons.eye,
+                      color: cs.primary.withValues(alpha: 0.7),
+                    ),
                   ),
                 ],
               ),
@@ -326,7 +350,7 @@ class RegisterReviewDataCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: onSend,
+                    onPressed: widget.onSend,
                     child: const CustomText(
                       'auth.register.create_account_button',
                       type: CustomTextType.titleMedium,
@@ -339,7 +363,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: cs.primary),
                     ),
-                    onPressed: onBack,
+                    onPressed: widget.onBack,
                     child: const CustomText(
                       'auth.register.back_button',
                       type: CustomTextType.titleMedium,

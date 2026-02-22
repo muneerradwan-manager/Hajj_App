@@ -5,6 +5,8 @@ import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:hajj_app/core/validators/app_validators.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 
+import '../../views/register_view.dart';
+
 class RegisterMainInfoCard extends StatelessWidget {
   const RegisterMainInfoCard({
     super.key,
@@ -71,12 +73,7 @@ class RegisterMainInfoCard extends StatelessWidget {
               color: CustomTextColor.lightGreen,
             ),
             const SizedBox(height: 24),
-            const CustomText(
-              'auth.register.email_label',
-              textAlign: TextAlign.start,
-              type: CustomTextType.titleSmall,
-              color: CustomTextColor.green,
-            ),
+            labelWithRedStar('auth.register.email_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: emailCtrl,
@@ -91,12 +88,7 @@ class RegisterMainInfoCard extends StatelessWidget {
               validator: (value) => AppValidators.email(value, context),
             ),
             const SizedBox(height: 24),
-            const CustomText(
-              'auth.register.national_id_label',
-              textAlign: TextAlign.start,
-              type: CustomTextType.titleSmall,
-              color: CustomTextColor.green,
-            ),
+            labelWithRedStar('auth.register.national_id_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: idCtrl,
@@ -111,12 +103,7 @@ class RegisterMainInfoCard extends StatelessWidget {
               validator: (value) => AppValidators.nationalId(value, context),
             ),
             const SizedBox(height: 24),
-            const CustomText(
-              'auth.register.phone_label',
-              textAlign: TextAlign.start,
-              type: CustomTextType.titleSmall,
-              color: CustomTextColor.green,
-            ),
+            labelWithRedStar('auth.register.phone_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: phoneCtrl,

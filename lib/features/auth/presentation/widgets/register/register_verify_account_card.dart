@@ -155,6 +155,7 @@ class _RegisterVerifyAccountCardState extends State<RegisterVerifyAccountCard> {
                 decoration: BoxDecoration(
                   border: BoxBorder.all(color: cs.primary),
                   borderRadius: BorderRadius.circular(10),
+                  color: cs.outline.withValues(alpha: .1),
                 ),
               ),
               focusedPinTheme: PinTheme(

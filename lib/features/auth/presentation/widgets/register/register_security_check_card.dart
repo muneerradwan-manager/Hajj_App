@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../../core/localization/app_localizations_setup.dart';
 import '../../../../../core/validators/app_validators.dart';
 import '../../../../../shared/widgets/custom_text.dart';
+import '../../views/register_view.dart';
 
 class RegisterSecurityCheckCard extends StatefulWidget {
   const RegisterSecurityCheckCard({
@@ -81,12 +82,7 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
               color: CustomTextColor.lightGreen,
             ),
             const SizedBox(height: 24),
-            const CustomText(
-              'auth.register.password_label',
-              textAlign: TextAlign.start,
-              type: CustomTextType.titleSmall,
-              color: CustomTextColor.green,
-            ),
+            labelWithRedStar('auth.register.password_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: widget.passwordCtrl,
@@ -110,12 +106,7 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
               validator: (value) => AppValidators.password(value, context),
             ),
             const SizedBox(height: 24),
-            const CustomText(
-              'auth.register.confirm_password_label',
-              textAlign: TextAlign.start,
-              type: CustomTextType.titleSmall,
-              color: CustomTextColor.green,
-            ),
+            labelWithRedStar('auth.register.confirm_password_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: widget.confirmCtrl,
@@ -144,12 +135,7 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
               ),
             ),
             const SizedBox(height: 24),
-            const CustomText(
-              'auth.register.barcode_label',
-              textAlign: TextAlign.start,
-              type: CustomTextType.titleSmall,
-              color: CustomTextColor.green,
-            ),
+            labelWithRedStar('auth.register.barcode_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: widget.qrcodeCtrl,

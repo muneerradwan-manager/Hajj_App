@@ -112,7 +112,6 @@ class _RegisterViewState extends State<RegisterView> {
     final cs = Theme.of(context).colorScheme;
     final viewport = MediaQuery.sizeOf(context);
     final password = _passwordCtrl.text.trim();
-    final maskedPassword = password.isEmpty ? '' : '*' * password.length;
     final heroHeight = (viewport.height * 0.25).clamp(220.0, 300.0);
     final overlap = (viewport.height * 0.03).clamp(16.0, 24.0);
     final statusBarInset = MediaQuery.paddingOf(context).top;
@@ -222,7 +221,7 @@ class _RegisterViewState extends State<RegisterView> {
                                       nationalId: _idCtrl.text.trim(),
                                       phone: _phoneCtrl.text.trim(),
                                       barcode: _qrCodeCtrl.text.trim(),
-                                      password: maskedPassword,
+                                      password: password,
                                       onSend: _submitReviewData,
                                       onBack: _handleBack,
                                     )
@@ -255,4 +254,18 @@ class _RegisterViewState extends State<RegisterView> {
       ),
     );
   }
+}
+
+Row labelWithRedStar(String text) {
+  return Row(
+    children: [
+      CustomText(
+        text,
+        textAlign: TextAlign.start,
+        type: CustomTextType.titleSmall,
+        color: CustomTextColor.green,
+      ),
+      const CustomText('*', color: CustomTextColor.lightRed),
+    ],
+  );
 }
