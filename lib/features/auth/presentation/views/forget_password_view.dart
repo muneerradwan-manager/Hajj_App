@@ -82,29 +82,44 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final viewport = MediaQuery.sizeOf(context);
-    final isTabletLayout = viewport.width >= 700;
-
     final heroHeight = (viewport.height * 0.25).clamp(220.0, 300.0);
     final overlap = (viewport.height * 0.03).clamp(16.0, 24.0);
-    final horizontalPadding = viewport.width < 390
-        ? 20.0
-        : isTabletLayout
-        ? 30.0
-        : 18.0;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Stack(
           children: [
-            ForgetPasswordHeroHeader(
-              height: heroHeight,
-              isSent: _isSent,
-              onBack: _handleBack,
+            Positioned(
+              child: Container(
+                height: heroHeight,
+                decoration: BoxDecoration(color: cs.primary),
+              ),
             ),
-            SafeArea(
-              top: false,
+            Positioned(
+              child: Opacity(
+                opacity: .1,
+                child: Container(
+                  height: heroHeight,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(AppImages.background),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned.fromRelativeRect(
+              rect: RelativeRect.fromLTRB(0, heroHeight, 0, 0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xffE5E0D6).withValues(alpha: .23),
+                ),
+              ),
+            ),
+            Positioned.fromRelativeRect(
+              rect: RelativeRect.fromLTRB(0, heroHeight, 0, 0),
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -112,68 +127,78 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                padding: EdgeInsets.fromLTRB(
-                  horizontalPadding,
-                  40,
-                  horizontalPadding,
-                  28,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ForgetPasswordHeroHeader(
+                  height: heroHeight,
+                  isSent: _isSent,
+                  onBack: _handleBack,
                 ),
-                child: Transform.translate(
-                  offset: Offset(0, -overlap),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Column(
-                      children: [
-                        AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 280),
-                          switchInCurve: Curves.easeOut,
-                          switchOutCurve: Curves.easeOut,
-                          transitionBuilder: (child, animation) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: ScaleTransition(
-                                scale: Tween<double>(
-                                  begin: 0.98,
-                                  end: 1,
-                                ).animate(animation),
-                                child: child,
-                              ),
-                            );
-                          },
-                          child: _isSent
-                              ? ForgetPasswordSuccessCard(
-                                  key: const ValueKey('success-card'),
-                                  email: _emailCtrl.text.trim(),
-                                  onBackToLogin: _goToLogin,
-                                  onResend: _openEmailStep,
-                                )
-                              : ForgetPasswordEmailCard(
-                                  key: const ValueKey('email-card'),
-                                  formKey: _formKey,
-                                  emailCtrl: _emailCtrl,
-                                  decoration: InputDecoration(
-                                    hintText: 'auth.forget.email_hint'.tr(
-                                      context,
-                                    ),
-                                    hintStyle: TextStyle(color: cs.outline),
-                                    suffixIcon: Icon(
-                                      LucideIcons.mail,
-                                      color: cs.brandGold,
-                                    ),
+                SafeArea(
+                  top: false,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Transform.translate(
+                      offset: Offset(0, -overlap),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Column(
+                          children: [
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 280),
+                              switchInCurve: Curves.easeOut,
+                              switchOutCurve: Curves.easeOut,
+                              transitionBuilder: (child, animation) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: ScaleTransition(
+                                    scale: Tween<double>(
+                                      begin: 0.98,
+                                      end: 1,
+                                    ).animate(animation),
+                                    child: child,
                                   ),
-                                  validateEmail: _validateEmail,
-                                  onSend: _canSend ? _sendResetLink : null,
-                                ),
+                                );
+                              },
+                              child: _isSent
+                                  ? ForgetPasswordSuccessCard(
+                                      key: const ValueKey('success-card'),
+                                      email: _emailCtrl.text.trim(),
+                                      onBackToLogin: _goToLogin,
+                                      onResend: _openEmailStep,
+                                    )
+                                  : ForgetPasswordEmailCard(
+                                      key: const ValueKey('email-card'),
+                                      formKey: _formKey,
+                                      emailCtrl: _emailCtrl,
+                                      decoration: InputDecoration(
+                                        hintText: 'auth.forget.email_hint'.tr(
+                                          context,
+                                        ),
+                                        hintStyle: TextStyle(color: cs.outline),
+                                        suffixIcon: Icon(
+                                          LucideIcons.mail,
+                                          color: cs.brandGold,
+                                        ),
+                                      ),
+                                      validateEmail: _validateEmail,
+                                      onSend: _canSend ? _sendResetLink : null,
+                                    ),
+                            ),
+                            if (!_isSent) ...[
+                              const SizedBox(height: 14),
+                              const ForgetPasswordSecurityNoteCard(),
+                            ],
+                          ],
                         ),
-                        if (!_isSent) ...[
-                          const SizedBox(height: 14),
-                          const ForgetPasswordSecurityNoteCard(),
-                        ],
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
           ],
         ),

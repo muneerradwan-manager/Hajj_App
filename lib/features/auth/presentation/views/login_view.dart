@@ -37,15 +37,21 @@ class LoginPage extends StatelessWidget {
             final logoSize = (viewportWidth * 0.30).clamp(90.0, 120.0);
             final cardMaxWidth = isDesktopLayout ? 560.0 : 720.0;
 
-            return DecoratedBox(
-              decoration: BoxDecoration(color: cs.surfaceDim),
-              child: SingleChildScrollView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
+            return SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Stack(
+                children: [
+                  Positioned(
+                    child: Container(
+                      height: heroHeight,
+                      decoration: BoxDecoration(color: cs.primary),
+                    ),
+                  ),
+                  Positioned(
+                    child: Opacity(
+                      opacity: .1,
                       child: Container(
+                        height: heroHeight,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage(AppImages.background),
@@ -54,16 +60,37 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(color: cs.primary),
-                          height: heroHeight,
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                          child: LoginHeroSection(logoSize: logoSize),
+                  ),
+                  Positioned.fromRelativeRect(
+                    rect: RelativeRect.fromLTRB(0, heroHeight, 0, 0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xffE5E0D6).withValues(alpha: .23),
+                      ),
+                    ),
+                  ),
+                  Positioned.fromRelativeRect(
+                    rect: RelativeRect.fromLTRB(0, heroHeight, 0, 0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(AppImages.background),
+                          fit: BoxFit.cover,
                         ),
-                        TweenAnimationBuilder<double>(
+                      ),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        height: heroHeight,
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: LoginHeroSection(logoSize: logoSize),
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(),
+                        child: TweenAnimationBuilder<double>(
                           tween: Tween(begin: 1.0, end: 0.0),
                           duration: const Duration(seconds: 2),
                           curve: Curves.easeOutQuart,
@@ -91,11 +118,10 @@ class LoginPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 24),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             );
           },

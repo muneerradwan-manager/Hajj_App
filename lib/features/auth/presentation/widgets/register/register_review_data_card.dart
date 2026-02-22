@@ -7,13 +7,21 @@ class RegisterReviewDataCard extends StatelessWidget {
   const RegisterReviewDataCard({
     super.key,
     required this.formKey,
-    required this.data,
+    required this.email,
+    required this.nationalId,
+    required this.phone,
+    required this.barcode,
+    required this.password,
     required this.onSend,
     required this.onBack,
   });
 
   final GlobalKey<FormState> formKey;
-  final Map<String, dynamic> data;
+  final String email;
+  final String nationalId;
+  final String phone;
+  final String barcode;
+  final String password;
   final VoidCallback? onSend;
   final VoidCallback? onBack;
 
@@ -21,10 +29,10 @@ class RegisterReviewDataCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    String valueOrFallback(String key, String fallbackKey) {
-      final raw = data[key];
-      if (raw is String && raw.trim().isNotEmpty) {
-        return raw.trim();
+    String valueOrFallback(String value, String fallbackKey) {
+      final normalized = value.trim();
+      if (normalized.isNotEmpty) {
+        return normalized;
       }
       return fallbackKey.tr(context);
     }
@@ -57,7 +65,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Icon(LucideIcons.check, color: cs.onPrimary, size: 30),
+                child: Icon(LucideIcons.check, color: cs.onPrimary, size: 24),
               ),
             ),
             const SizedBox(height: 12),
@@ -105,7 +113,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                   ),
                   CustomText(
                     valueOrFallback(
-                      'email',
+                      email,
                       'auth.register.review_placeholder_email',
                     ),
                     type: CustomTextType.bodyLarge,
@@ -146,7 +154,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                   ),
                   CustomText(
                     valueOrFallback(
-                      'nationalId',
+                      nationalId,
                       'auth.register.review_placeholder_national_id',
                     ),
                     type: CustomTextType.bodyLarge,
@@ -187,7 +195,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                   ),
                   CustomText(
                     valueOrFallback(
-                      'phone',
+                      phone,
                       'auth.register.review_placeholder_phone',
                     ),
                     type: CustomTextType.bodyLarge,
@@ -228,7 +236,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                   ),
                   CustomText(
                     valueOrFallback(
-                      'barcode',
+                      barcode,
                       'auth.register.review_placeholder_barcode',
                     ),
                     type: CustomTextType.bodyLarge,
@@ -272,7 +280,7 @@ class RegisterReviewDataCard extends StatelessWidget {
                       ),
                       CustomText(
                         valueOrFallback(
-                          'password',
+                          password,
                           'auth.register.review_placeholder_password',
                         ),
                         type: CustomTextType.bodyLarge,

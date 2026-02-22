@@ -63,7 +63,7 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
                     ),
                   ],
                 ),
-                child: Icon(LucideIcons.user, color: cs.onPrimary, size: 30),
+                child: Icon(LucideIcons.lock, color: cs.onPrimary, size: 24),
               ),
             ),
             const SizedBox(height: 12),
@@ -91,6 +91,7 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
             TextFormField(
               controller: widget.passwordCtrl,
               keyboardType: TextInputType.text,
+              obscureText: _obscure,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => widget.onSend?.call(),
               decoration: InputDecoration(
@@ -118,7 +119,8 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
             const SizedBox(height: 10),
             TextFormField(
               controller: widget.confirmCtrl,
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
+              obscureText: _obscureConfirm,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => widget.onSend?.call(),
               decoration: InputDecoration(
@@ -151,7 +153,7 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
             const SizedBox(height: 10),
             TextFormField(
               controller: widget.qrcodeCtrl,
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.text,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => widget.onSend?.call(),
               decoration: InputDecoration(

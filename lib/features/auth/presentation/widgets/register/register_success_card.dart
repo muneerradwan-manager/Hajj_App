@@ -4,11 +4,8 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 
-class RegisterPasswordSuccessCard extends StatelessWidget {
-  const RegisterPasswordSuccessCard({
-    super.key,
-    required this.onContinueToLogin,
-  });
+class RegisterSuccessCard extends StatelessWidget {
+  const RegisterSuccessCard({super.key, required this.onContinueToLogin});
 
   final VoidCallback onContinueToLogin;
 
@@ -30,8 +27,8 @@ class RegisterPasswordSuccessCard extends StatelessWidget {
         children: [
           Align(
             child: Container(
-              width: 92,
-              height: 92,
+              width: 64,
+              height: 64,
               decoration: BoxDecoration(
                 color: cs.primary,
                 shape: BoxShape.circle,
@@ -43,7 +40,7 @@ class RegisterPasswordSuccessCard extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Icon(LucideIcons.check, color: cs.onPrimary, size: 56),
+              child: Icon(LucideIcons.check, color: cs.onPrimary, size: 24),
             ),
           ),
           const SizedBox(height: 14),

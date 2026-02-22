@@ -148,77 +148,92 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(color: Color(0xff00594F)),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _scaleFade(
-                  scale: _imageScale,
-                  fade: _imageFade,
-                  child: SizedBox(
-                    height: 248,
-                    width: 302,
-                    child: Hero(
-                      tag: 'logo',
-                      child: Image.asset(AppImages.logo, fit: BoxFit.contain),
-                    ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Container(decoration: BoxDecoration(color: cs.primary)),
+          ),
+          Positioned.fill(
+            child: Opacity(
+              opacity: .1,
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(AppImages.background),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: 36),
-                _slideFade(
-                  slide: _titleSlide,
-                  fade: _titleFade,
-                  child: const CustomText(
-                    'app.title',
-                    textAlign: TextAlign.center,
-                    type: CustomTextType.headlineLarge,
-                    color: CustomTextColor.white,
-                  ),
-                ),
-                const SizedBox(height: 18),
-                _slideFade(
-                  slide: _subtitleSlide,
-                  fade: _subtitleFade,
-                  child: const CustomText(
-                    'app.subtitle',
-                    textAlign: TextAlign.center,
-                    type: CustomTextType.bodyLarge,
-                    color: CustomTextColor.lightGold,
-                  ),
-                ),
-                const SizedBox(height: 36),
-                _slideFade(
-                  slide: _dotsSlide,
-                  fade: _dotsFade,
-                  child: SplashPulseIndicator(
-                    animation: _dotsController,
-                    dotSize: _dotSize,
-                    dotSpacing: _dotSpacing,
-                    inactiveColor: const Color(0x99E3DDD2),
-                    activeColor: cs.surfaceDim,
-                  ),
-                ),
-                const SizedBox(height: 36),
-                _slideFade(
-                  slide: _basmalaSlide,
-                  fade: _basmalaFade,
-                  child: const CustomText(
-                    'app.basmala',
-                    textAlign: TextAlign.center,
-                    type: CustomTextType.bodyLarge,
-                    color: CustomTextColor.lightGold,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _scaleFade(
+                    scale: _imageScale,
+                    fade: _imageFade,
+                    child: SizedBox(
+                      height: 248,
+                      width: 302,
+                      child: Hero(
+                        tag: 'logo',
+                        child: Image.asset(AppImages.logo, fit: BoxFit.contain),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 36),
+                  _slideFade(
+                    slide: _titleSlide,
+                    fade: _titleFade,
+                    child: const CustomText(
+                      'app.title',
+                      textAlign: TextAlign.center,
+                      type: CustomTextType.headlineLarge,
+                      color: CustomTextColor.white,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  _slideFade(
+                    slide: _subtitleSlide,
+                    fade: _subtitleFade,
+                    child: const CustomText(
+                      'app.subtitle',
+                      textAlign: TextAlign.center,
+                      type: CustomTextType.bodyLarge,
+                      color: CustomTextColor.lightGold,
+                    ),
+                  ),
+                  const SizedBox(height: 36),
+                  _slideFade(
+                    slide: _dotsSlide,
+                    fade: _dotsFade,
+                    child: SplashPulseIndicator(
+                      animation: _dotsController,
+                      dotSize: _dotSize,
+                      dotSpacing: _dotSpacing,
+                      inactiveColor: const Color(0x99E3DDD2),
+                      activeColor: cs.surfaceDim,
+                    ),
+                  ),
+                  const SizedBox(height: 36),
+                  _slideFade(
+                    slide: _basmalaSlide,
+                    fade: _basmalaFade,
+                    child: const CustomText(
+                      'app.basmala',
+                      textAlign: TextAlign.center,
+                      type: CustomTextType.bodyLarge,
+                      color: CustomTextColor.lightGold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

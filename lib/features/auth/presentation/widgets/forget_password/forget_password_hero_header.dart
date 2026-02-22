@@ -23,13 +23,6 @@ class ForgetPasswordHeroHeader extends StatelessWidget {
     return Container(
       height: height + statusBarInset,
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 18),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [cs.primaryContainer, cs.primary],
-        ),
-      ),
       child: SafeArea(
         bottom: false,
         child: Column(

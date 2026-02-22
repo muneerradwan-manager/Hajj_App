@@ -25,19 +25,13 @@ class RegisterHeroHeader extends StatelessWidget {
       1 => 'auth.register.step_basic_info',
       2 => 'auth.register.step_security',
       3 => 'auth.register.step_review',
+      4 => 'auth.register.step_verify',
       _ => 'auth.register.step_success',
     };
 
     return Container(
       height: height + statusBarInset,
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 18),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [cs.primaryContainer, cs.primary],
-        ),
-      ),
       child: SafeArea(
         bottom: false,
         child: Column(
@@ -90,7 +84,7 @@ class RegisterHeroHeader extends StatelessWidget {
 
             RegisterStepProgress(
               stepNumber: stepNumber,
-              totalSteps: 4,
+              totalSteps: 5,
               activeColor: cs.brandGold,
               completedColor: cs.brandGold,
               lineActiveColor: cs.brandGold,
@@ -106,7 +100,7 @@ class RegisterStepProgress extends StatelessWidget {
   const RegisterStepProgress({
     super.key,
     required this.stepNumber,
-    this.totalSteps = 4,
+    this.totalSteps = 5,
     this.activeColor,
     this.completedColor,
     this.inactiveColor,
@@ -209,7 +203,9 @@ class _AnimatedStepCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final bg = isActive ? activeColor : (isDone ? doneColor : inactiveColor);
-    final textColor = isActive ? cs.onSurface : cs.outline;
+    final textColor = isDone
+        ? Colors.white
+        : (isActive ? cs.onSurface : cs.outline);
 
     return AnimatedScale(
       duration: const Duration(milliseconds: 220),
@@ -234,19 +230,31 @@ class _AnimatedStepCircle extends StatelessWidget {
               : null,
         ),
         child: Center(
-          child: AnimatedDefaultTextStyle(
+          child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 220),
-            curve: Curves.easeInOut,
-            style: const TextStyle(
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+            switchInCurve: Curves.easeInOut,
+            switchOutCurve: Curves.easeInOut,
+            transitionBuilder: (child, animation) => FadeTransition(
+              opacity: animation,
+              child: ScaleTransition(scale: animation, child: child),
             ),
-            child: CustomText(
-              '$number',
-              type: CustomTextType.labelSmall,
-              style: TextStyle(color: textColor, fontWeight: FontWeight.w700),
-              translate: false,
-            ),
+            child: isDone
+                ? Icon(
+                    LucideIcons.check,
+                    key: ValueKey('done-$number'),
+                    size: 16,
+                    color: textColor,
+                  )
+                : CustomText(
+                    '$number',
+                    key: ValueKey('num-$number'),
+                    type: CustomTextType.labelSmall,
+                    style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    translate: false,
+                  ),
           ),
         ),
       ),

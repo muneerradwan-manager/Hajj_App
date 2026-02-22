@@ -22,6 +22,10 @@ class AppValidators {
       'auth.register.validation_national_id_required';
   static const String _barcodeRequiredKey =
       'auth.register.validation_barcode_required';
+  static const String _verificationCodeRequiredKey =
+      'auth.register.validation_verification_code_required';
+  static const String _verificationCodeInvalidKey =
+      'auth.register.validation_verification_code_invalid';
 
   static String _normalize(String? value) => (value ?? '').trim();
 
@@ -50,6 +54,24 @@ class AppValidators {
 
   static String? barcode(String? value, BuildContext context) {
     return _requiredWithKey(value, context, _barcodeRequiredKey);
+  }
+
+  static String? verificationCode(
+    String? value,
+    BuildContext context, {
+    int length = 6,
+  }) {
+    final normalized = _normalize(value);
+    if (normalized.isEmpty) {
+      return _verificationCodeRequiredKey.tr(context);
+    }
+
+    final isDigitsOnly = RegExp(r'^\d+$').hasMatch(normalized);
+    if (!isDigitsOnly || normalized.length != length) {
+      return _verificationCodeInvalidKey.tr(context, args: {'length': length});
+    }
+
+    return null;
   }
 
   static String? phone(String? value, BuildContext context) {

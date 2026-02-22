@@ -53,7 +53,7 @@ class RegisterMainInfoCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Icon(LucideIcons.user, color: cs.onPrimary, size: 30),
+                child: Icon(LucideIcons.user, color: cs.onPrimary, size: 24),
               ),
             ),
             const SizedBox(height: 12),

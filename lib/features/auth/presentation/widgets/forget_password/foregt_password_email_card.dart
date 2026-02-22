@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/shared/widgets/custom_text.dart';
@@ -66,7 +67,7 @@ class ForgetPasswordEmailCard extends StatelessWidget {
               'auth.forget.email_card_subtitle',
               textAlign: TextAlign.center,
               type: CustomTextType.bodyMedium,
-              color: CustomTextColor.lightRed,
+              color: CustomTextColor.gold,
             ),
             const SizedBox(height: 24),
             const CustomText(
@@ -77,11 +78,18 @@ class ForgetPasswordEmailCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             TextFormField(
+              style: TextStyle(color: Theme.of(context).colorScheme.brandRed),
               controller: emailCtrl,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => onSend?.call(),
-              decoration: decoration,
+              decoration: decoration.copyWith(
+                hintStyle: TextStyle(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.errorContainer.withValues(alpha: .2),
+                ),
+              ),
               validator: validateEmail,
             ),
             const SizedBox(height: 20),
@@ -92,7 +100,7 @@ class ForgetPasswordEmailCard extends StatelessWidget {
                 color: CustomTextColor.white,
               ),
               onPressed: onSend,
-              icon: Icon(LucideIcons.check, size: 18, color: cs.onPrimary),
+              icon: Icon(LucideIcons.send, size: 18, color: cs.onPrimary),
             ),
             const SizedBox(height: 20),
             const CustomText(
