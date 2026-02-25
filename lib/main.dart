@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,16 +13,31 @@ import 'package:hajj_app/core/theme/theme_state.dart';
 
 import 'core/router/app_router.dart';
 
+bool get _enableDevicePreview {
+  if (!kDebugMode) return false;
+  if (kIsWeb) return true;
+
+  switch (defaultTargetPlatform) {
+    case TargetPlatform.android:
+    case TargetPlatform.iOS:
+      return false;
+    case TargetPlatform.fuchsia:
+    case TargetPlatform.linux:
+    case TargetPlatform.macOS:
+    case TargetPlatform.windows:
+      return true;
+  }
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await bootstrapApp();
 
-  runApp(
-    DevicePreview(
-      enabled: kIsWeb || !(Platform.isAndroid || Platform.isIOS),
-      builder: (context) => const MainApp(),
-    ),
-  );
+  final app = _enableDevicePreview
+      ? DevicePreview(enabled: true, builder: (_) => const MainApp())
+      : const MainApp();
+
+  runApp(app);
 }
 
 class MainApp extends StatelessWidget {
@@ -46,7 +59,7 @@ class MainApp extends StatelessWidget {
               return MaterialApp.router(
                 debugShowCheckedModeBanner: false,
                 debugShowMaterialGrid: false,
-                builder: DevicePreview.appBuilder,
+                builder: _enableDevicePreview ? DevicePreview.appBuilder : null,
                 theme: AppTheme.lightTheme,
                 darkTheme: AppTheme.darkTheme,
                 themeMode: ThemeMode.light,

@@ -131,7 +131,7 @@ class _RegisterViewState extends State<RegisterView> {
                 opacity: .1,
                 child: Container(
                   height: heroHeight + statusBarInset,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(AppImages.background),
                       fit: BoxFit.cover,
@@ -151,7 +151,7 @@ class _RegisterViewState extends State<RegisterView> {
             Positioned.fromRelativeRect(
               rect: RelativeRect.fromLTRB(0, heroHeight + statusBarInset, 0, 0),
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(AppImages.background),
                     fit: BoxFit.cover,

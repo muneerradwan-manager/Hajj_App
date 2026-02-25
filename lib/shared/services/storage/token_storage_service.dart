@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,10 +10,8 @@ class TokenStorageService {
 
   TokenStorageService(this._secureStorage);
 
-  /// Check if we should use SharedPreferences as fallback
-  /// Use it for web (always) and Windows in debug mode due to flutter_secure_storage issues
   bool get _useSharedPreferences =>
-      kIsWeb || (kDebugMode && Platform.isWindows);
+      kIsWeb || (kDebugMode && defaultTargetPlatform == TargetPlatform.windows);
 
   Future<void> saveAccessToken(String token) async {
     if (_useSharedPreferences) {

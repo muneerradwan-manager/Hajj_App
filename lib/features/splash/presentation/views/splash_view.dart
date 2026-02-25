@@ -17,11 +17,14 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   static const double _dotSize = 12;
   static const double _dotSpacing = 5;
+  static const Duration _sequenceDuration = Duration(milliseconds: 3200);
+  static const Duration _postSequenceDelay = Duration(milliseconds: 350);
 
   late final AnimationController _controller;
   late final AnimationController _dotsController;
   Timer? _navigationTimer;
   bool _isDotsAnimationStarted = false;
+  bool _didPrecacheAssets = false;
 
   late final Animation<double> _imageScale;
   late final Animation<double> _imageFade;
@@ -37,15 +40,20 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   late final Animation<double> _basmalaFade;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didPrecacheAssets) return;
+
+    _didPrecacheAssets = true;
+    precacheImage(const AssetImage(AppImages.background), context);
+    precacheImage(const AssetImage(AppImages.logo), context);
+  }
+
+  @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(
-        milliseconds: 6500,
-      ), // Slightly longer total time
-    );
+    _controller = AnimationController(vsync: this, duration: _sequenceDuration);
 
     _dotsController = AnimationController(
       vsync: this,
@@ -84,10 +92,10 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       }
     });
 
-    _controller.forward();
-
-    // Navigation starts after the sequence finishes
-    _navigationTimer = Timer(const Duration(milliseconds: 7000), _goToLogin);
+    _controller.forward().whenComplete(() {
+      if (!mounted) return;
+      _navigationTimer = Timer(_postSequenceDelay, _goToLogin);
+    });
   }
 
   void _goToLogin() {
@@ -157,7 +165,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
             child: Opacity(
               opacity: .1,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(AppImages.background),
                     fit: BoxFit.cover,

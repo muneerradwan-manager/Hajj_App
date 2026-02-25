@@ -134,6 +134,7 @@
 // ============================================================
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -150,6 +151,10 @@ class LocalizationCubit extends Cubit<LocalizationState> {
   /// Creates a [LocalizationCubit] with Arabic as the default locale
   LocalizationCubit() : super(LocalizationState.initial());
 
+  void _log(String message) {
+    if (kDebugMode) debugPrint(message);
+  }
+
   /// Changes the current locale and persists it to storage
   ///
   /// [locale] - The new locale to set (e.g., Locale('en'), Locale('ar'))
@@ -161,11 +166,9 @@ class LocalizationCubit extends Cubit<LocalizationState> {
     try {
       emit(state.copyWith(locale: locale));
       await _saveLocale(locale);
-      debugPrint(
-        '[LocalizationCubit] Locale changed to: ${locale.languageCode}',
-      );
+      _log('[LocalizationCubit] Locale changed to: ${locale.languageCode}');
     } catch (e) {
-      debugPrint('[LocalizationCubit] Error changing locale: $e');
+      _log('[LocalizationCubit] Error changing locale: $e');
     }
   }
 
@@ -184,12 +187,12 @@ class LocalizationCubit extends Cubit<LocalizationState> {
           AppLocalizationsSetup.supportedLanguageCodes.contains(languageCode)) {
         final savedLocale = Locale(languageCode);
         emit(state.copyWith(locale: savedLocale));
-        debugPrint('[LocalizationCubit] Loaded saved locale: $languageCode');
+        _log('[LocalizationCubit] Loaded saved locale: $languageCode');
       } else {
-        debugPrint('[LocalizationCubit] No saved locale found, using default');
+        _log('[LocalizationCubit] No saved locale found, using default');
       }
     } catch (e) {
-      debugPrint('[LocalizationCubit] Error loading saved locale: $e');
+      _log('[LocalizationCubit] Error loading saved locale: $e');
     }
   }
 
@@ -198,9 +201,9 @@ class LocalizationCubit extends Cubit<LocalizationState> {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_localeKey, locale.languageCode);
-      debugPrint('[LocalizationCubit] Locale saved: ${locale.languageCode}');
+      _log('[LocalizationCubit] Locale saved: ${locale.languageCode}');
     } catch (e) {
-      debugPrint('[LocalizationCubit] Error saving locale: $e');
+      _log('[LocalizationCubit] Error saving locale: $e');
     }
   }
 

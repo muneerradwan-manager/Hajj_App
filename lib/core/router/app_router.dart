@@ -8,6 +8,8 @@ import 'package:hajj_app/features/auth/presentation/views/register_view.dart';
 import 'package:hajj_app/features/home/presentation/views/home_view.dart';
 import 'package:hajj_app/features/splash/presentation/views/splash_view.dart';
 
+import '../../features/home/presentation/views/navigation_bottom.dart';
+
 enum PageTransitionDirection {
   rightToLeft,
   leftToRight,
@@ -19,11 +21,11 @@ enum PageTransitionDirection {
 class AppRouter {
   const AppRouter._();
 
-  static CustomTransitionPage fadeSlidePage({
+  static CustomTransitionPage<void> fadeSlidePage({
     required GoRouterState state,
     required Widget child,
     PageTransitionDirection direction = PageTransitionDirection.rightToLeft,
-    Duration duration = const Duration(milliseconds: 500),
+    Duration duration = const Duration(milliseconds: 320),
     Curve curve = Curves.easeOut,
     double distance = 0.08,
     bool fade = true,
@@ -70,7 +72,7 @@ class AppRouter {
   }
 
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.splashPath,
+    initialLocation: AppRoutes.navigationBottomPath,
     routes: <RouteBase>[
       GoRoute(
         name: AppRoutes.splashName,
@@ -85,7 +87,7 @@ class AppRouter {
           state: state,
           child: const LoginPage(),
           direction: PageTransitionDirection.bottomToTop,
-          duration: const Duration(seconds: 2),
+          duration: const Duration(milliseconds: 450),
         ),
       ),
 
@@ -107,6 +109,12 @@ class AppRouter {
           child: const RegisterView(),
           direction: PageTransitionDirection.bottomToTop,
         ),
+      ),
+
+      GoRoute(
+        name: AppRoutes.navigationBottomName,
+        path: AppRoutes.navigationBottomPath,
+        builder: (context, state) => const NavigationBottom(),
       ),
 
       GoRoute(

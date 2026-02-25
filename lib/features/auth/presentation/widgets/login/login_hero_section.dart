@@ -13,7 +13,7 @@ class LoginHeroSection extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const SizedBox(height: 50),
+        SizedBox(height: MediaQuery.of(context).padding.top + 12),
         SizedBox(
           width: logoSize,
           height: logoSize,

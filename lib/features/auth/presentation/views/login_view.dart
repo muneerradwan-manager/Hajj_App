@@ -52,7 +52,7 @@ class LoginPage extends StatelessWidget {
                       opacity: .1,
                       child: Container(
                         height: heroHeight,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage(AppImages.background),
                             fit: BoxFit.cover,
@@ -72,7 +72,7 @@ class LoginPage extends StatelessWidget {
                   Positioned.fromRelativeRect(
                     rect: RelativeRect.fromLTRB(0, heroHeight, 0, 0),
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(AppImages.background),
                           fit: BoxFit.cover,
@@ -121,6 +121,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  
                 ],
               ),
             );

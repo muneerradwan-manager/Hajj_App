@@ -3,7 +3,6 @@ import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-// import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../core/network/interceptors/auth_interceptor.dart';
 import '../../shared/services/storage/token_storage_service.dart';
@@ -14,15 +13,16 @@ class DioClient {
 
   DioClient({TokenStorageService? tokenStorage})
     : _tokenStorage = tokenStorage {
+    final connectTimeoutSeconds =
+        int.tryParse(dotenv.env['CONNECT_TIMEOUT'] ?? '') ?? 5;
+    final receiveTimeoutSeconds =
+        int.tryParse(dotenv.env['RECEIVE_TIMEOUT'] ?? '') ?? 3;
+
     dio = Dio(
       BaseOptions(
         baseUrl: dotenv.env['BASE_URL'] ?? 'http://example.com/api',
-        connectTimeout: Duration(
-          seconds: int.parse(dotenv.env['CONNECT_TIMEOUT'] ?? '5'),
-        ),
-        receiveTimeout: Duration(
-          seconds: int.parse(dotenv.env['RECEIVE_TIMEOUT'] ?? '3'),
-        ),
+        connectTimeout: Duration(seconds: connectTimeoutSeconds),
+        receiveTimeout: Duration(seconds: receiveTimeoutSeconds),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -35,10 +35,9 @@ class DioClient {
     _addInterceptors();
   }
 
-  void _addInterceptors() async {
+  void _addInterceptors() {
     // Add auth interceptor first if token storage is available
     if (_tokenStorage != null) {
-      debugPrint(await _tokenStorage.getAccessToken());
       dio.interceptors.add(AuthInterceptor(_tokenStorage, dio));
     }
 
@@ -47,6 +46,8 @@ class DioClient {
   }
 
   void _addLogInterceptors() {
+    if (!kDebugMode) return;
+
     dio.interceptors.add(
       LogInterceptor(
         requestBody: true,
@@ -120,10 +121,7 @@ class DioClient {
       formData = data;
       formData.fields.add(MapEntry('_method', method));
     } else if (data is Map<String, dynamic>) {
-      formData = FormData.fromMap({
-        ...data,
-        '_method': method,
-      });
+      formData = FormData.fromMap({...data, '_method': method});
     } else {
       formData = FormData.fromMap({'_method': method});
     }

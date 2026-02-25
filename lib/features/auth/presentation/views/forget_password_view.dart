@@ -28,12 +28,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
   bool _isSent = false;
 
   @override
-  void initState() {
-    super.initState();
-    _emailCtrl.addListener(() => setState(() {}));
-  }
-
-  @override
   void dispose() {
     _emailCtrl.dispose();
     super.dispose();
@@ -76,8 +70,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
     return AppValidators.email(value, context);
   }
 
-  bool get _canSend => _emailCtrl.text.trim().isNotEmpty;
-
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -101,7 +93,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 opacity: .1,
                 child: Container(
                   height: heroHeight,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(AppImages.background),
                       fit: BoxFit.cover,
@@ -121,7 +113,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
             Positioned.fromRelativeRect(
               rect: RelativeRect.fromLTRB(0, heroHeight, 0, 0),
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(AppImages.background),
                     fit: BoxFit.cover,
@@ -170,22 +162,34 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                                       onBackToLogin: _goToLogin,
                                       onResend: _openEmailStep,
                                     )
-                                  : ForgetPasswordEmailCard(
+                                  : ValueListenableBuilder<TextEditingValue>(
                                       key: const ValueKey('email-card'),
-                                      formKey: _formKey,
-                                      emailCtrl: _emailCtrl,
-                                      decoration: InputDecoration(
-                                        hintText: 'auth.forget.email_hint'.tr(
-                                          context,
-                                        ),
-                                        hintStyle: TextStyle(color: cs.outline),
-                                        suffixIcon: Icon(
-                                          LucideIcons.mail,
-                                          color: cs.brandGold,
-                                        ),
-                                      ),
-                                      validateEmail: _validateEmail,
-                                      onSend: _canSend ? _sendResetLink : null,
+                                      valueListenable: _emailCtrl,
+                                      builder: (context, value, _) {
+                                        final canSend = value.text
+                                            .trim()
+                                            .isNotEmpty;
+
+                                        return ForgetPasswordEmailCard(
+                                          formKey: _formKey,
+                                          emailCtrl: _emailCtrl,
+                                          decoration: InputDecoration(
+                                            hintText: 'auth.forget.email_hint'
+                                                .tr(context),
+                                            hintStyle: TextStyle(
+                                              color: cs.outline,
+                                            ),
+                                            suffixIcon: Icon(
+                                              LucideIcons.mail,
+                                              color: cs.brandGold,
+                                            ),
+                                          ),
+                                          validateEmail: _validateEmail,
+                                          onSend: canSend
+                                              ? _sendResetLink
+                                              : null,
+                                        );
+                                      },
                                     ),
                             ),
                             if (!_isSent) ...[

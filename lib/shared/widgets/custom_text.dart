@@ -56,7 +56,7 @@ class CustomText extends StatelessWidget {
     this.fontWeight,
     this.fontSize,
     this.height,
-    this.letterSpacing,
+    this.letterSpacing = 0,
   });
 
   final String text;

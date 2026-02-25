@@ -96,6 +96,7 @@
 // ============================================================
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -106,6 +107,10 @@ class AppLocalizations {
   late Map<String, dynamic> _localizedStrings;
 
   AppLocalizations(this.locale);
+
+  void _log(String message) {
+    if (kDebugMode) debugPrint(message);
+  }
 
   /// Get AppLocalizations instance from context
   static AppLocalizations of(BuildContext context) {
@@ -124,7 +129,7 @@ class AppLocalizations {
     }
 
     if (_localizedStrings.isEmpty) {
-      debugPrint(
+      _log(
         '[AppLocalizations] No localization data found for ${locale.languageCode} and fallback ar',
       );
     }
@@ -137,7 +142,7 @@ class AppLocalizations {
       );
       return json.decode(jsonString) as Map<String, dynamic>;
     } catch (e) {
-      debugPrint('[AppLocalizations] Error loading locale $languageCode: $e');
+      _log('[AppLocalizations] Error loading locale $languageCode: $e');
       return {};
     }
   }
@@ -228,10 +233,7 @@ class AppLocalizationsSetup {
     'en', // English
   ];
 
-  /// List of supported locales
-  static List<Locale> get supportedLocales {
-    return supportedLanguageCodes.map((code) => Locale(code)).toList();
-  }
+  static const List<Locale> supportedLocales = [Locale('ar'), Locale('en')];
 
   /// List of localization delegates
   /// Use this in MaterialApp's localizationsDelegates parameter

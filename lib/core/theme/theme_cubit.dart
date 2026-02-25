@@ -109,6 +109,7 @@
 // ============================================================
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'theme_state.dart';
@@ -122,6 +123,10 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   /// Creates a ThemeCubit with initial system theme mode
   ThemeCubit() : super(const ThemeState.initial());
+
+  void _log(String message) {
+    if (kDebugMode) debugPrint(message);
+  }
 
   /// Toggles between light and dark theme modes
   ///
@@ -182,7 +187,7 @@ class ThemeCubit extends Cubit<ThemeState> {
         emit(state.copyWith(themeMode: mode));
       }
     } catch (e) {
-      debugPrint('[ThemeCubit] Error loading saved theme: $e');
+      _log('[ThemeCubit] Error loading saved theme: $e');
       // Keep default system theme on error
     }
   }
@@ -206,9 +211,9 @@ class ThemeCubit extends Cubit<ThemeState> {
       }
 
       await prefs.setString(_themeModeKey, modeString);
-      debugPrint('[ThemeCubit] Saved theme mode: $modeString');
+      _log('[ThemeCubit] Saved theme mode: $modeString');
     } catch (e) {
-      debugPrint('[ThemeCubit] Error saving theme mode: $e');
+      _log('[ThemeCubit] Error saving theme mode: $e');
     }
   }
 }
