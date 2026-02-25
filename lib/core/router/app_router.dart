@@ -72,7 +72,7 @@ class AppRouter {
   }
 
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.navigationBottomPath,
+    initialLocation: AppRoutes.splashPath,
     routes: <RouteBase>[
       GoRoute(
         name: AppRoutes.splashName,

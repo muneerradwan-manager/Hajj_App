@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:hajj_app/core/constants/app_routes.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
-import 'package:hajj_app/features/auth/presentation/widgets/register/register_hero_header.dart';
-import '../../../../core/constants/app_images.dart';
-import '../../../../core/constants/app_routes.dart';
+import 'package:hajj_app/shared/widgets/hero_background.dart';
+import 'package:hajj_app/shared/widgets/step_animated_switcher.dart';
+
+import '../widgets/register/register_hero_header.dart';
 import '../widgets/register/register_main_info_card.dart';
-import '../widgets/register/register_success_card.dart';
 import '../widgets/register/register_review_data_card.dart';
 import '../widgets/register/register_security_check_card.dart';
+import '../widgets/register/register_success_card.dart';
 import '../widgets/register/register_verify_account_card.dart';
 
 class RegisterView extends StatefulWidget {
@@ -42,15 +45,10 @@ class _RegisterViewState extends State<RegisterView> {
       _goToLogin();
       return;
     }
-
-    setState(() {
-      _stepNumber -= 1; // <-- رجوع خطوة للخلف
-    });
+    setState(() => _stepNumber -= 1);
   }
 
-  void _goToLogin() {
-    context.go(AppRoutes.loginPath);
-  }
+  void _goToLogin() => context.go(AppRoutes.loginPath);
 
   void _goNext() {
     if (_stepNumber >= 5) return;
@@ -78,9 +76,7 @@ class _RegisterViewState extends State<RegisterView> {
     _goNext();
   }
 
-  void _submitVerificationCode(String _) {
-    _goNext();
-  }
+  void _submitVerificationCode(String _) => _goNext();
 
   void _resendVerificationCode() {
     ScaffoldMessenger.of(context)
@@ -109,56 +105,18 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     final viewport = MediaQuery.sizeOf(context);
-    final password = _passwordCtrl.text.trim();
     final heroHeight = (viewport.height * 0.25).clamp(220.0, 300.0);
     final overlap = (viewport.height * 0.03).clamp(16.0, 24.0);
     final statusBarInset = MediaQuery.paddingOf(context).top;
+    final totalHeroHeight = heroHeight + statusBarInset;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Positioned(
-              child: Container(
-                height: heroHeight + statusBarInset,
-                decoration: BoxDecoration(color: cs.primary),
-              ),
-            ),
-            Positioned(
-              child: Opacity(
-                opacity: .1,
-                child: Container(
-                  height: heroHeight + statusBarInset,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(AppImages.background),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned.fromRelativeRect(
-              rect: RelativeRect.fromLTRB(0, heroHeight + statusBarInset, 0, 0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xffE5E0D6).withValues(alpha: .23),
-                ),
-              ),
-            ),
-            Positioned.fromRelativeRect(
-              rect: RelativeRect.fromLTRB(0, heroHeight + statusBarInset, 0, 0),
-              child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(AppImages.background),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
+            ...HeroBackground.layers(context, totalHeroHeight),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -172,78 +130,7 @@ class _RegisterViewState extends State<RegisterView> {
                     padding: const EdgeInsets.all(20.0),
                     child: Transform.translate(
                       offset: Offset(0, -overlap),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Column(
-                          children: [
-                            AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 280),
-                              switchInCurve: Curves.easeOut,
-                              switchOutCurve: Curves.easeOut,
-                              transitionBuilder: (child, animation) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: ScaleTransition(
-                                    scale: Tween<double>(
-                                      begin: 0.98,
-                                      end: 1,
-                                    ).animate(animation),
-                                    child: child,
-                                  ),
-                                );
-                              },
-                              child: _stepNumber == 1
-                                  ? RegisterMainInfoCard(
-                                      key: const ValueKey('main-info-card'),
-                                      formKey: _formMainInfoKey,
-                                      emailCtrl: _emailCtrl,
-                                      idCtrl: _idCtrl,
-                                      phoneCtrl: _phoneCtrl,
-                                      onSend: _submitMainInfo,
-                                    )
-                                  : _stepNumber == 2
-                                  ? RegisterSecurityCheckCard(
-                                      key: const ValueKey(
-                                        'security-check-card',
-                                      ),
-                                      formKey: _formSecurityCheckKey,
-                                      passwordCtrl: _passwordCtrl,
-                                      confirmCtrl: _confirmCtrl,
-                                      qrcodeCtrl: _qrCodeCtrl,
-                                      onSend: _submitSecurityCheck,
-                                      onBack: _handleBack,
-                                    )
-                                  : _stepNumber == 3
-                                  ? RegisterReviewDataCard(
-                                      key: const ValueKey('review-data-card'),
-                                      formKey: _formSubmitKey,
-                                      email: _emailCtrl.text.trim(),
-                                      nationalId: _idCtrl.text.trim(),
-                                      phone: _phoneCtrl.text.trim(),
-                                      barcode: _qrCodeCtrl.text.trim(),
-                                      password: password,
-                                      onSend: _submitReviewData,
-                                      onBack: _handleBack,
-                                    )
-                                  : _stepNumber == 4
-                                  ? RegisterVerifyAccountCard(
-                                      key: const ValueKey(
-                                        'verify-account-card',
-                                      ),
-                                      formKey: _formVerifyAccountKey,
-                                      pinput: _pinput,
-                                      onSubmit: _submitVerificationCode,
-                                      email: _emailCtrl.text.trim(),
-                                      onResend: _resendVerificationCode,
-                                    )
-                                  : RegisterSuccessCard(
-                                      key: const ValueKey('success-card'),
-                                      onContinueToLogin: _goToLogin,
-                                    ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: StepAnimatedSwitcher(child: _buildStep()),
                     ),
                   ),
                 ),
@@ -254,18 +141,49 @@ class _RegisterViewState extends State<RegisterView> {
       ),
     );
   }
-}
 
-Row labelWithRedStar(String text) {
-  return Row(
-    children: [
-      CustomText(
-        text,
-        textAlign: TextAlign.start,
-        type: CustomTextType.titleSmall,
-        color: CustomTextColor.green,
-      ),
-      const CustomText('*', color: CustomTextColor.lightRed),
-    ],
-  );
+  Widget _buildStep() {
+    return switch (_stepNumber) {
+      1 => RegisterMainInfoCard(
+          key: const ValueKey('main-info-card'),
+          formKey: _formMainInfoKey,
+          emailCtrl: _emailCtrl,
+          idCtrl: _idCtrl,
+          phoneCtrl: _phoneCtrl,
+          onSend: _submitMainInfo,
+        ),
+      2 => RegisterSecurityCheckCard(
+          key: const ValueKey('security-check-card'),
+          formKey: _formSecurityCheckKey,
+          passwordCtrl: _passwordCtrl,
+          confirmCtrl: _confirmCtrl,
+          qrcodeCtrl: _qrCodeCtrl,
+          onSend: _submitSecurityCheck,
+          onBack: _handleBack,
+        ),
+      3 => RegisterReviewDataCard(
+          key: const ValueKey('review-data-card'),
+          formKey: _formSubmitKey,
+          email: _emailCtrl.text.trim(),
+          nationalId: _idCtrl.text.trim(),
+          phone: _phoneCtrl.text.trim(),
+          barcode: _qrCodeCtrl.text.trim(),
+          password: _passwordCtrl.text.trim(),
+          onSend: _submitReviewData,
+          onBack: _handleBack,
+        ),
+      4 => RegisterVerifyAccountCard(
+          key: const ValueKey('verify-account-card'),
+          formKey: _formVerifyAccountKey,
+          pinput: _pinput,
+          onSubmit: _submitVerificationCode,
+          email: _emailCtrl.text.trim(),
+          onResend: _resendVerificationCode,
+        ),
+      _ => RegisterSuccessCard(
+          key: const ValueKey('success-card'),
+          onContinueToLogin: _goToLogin,
+        ),
+    };
+  }
 }

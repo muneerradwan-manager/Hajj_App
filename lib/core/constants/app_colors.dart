@@ -14,6 +14,9 @@ class AppColors {
   static const Color black = Color(0xFF021526);
   static const Color hintGrey = Color(0xFFC5CBC8);
 
+  /// Semi-transparent overlay used behind content areas below hero sections.
+  static const Color overlay = Color(0xFFE5E0D6);
+
   // Supporting tones for accessible light/dark ColorScheme mapping.
   static const Color _greenLight = Color(0xFF006e5c);
   static const Color _greenDark = Color(0xFF279e91);

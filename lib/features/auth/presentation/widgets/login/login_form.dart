@@ -30,13 +30,14 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _submit() {
-    if (!_formKey.currentState!.validate()) return;
+    // if (!_formKey.currentState!.validate()) return;
 
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        const SnackBar(content: CustomText('auth.login.login_in_progress')),
-      );
+    // ScaffoldMessenger.of(context)
+    //   ..hideCurrentSnackBar()
+    //   ..showSnackBar(
+    //     const SnackBar(content: CustomText('auth.login.login_in_progress')),
+    //   );
+    context.go(AppRoutes.navigationBottomPath);
   }
 
   @override

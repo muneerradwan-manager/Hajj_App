@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../../shared/widgets/custom_text.dart';
+import 'package:hajj_app/core/constants/app_colors.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({super.key});
@@ -29,16 +29,7 @@ class HomeCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            height: 5,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [cs.brandRed, cs.primary, cs.brandGold],
-              ),
-            ),
-          ),
+          _GradientStripe(cs: cs),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
@@ -59,7 +50,7 @@ class HomeCard extends StatelessWidget {
                     spacing: 12,
                     children: [
                       const CustomText(
-                        'محمد أحمد الشامي',
+                        'home.pilgrim_name',
                         textAlign: TextAlign.center,
                         type: CustomTextType.bodyLarge,
                         color: CustomTextColor.green,
@@ -74,7 +65,7 @@ class HomeCard extends StatelessWidget {
                         ),
                         padding: const EdgeInsets.all(5),
                         child: const CustomText(
-                          'SYR-2026-4521',
+                          'home.pilgrim_id',
                           textAlign: TextAlign.center,
                           type: CustomTextType.bodyMedium,
                           color: CustomTextColor.lightGreen,
@@ -109,87 +100,21 @@ class HomeCard extends StatelessWidget {
               spacing: 10,
               children: [
                 Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: cs.brandGold.withValues(alpha: .1),
-                    ),
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 10,
-                      children: [
-                        Row(
-                          spacing: 10,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: cs.brandRed,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: const EdgeInsets.all(5),
-                              child: const Icon(
-                                LucideIcons.layers,
-                                size: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const CustomText(
-                              'التكتل',
-                              type: CustomTextType.bodyMedium,
-                              color: CustomTextColor.gold,
-                            ),
-                          ],
-                        ),
-                        const CustomText(
-                          'ارتقاء',
-                          type: CustomTextType.bodyMedium,
-                          color: CustomTextColor.lightGreen,
-                        ),
-                      ],
-                    ),
+                  child: _InfoChip(
+                    icon: LucideIcons.layers,
+                    iconBgColor: cs.brandRed,
+                    labelKey: 'home.cluster_label',
+                    valueKey: 'home.cluster_value',
+                    bgColor: cs.brandGold.withValues(alpha: .1),
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: cs.brandGold.withValues(alpha: .1),
-                    ),
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 10,
-                      children: [
-                        Row(
-                          spacing: 10,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: cs.primary,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: const EdgeInsets.all(5),
-                              child: const Icon(
-                                LucideIcons.grid3x3,
-                                size: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const CustomText(
-                              'المجموعة',
-                              type: CustomTextType.bodyMedium,
-                              color: CustomTextColor.gold,
-                            ),
-                          ],
-                        ),
-                        const CustomText(
-                          'التوفيق',
-                          type: CustomTextType.bodyMedium,
-                          color: CustomTextColor.lightGreen,
-                        ),
-                      ],
-                    ),
+                  child: _InfoChip(
+                    icon: LucideIcons.grid3x3,
+                    iconBgColor: cs.primary,
+                    labelKey: 'home.group_label',
+                    valueKey: 'home.group_value',
+                    bgColor: cs.brandGold.withValues(alpha: .1),
                   ),
                 ),
               ],
@@ -197,23 +122,90 @@ class HomeCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
-            child: ElevatedButton(
+            child: ElevatedButton.icon(
               onPressed: () {},
-              child: const CustomText(
-                'عرض البطاقة الكاملة',
+              icon: const Icon(LucideIcons.squareArrowRight, size: 18),
+              label: const CustomText(
+                'home.view_full_card',
                 color: CustomTextColor.white,
               ),
             ),
           ),
-          Container(
-            height: 5,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [cs.brandRed, cs.primary, cs.brandGold],
+          _GradientStripe(cs: cs),
+        ],
+      ),
+    );
+  }
+}
+
+class _GradientStripe extends StatelessWidget {
+  const _GradientStripe({required this.cs});
+  final ColorScheme cs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 5,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [cs.brandRed, cs.primary, cs.brandGold],
+        ),
+      ),
+    );
+  }
+}
+
+class _InfoChip extends StatelessWidget {
+  const _InfoChip({
+    required this.icon,
+    required this.iconBgColor,
+    required this.labelKey,
+    required this.valueKey,
+    required this.bgColor,
+  });
+
+  final IconData icon;
+  final Color iconBgColor;
+  final String labelKey;
+  final String valueKey;
+  final Color bgColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: bgColor,
+      ),
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: 10,
+        children: [
+          Row(
+            spacing: 10,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: iconBgColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.all(5),
+                child: Icon(icon, size: 18, color: Colors.white),
               ),
-            ),
+              CustomText(
+                labelKey,
+                type: CustomTextType.bodyMedium,
+                color: CustomTextColor.gold,
+              ),
+            ],
+          ),
+          CustomText(
+            valueKey,
+            type: CustomTextType.bodyMedium,
+            color: CustomTextColor.lightGreen,
           ),
         ],
       ),

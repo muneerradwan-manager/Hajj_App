@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import 'package:hajj_app/core/constants/app_colors.dart';
+import 'package:hajj_app/shared/widgets/app_card_container.dart';
+import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class ForgetPasswordEmailCard extends StatelessWidget {
@@ -24,37 +26,13 @@ class ForgetPasswordEmailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: cs.outlineVariant),
-      ),
+    return AppCardContainer(
       child: Form(
         key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Align(
-              child: Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: cs.primary,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: cs.shadow.withValues(alpha: 0.2),
-                      blurRadius: 14,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Icon(LucideIcons.mail, color: cs.onPrimary, size: 30),
-              ),
-            ),
+            const CircularIconBadge(icon: LucideIcons.mail, iconSize: 30),
             const SizedBox(height: 12),
             const CustomText(
               'auth.forget.email_card_title',
@@ -78,16 +56,14 @@ class ForgetPasswordEmailCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             TextFormField(
-              style: TextStyle(color: Theme.of(context).colorScheme.brandRed),
+              style: TextStyle(color: cs.brandRed),
               controller: emailCtrl,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => onSend?.call(),
               decoration: decoration.copyWith(
                 hintStyle: TextStyle(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.errorContainer.withValues(alpha: .2),
+                  color: cs.errorContainer.withValues(alpha: .2),
                 ),
               ),
               validator: validateEmail,

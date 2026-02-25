@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../../../core/localization/app_localizations_setup.dart';
-import '../../../../../core/validators/app_validators.dart';
-import '../../../../../shared/widgets/custom_text.dart';
-import '../../views/register_view.dart';
+import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/core/validators/app_validators.dart';
+import 'package:hajj_app/shared/widgets/app_card_container.dart';
+import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:hajj_app/shared/widgets/required_field_label.dart';
 
 class RegisterSecurityCheckCard extends StatefulWidget {
   const RegisterSecurityCheckCard({
@@ -29,44 +31,22 @@ class RegisterSecurityCheckCard extends StatefulWidget {
       _RegisterSecurityCheckCardState();
 }
 
-class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
+class _RegisterSecurityCheckCardState
+    extends State<RegisterSecurityCheckCard> {
   bool _obscure = true;
   bool _obscureConfirm = true;
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: cs.outlineVariant),
-      ),
+    return AppCardContainer(
       child: Form(
         key: widget.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Align(
-              child: Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: cs.primary,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: cs.shadow.withValues(alpha: 0.2),
-                      blurRadius: 14,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Icon(LucideIcons.lock, color: cs.onPrimary, size: 24),
-              ),
-            ),
+            const CircularIconBadge(icon: LucideIcons.lock),
             const SizedBox(height: 12),
             const CustomText(
               'auth.register.security_title',
@@ -82,11 +62,10 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
               color: CustomTextColor.lightGreen,
             ),
             const SizedBox(height: 24),
-            labelWithRedStar('auth.register.password_label'),
+            const RequiredFieldLabel('auth.register.password_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: widget.passwordCtrl,
-              keyboardType: TextInputType.text,
               obscureText: _obscure,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => widget.onSend?.call(),
@@ -94,35 +73,44 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
                 hintText: 'auth.register.password_hint'.tr(context),
                 hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: IconButton(
-                  onPressed: () => setState(() => _obscure = !_obscure),
+                  onPressed: () =>
+                      setState(() => _obscure = !_obscure),
                   splashRadius: 20,
                   icon: Icon(
-                    _obscure ? LucideIcons.eye : LucideIcons.eyeClosed,
+                    _obscure
+                        ? LucideIcons.eye
+                        : LucideIcons.eyeClosed,
                     color: cs.primary,
                     size: 22,
                   ),
                 ),
               ),
-              validator: (value) => AppValidators.password(value, context),
+              validator: (value) =>
+                  AppValidators.password(value, context),
             ),
             const SizedBox(height: 24),
-            labelWithRedStar('auth.register.confirm_password_label'),
+            const RequiredFieldLabel(
+              'auth.register.confirm_password_label',
+            ),
             const SizedBox(height: 10),
             TextFormField(
               controller: widget.confirmCtrl,
-              keyboardType: TextInputType.text,
               obscureText: _obscureConfirm,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => widget.onSend?.call(),
               decoration: InputDecoration(
-                hintText: 'auth.register.confirm_password_hint'.tr(context),
+                hintText:
+                    'auth.register.confirm_password_hint'.tr(context),
                 hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: IconButton(
-                  onPressed: () =>
-                      setState(() => _obscureConfirm = !_obscureConfirm),
+                  onPressed: () => setState(
+                    () => _obscureConfirm = !_obscureConfirm,
+                  ),
                   splashRadius: 20,
                   icon: Icon(
-                    _obscureConfirm ? LucideIcons.eye : LucideIcons.eyeClosed,
+                    _obscureConfirm
+                        ? LucideIcons.eye
+                        : LucideIcons.eyeClosed,
                     color: cs.primary,
                     size: 22,
                   ),
@@ -135,19 +123,20 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
               ),
             ),
             const SizedBox(height: 24),
-            labelWithRedStar('auth.register.barcode_label'),
+            const RequiredFieldLabel('auth.register.barcode_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: widget.qrcodeCtrl,
-              keyboardType: TextInputType.text,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => widget.onSend?.call(),
               decoration: InputDecoration(
                 hintText: 'auth.register.barcode_hint'.tr(context),
                 hintStyle: TextStyle(color: cs.outline),
-                suffixIcon: Icon(LucideIcons.barcode, color: cs.primary),
+                suffixIcon:
+                    Icon(LucideIcons.barcode, color: cs.primary),
               ),
-              validator: (value) => AppValidators.barcode(value, context),
+              validator: (value) =>
+                  AppValidators.barcode(value, context),
             ),
             const SizedBox(height: 10),
             const CustomText(

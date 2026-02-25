@@ -2,7 +2,11 @@
   "app": {
     "title": "Pilgrim Portal",
     "subtitle": "Hajj and Umrah Management",
-    "basmala": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
+    "basmala": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+    "exit_title": "Exit App",
+    "exit_message": "Do you want to close Pilgrim Portal?",
+    "cancel": "Cancel",
+    "exit": "Exit"
   },
   "auth": {
     "login": {
@@ -121,6 +125,51 @@
       "success_important_body": "You may need to verify your email before all features are activated.",
       "go_to_login_button": "Go to Login"
     }
+  },
+  "home": {
+    "greeting": "Assalamu Alaikum {name}",
+    "welcome_subtitle": "Welcome to your Hajj journey",
+    "hijri_date": "Hijri Date",
+    "gregorian_date": "Gregorian Date",
+    "pilgrim_name": "Mohammed Ahmad Al-Shami",
+    "pilgrim_id": "SYR-2026-4521",
+    "cluster_label": "Cluster",
+    "cluster_value": "Irtiqa'a",
+    "group_label": "Group",
+    "group_value": "Al-Tawfiq",
+    "view_full_card": "View Full Card",
+    "arafat_countdown": "Time remaining until Arafat Day",
+    "day": "Day",
+    "hour": "Hour",
+    "minute": "Minute",
+    "second": "Second",
+    "prayer_times": "Prayer Times",
+    "prayer_location": "Location not set",
+    "prayer_fajr": "Fajr",
+    "prayer_dhuhr": "Dhuhr",
+    "prayer_asr": "Asr",
+    "prayer_maghrib": "Maghrib",
+    "prayer_isha": "Isha",
+    "prayer_error": "Could not load prayer times",
+    "prayer_enable_location": "Enable Location",
+    "prayer_retry": "Retry",
+    "quick_actions": "Quick Actions",
+    "action_rituals_title": "Hajj Rituals",
+    "action_rituals_subtitle": "Learn Hajj rituals",
+    "action_survey_title": "Satisfaction Survey",
+    "action_survey_subtitle": "Share your opinion",
+    "action_certificate_title": "Certificate",
+    "action_certificate_subtitle": "Hajj completion certificate",
+    "action_complaints_title": "Complaints",
+    "action_complaints_subtitle": "Submit a complaint",
+    "daily_ayah": "\"And complete the Hajj and Umrah for Allah\"",
+    "daily_ayah_source": "Surah Al-Baqarah - Ayah 196"
+  },
+  "nav": {
+    "home": "Home",
+    "training": "Training",
+    "support": "Support",
+    "more": "More"
   },
   "validation": {
     "required": "This field is required",

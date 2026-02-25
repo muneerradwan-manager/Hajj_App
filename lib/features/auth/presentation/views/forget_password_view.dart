@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/constants/app_images.dart';
+import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:hajj_app/core/constants/app_routes.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:hajj_app/core/validators/app_validators.dart';
-import 'package:hajj_app/features/auth/presentation/widgets/forget_password/forget_password_success_card.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:hajj_app/shared/widgets/hero_background.dart';
+import 'package:hajj_app/shared/widgets/step_animated_switcher.dart';
 
 import '../widgets/forget_password/foregt_password_email_card.dart';
 import '../widgets/forget_password/forget_password_hero_header.dart';
 import '../widgets/forget_password/forget_password_security_note_card.dart';
+import '../widgets/forget_password/forget_password_success_card.dart';
 
 class ForgetPasswordView extends StatefulWidget {
   const ForgetPasswordView({super.key});
@@ -35,7 +36,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
   void _sendResetLink() {
     if (!_formKey.currentState!.validate()) return;
-
     setState(() => _isSent = true);
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
@@ -44,31 +44,23 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
       );
   }
 
-  void _openEmailStep() {
-    setState(() => _isSent = false);
-  }
+  void _openEmailStep() => setState(() => _isSent = false);
 
-  void _goToLogin() {
-    context.go(AppRoutes.loginPath);
-  }
+  void _goToLogin() => context.go(AppRoutes.loginPath);
 
   void _handleBack() {
     if (_isSent) {
       setState(() => _isSent = false);
       return;
     }
-
     if (context.canPop()) {
       context.pop();
       return;
     }
-
     _goToLogin();
   }
 
-  String? _validateEmail(String? value) {
-    return AppValidators.email(value, context);
-  }
+  String? _validateEmail(String? value) => AppValidators.email(value, context);
 
   @override
   Widget build(BuildContext context) {
@@ -82,45 +74,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Positioned(
-              child: Container(
-                height: heroHeight,
-                decoration: BoxDecoration(color: cs.primary),
-              ),
-            ),
-            Positioned(
-              child: Opacity(
-                opacity: .1,
-                child: Container(
-                  height: heroHeight,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(AppImages.background),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned.fromRelativeRect(
-              rect: RelativeRect.fromLTRB(0, heroHeight, 0, 0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xffE5E0D6).withValues(alpha: .23),
-                ),
-              ),
-            ),
-            Positioned.fromRelativeRect(
-              rect: RelativeRect.fromLTRB(0, heroHeight, 0, 0),
-              child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(AppImages.background),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
+            ...HeroBackground.layers(context, heroHeight),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -135,69 +89,49 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                     padding: const EdgeInsets.all(20.0),
                     child: Transform.translate(
                       offset: Offset(0, -overlap),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Column(
-                          children: [
-                            AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 280),
-                              switchInCurve: Curves.easeOut,
-                              switchOutCurve: Curves.easeOut,
-                              transitionBuilder: (child, animation) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: ScaleTransition(
-                                    scale: Tween<double>(
-                                      begin: 0.98,
-                                      end: 1,
-                                    ).animate(animation),
-                                    child: child,
-                                  ),
-                                );
-                              },
-                              child: _isSent
-                                  ? ForgetPasswordSuccessCard(
-                                      key: const ValueKey('success-card'),
-                                      email: _emailCtrl.text.trim(),
-                                      onBackToLogin: _goToLogin,
-                                      onResend: _openEmailStep,
-                                    )
-                                  : ValueListenableBuilder<TextEditingValue>(
-                                      key: const ValueKey('email-card'),
-                                      valueListenable: _emailCtrl,
-                                      builder: (context, value, _) {
-                                        final canSend = value.text
-                                            .trim()
-                                            .isNotEmpty;
-
-                                        return ForgetPasswordEmailCard(
-                                          formKey: _formKey,
-                                          emailCtrl: _emailCtrl,
-                                          decoration: InputDecoration(
-                                            hintText: 'auth.forget.email_hint'
-                                                .tr(context),
-                                            hintStyle: TextStyle(
-                                              color: cs.outline,
-                                            ),
-                                            suffixIcon: Icon(
-                                              LucideIcons.mail,
-                                              color: cs.brandGold,
-                                            ),
+                      child: Column(
+                        children: [
+                          StepAnimatedSwitcher(
+                            child: _isSent
+                                ? ForgetPasswordSuccessCard(
+                                    key: const ValueKey('success-card'),
+                                    email: _emailCtrl.text.trim(),
+                                    onBackToLogin: _goToLogin,
+                                    onResend: _openEmailStep,
+                                  )
+                                : ValueListenableBuilder<TextEditingValue>(
+                                    key: const ValueKey('email-card'),
+                                    valueListenable: _emailCtrl,
+                                    builder: (context, value, _) {
+                                      final canSend = value.text
+                                          .trim()
+                                          .isNotEmpty;
+                                      return ForgetPasswordEmailCard(
+                                        formKey: _formKey,
+                                        emailCtrl: _emailCtrl,
+                                        decoration: InputDecoration(
+                                          hintText: 'auth.forget.email_hint'.tr(
+                                            context,
                                           ),
-                                          validateEmail: _validateEmail,
-                                          onSend: canSend
-                                              ? _sendResetLink
-                                              : null,
-                                        );
-                                      },
-                                    ),
-                            ),
-                            if (!_isSent) ...[
-                              const SizedBox(height: 14),
-                              const ForgetPasswordSecurityNoteCard(),
-                            ],
+                                          hintStyle: TextStyle(
+                                            color: cs.outline,
+                                          ),
+                                          suffixIcon: Icon(
+                                            LucideIcons.mail,
+                                            color: cs.brandGold,
+                                          ),
+                                        ),
+                                        validateEmail: _validateEmail,
+                                        onSend: canSend ? _sendResetLink : null,
+                                      );
+                                    },
+                                  ),
+                          ),
+                          if (!_isSent) ...[
+                            const SizedBox(height: 14),
+                            const ForgetPasswordSecurityNoteCard(),
                           ],
-                        ),
+                        ],
                       ),
                     ),
                   ),

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/app_card_container.dart';
+import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:hajj_app/shared/widgets/important_note_box.dart';
+import 'package:hajj_app/shared/widgets/info_display_tile.dart';
 
 class RegisterReviewDataCard extends StatefulWidget {
   const RegisterReviewDataCard({
@@ -26,7 +31,8 @@ class RegisterReviewDataCard extends StatefulWidget {
   final VoidCallback? onBack;
 
   @override
-  State<RegisterReviewDataCard> createState() => _RegisterReviewDataCardState();
+  State<RegisterReviewDataCard> createState() =>
+      _RegisterReviewDataCardState();
 }
 
 class _RegisterReviewDataCardState extends State<RegisterReviewDataCard> {
@@ -38,313 +44,98 @@ class _RegisterReviewDataCardState extends State<RegisterReviewDataCard> {
     return '*' * normalized.length;
   }
 
+  String _valueOrFallback(String value, String fallbackKey) {
+    final normalized = value.trim();
+    if (normalized.isNotEmpty) return normalized;
+    return fallbackKey.tr(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-    String valueOrFallback(String value, String fallbackKey) {
-      final normalized = value.trim();
-      if (normalized.isNotEmpty) {
-        return normalized;
-      }
-      return fallbackKey.tr(context);
-    }
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: cs.outlineVariant),
-      ),
+    return AppCardContainer(
       child: Form(
         key: widget.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: 12,
           children: [
-            Align(
-              child: Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: cs.primary,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: cs.shadow.withValues(alpha: 0.2),
-                      blurRadius: 14,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Icon(LucideIcons.check, color: cs.onPrimary, size: 24),
-              ),
-            ),
-            const SizedBox(height: 12),
+            const CircularIconBadge(icon: LucideIcons.check),
             const CustomText(
               'auth.register.review_title',
               textAlign: TextAlign.center,
               type: CustomTextType.titleLarge,
               color: CustomTextColor.green,
             ),
-            const SizedBox(height: 6),
             const CustomText(
               'auth.register.review_subtitle',
               textAlign: TextAlign.center,
               type: CustomTextType.bodyMedium,
               color: CustomTextColor.lightGreen,
             ),
-            const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: cs.surfaceDim),
-                color: cs.surfaceDim.withValues(
-                  alpha: .2,
-                ), // Color(0xffF9F8F6),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                spacing: 10,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    spacing: 10,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        LucideIcons.mail,
-                        color: cs.primary.withValues(alpha: 0.7),
-                      ),
-                      const CustomText(
-                        'auth.register.review_email_label',
-                        type: CustomTextType.bodySmall,
-                        color: CustomTextColor.gold,
-                      ),
-                    ],
-                  ),
-                  CustomText(
-                    valueOrFallback(
-                      widget.email,
-                      'auth.register.review_placeholder_email',
-                    ),
-                    type: CustomTextType.bodyLarge,
-                    color: CustomTextColor.green,
-                    translate: false,
-                  ),
-                ],
+            InfoDisplayTile(
+              icon: LucideIcons.mail,
+              labelKey: 'auth.register.review_email_label',
+              value: _valueOrFallback(
+                widget.email,
+                'auth.register.review_placeholder_email',
               ),
             ),
-            const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: cs.surfaceDim),
-                color: cs.surfaceDim.withValues(
-                  alpha: .2,
-                ), // Color(0xffF9F8F6),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                spacing: 10,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    spacing: 10,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        LucideIcons.user,
-                        color: cs.primary.withValues(alpha: 0.7),
-                      ),
-                      const CustomText(
-                        'auth.register.review_national_id_label',
-                        type: CustomTextType.bodySmall,
-                        color: CustomTextColor.gold,
-                      ),
-                    ],
-                  ),
-                  CustomText(
-                    valueOrFallback(
-                      widget.nationalId,
-                      'auth.register.review_placeholder_national_id',
-                    ),
-                    type: CustomTextType.bodyLarge,
-                    color: CustomTextColor.green,
-                    translate: false,
-                  ),
-                ],
+            InfoDisplayTile(
+              icon: LucideIcons.user,
+              labelKey: 'auth.register.review_national_id_label',
+              value: _valueOrFallback(
+                widget.nationalId,
+                'auth.register.review_placeholder_national_id',
               ),
             ),
-            const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: cs.surfaceDim),
-                color: cs.surfaceDim.withValues(
-                  alpha: .2,
-                ), // Color(0xffF9F8F6),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                spacing: 10,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    spacing: 10,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        LucideIcons.phone,
-                        color: cs.primary.withValues(alpha: 0.7),
-                      ),
-                      const CustomText(
-                        'auth.register.review_phone_label',
-                        type: CustomTextType.bodySmall,
-                        color: CustomTextColor.gold,
-                      ),
-                    ],
-                  ),
-                  CustomText(
-                    valueOrFallback(
-                      widget.phone,
-                      'auth.register.review_placeholder_phone',
-                    ),
-                    type: CustomTextType.bodyLarge,
-                    color: CustomTextColor.green,
-                    translate: false,
-                  ),
-                ],
+            InfoDisplayTile(
+              icon: LucideIcons.phone,
+              labelKey: 'auth.register.review_phone_label',
+              value: _valueOrFallback(
+                widget.phone,
+                'auth.register.review_placeholder_phone',
               ),
             ),
-            const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: cs.surfaceDim),
-                color: cs.surfaceDim.withValues(
-                  alpha: .2,
-                ), // Color(0xffF9F8F6),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                spacing: 10,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    spacing: 10,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        LucideIcons.barcode,
-                        color: cs.primary.withValues(alpha: 0.7),
-                      ),
-                      const CustomText(
-                        'auth.register.review_barcode_label',
-                        type: CustomTextType.bodySmall,
-                        color: CustomTextColor.gold,
-                      ),
-                    ],
-                  ),
-                  CustomText(
-                    valueOrFallback(
-                      widget.barcode,
-                      'auth.register.review_placeholder_barcode',
-                    ),
-                    type: CustomTextType.bodyLarge,
-                    color: CustomTextColor.green,
-                    translate: false,
-                  ),
-                ],
+            InfoDisplayTile(
+              icon: LucideIcons.barcode,
+              labelKey: 'auth.register.review_barcode_label',
+              value: _valueOrFallback(
+                widget.barcode,
+                'auth.register.review_placeholder_barcode',
               ),
             ),
-            const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: cs.surfaceDim),
-                color: cs.surfaceDim.withValues(
-                  alpha: .2,
-                ), // Color(0xffF9F8F6),
-                borderRadius: BorderRadius.circular(15),
+            InfoDisplayTile(
+              icon: LucideIcons.lock,
+              labelKey: 'auth.register.review_password_label',
+              value: _valueOrFallback(
+                _isPasswordVisible
+                    ? widget.password
+                    : _maskedPassword(widget.password),
+                'auth.register.review_placeholder_password',
               ),
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    spacing: 10,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        spacing: 10,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            LucideIcons.lock,
-                            color: cs.primary.withValues(alpha: 0.7),
-                          ),
-                          const CustomText(
-                            'auth.register.review_password_label',
-                            type: CustomTextType.bodySmall,
-                            color: CustomTextColor.gold,
-                          ),
-                        ],
-                      ),
-                      CustomText(
-                        valueOrFallback(
-                          _isPasswordVisible
-                              ? widget.password
-                              : _maskedPassword(widget.password),
-                          'auth.register.review_placeholder_password',
-                        ),
-                        type: CustomTextType.bodyLarge,
-                        color: CustomTextColor.green,
-                        translate: false,
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () => setState(
-                      () => _isPasswordVisible = !_isPasswordVisible,
-                    ),
-                    splashRadius: 20,
-                    icon: Icon(
-                      _isPasswordVisible
-                          ? LucideIcons.eyeClosed
-                          : LucideIcons.eye,
-                      color: cs.primary.withValues(alpha: 0.7),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-              decoration: BoxDecoration(
-                color: cs.primary.withValues(alpha: .1),
-                borderRadius: BorderRadius.circular(9),
-                border: Border.all(color: cs.outlineVariant),
-              ),
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'auth.register.review_warning_label'.tr(context),
-                      style: textTheme.titleSmall?.copyWith(color: cs.primary),
-                    ),
-                    TextSpan(
-                      text: 'auth.register.review_warning_body'.tr(context),
-                      style: textTheme.bodySmall?.copyWith(color: cs.primary),
-                    ),
-                  ],
+              trailing: IconButton(
+                onPressed: () => setState(
+                  () => _isPasswordVisible = !_isPasswordVisible,
                 ),
-                textAlign: TextAlign.start,
+                splashRadius: 20,
+                icon: Icon(
+                  _isPasswordVisible
+                      ? LucideIcons.eyeClosed
+                      : LucideIcons.eye,
+                  color: cs.primary.withValues(alpha: 0.7),
+                ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 8),
+            ImportantNoteBox(
+              labelKey: 'auth.register.review_warning_label',
+              bodyKey: 'auth.register.review_warning_body',
+              textAlign: TextAlign.start,
+              backgroundColor: cs.primary.withValues(alpha: .1),
+            ),
+            const SizedBox(height: 18),
             Row(
               spacing: 10,
               children: [

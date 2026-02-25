@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../../shared/widgets/exit_app_dialog.dart';
+import 'package:hajj_app/core/constants/app_colors.dart';
+import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/exit_app_dialog.dart';
+
 import 'home_view.dart';
 
 class NavigationBottom extends StatefulWidget {
@@ -15,17 +17,17 @@ class NavigationBottom extends StatefulWidget {
 
 class _NavigationBottomState extends State<NavigationBottom> {
   static const List<_NavItemData> _navItems = [
-    _NavItemData(label: 'الرئيسية', icon: LucideIcons.house),
-    _NavItemData(label: 'التدريب', icon: LucideIcons.bookOpen),
-    _NavItemData(label: 'الدعم', icon: LucideIcons.messageCircle),
-    _NavItemData(label: 'More', icon: LucideIcons.menu),
+    _NavItemData(labelKey: 'nav.home', icon: LucideIcons.house),
+    _NavItemData(labelKey: 'nav.training', icon: LucideIcons.bookOpen),
+    _NavItemData(labelKey: 'nav.support', icon: LucideIcons.messageCircle),
+    _NavItemData(labelKey: 'nav.more', icon: LucideIcons.menu),
   ];
 
   static const List<Widget> _pages = [
     HomeView(),
-    _PlaceholderPage(title: 'Map'),
-    _PlaceholderPage(title: 'Vehicles'),
-    _PlaceholderPage(title: 'More'),
+    _PlaceholderPage(titleKey: 'nav.training'),
+    _PlaceholderPage(titleKey: 'nav.support'),
+    _PlaceholderPage(titleKey: 'nav.more'),
   ];
 
   late final PageController _pageController;
@@ -45,7 +47,6 @@ class _NavigationBottomState extends State<NavigationBottom> {
 
   void _onTabSelected(int index) {
     if (_selectedIndex == index) return;
-
     setState(() => _selectedIndex = index);
     _pageController.animateToPage(
       index,
@@ -100,7 +101,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
                   final item = _navItems[index];
                   return Expanded(
                     child: _BottomNavItem(
-                      label: item.label,
+                      labelKey: item.labelKey,
                       icon: item.icon,
                       isSelected: index == _selectedIndex,
                       onTap: () => _onTabSelected(index),
@@ -117,13 +118,13 @@ class _NavigationBottomState extends State<NavigationBottom> {
 }
 
 class _BottomNavItem extends StatelessWidget {
-  final String label;
+  final String labelKey;
   final IconData icon;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _BottomNavItem({
-    required this.label,
+    required this.labelKey,
     required this.icon,
     required this.isSelected,
     required this.onTap,
@@ -146,7 +147,8 @@ class _BottomNavItem extends StatelessWidget {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 220),
             curve: Curves.easeOutCubic,
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
             decoration: BoxDecoration(
               color: isSelected
                   ? activeColor.withValues(alpha: 0.12)
@@ -165,15 +167,15 @@ class _BottomNavItem extends StatelessWidget {
                 AnimatedDefaultTextStyle(
                   duration: const Duration(milliseconds: 220),
                   curve: Curves.easeOutCubic,
-                  style: (theme.textTheme.labelSmall ?? const TextStyle())
-                      .copyWith(
-                        color: isSelected ? activeColor : inactiveColor,
-                        fontWeight: isSelected
-                            ? FontWeight.w600
-                            : FontWeight.w500,
-                      ),
+                  style:
+                      (theme.textTheme.labelSmall ?? const TextStyle())
+                          .copyWith(
+                    color: isSelected ? activeColor : inactiveColor,
+                    fontWeight:
+                        isSelected ? FontWeight.w600 : FontWeight.w500,
+                  ),
                   child: Text(
-                    label,
+                    labelKey.tr(context),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -188,16 +190,16 @@ class _BottomNavItem extends StatelessWidget {
 }
 
 class _NavItemData {
-  final String label;
+  final String labelKey;
   final IconData icon;
 
-  const _NavItemData({required this.label, required this.icon});
+  const _NavItemData({required this.labelKey, required this.icon});
 }
 
 class _PlaceholderPage extends StatelessWidget {
-  final String title;
+  final String titleKey;
 
-  const _PlaceholderPage({required this.title});
+  const _PlaceholderPage({required this.titleKey});
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +208,7 @@ class _PlaceholderPage extends StatelessWidget {
 
     return Center(
       child: Text(
-        '$title Page',
+        titleKey.tr(context),
         style: theme.textTheme.headlineSmall?.copyWith(
           color: colorScheme.onSurfaceVariant,
         ),

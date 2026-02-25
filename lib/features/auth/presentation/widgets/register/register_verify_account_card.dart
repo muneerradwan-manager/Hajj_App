@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:pinput/pinput.dart';
 
+import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:hajj_app/core/validators/app_validators.dart';
+import 'package:hajj_app/shared/widgets/app_card_container.dart';
+import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
-import 'package:pinput/pinput.dart';
+import 'package:hajj_app/shared/widgets/gradient_elevated_button.dart';
 
 class RegisterVerifyAccountCard extends StatefulWidget {
   const RegisterVerifyAccountCard({
@@ -32,7 +35,8 @@ class RegisterVerifyAccountCard extends StatefulWidget {
       _RegisterVerifyAccountCardState();
 }
 
-class _RegisterVerifyAccountCardState extends State<RegisterVerifyAccountCard> {
+class _RegisterVerifyAccountCardState
+    extends State<RegisterVerifyAccountCard> {
   Timer? _resendTimer;
   late int _remainingSeconds;
 
@@ -56,18 +60,14 @@ class _RegisterVerifyAccountCardState extends State<RegisterVerifyAccountCard> {
         timer.cancel();
         return;
       }
-      setState(() {
-        _remainingSeconds -= 1;
-      });
+      setState(() => _remainingSeconds -= 1);
     });
   }
 
   void _handleResend() {
     if (_remainingSeconds > 0) return;
     widget.onResend();
-    setState(() {
-      _remainingSeconds = widget.resendIntervalSeconds;
-    });
+    setState(() => _remainingSeconds = widget.resendIntervalSeconds);
     _startResendTimer();
   }
 
@@ -90,35 +90,13 @@ class _RegisterVerifyAccountCardState extends State<RegisterVerifyAccountCard> {
         ? 'auth.register.review_placeholder_email'.tr(context)
         : widget.email.trim();
 
-    return Container(
-      width: double.infinity,
+    return AppCardContainer(
       padding: const EdgeInsets.all(17),
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: cs.primaryContainer),
-      ),
+      borderColor: cs.primaryContainer,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Align(
-            child: Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                color: cs.primary,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: cs.shadow.withValues(alpha: 0.22),
-                    blurRadius: 16,
-                    offset: const Offset(0, 7),
-                  ),
-                ],
-              ),
-              child: Icon(LucideIcons.shield, color: cs.onPrimary, size: 24),
-            ),
-          ),
+          const CircularIconBadge(icon: LucideIcons.shield),
           const SizedBox(height: 14),
           const CustomText(
             'auth.register.verify_title',
@@ -213,23 +191,9 @@ class _RegisterVerifyAccountCardState extends State<RegisterVerifyAccountCard> {
             ),
           ),
           const SizedBox(height: 16),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [cs.primaryContainer, cs.primary],
-              ),
-            ),
-            child: ElevatedButton(
-              onPressed: _handleSubmit,
-              child: const CustomText(
-                'auth.register.verify_button',
-                type: CustomTextType.titleMedium,
-                color: CustomTextColor.white,
-              ),
-            ),
+          GradientElevatedButton(
+            textKey: 'auth.register.verify_button',
+            onPressed: _handleSubmit,
           ),
         ],
       ),

@@ -2,7 +2,11 @@
   "app": {
     "title": "بوابة الحاج",
     "subtitle": "إدارة الحج والعمرة",
-    "basmala": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
+    "basmala": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+    "exit_title": "الخروج من التطبيق",
+    "exit_message": "هل تريد الخروج من بوابة الحاج؟",
+    "cancel": "إلغاء",
+    "exit": "خروج"
   },
   "auth": {
     "login": {
@@ -121,6 +125,51 @@
       "success_important_body": "قد تحتاج إلى تأكيد البريد الإلكتروني قبل تفعيل جميع الميزات.",
       "go_to_login_button": "الذهاب لتسجيل الدخول"
     }
+  },
+  "home": {
+    "greeting": "السلام عليكم {name}",
+    "welcome_subtitle": "أهلاً بك في رحلة الحج",
+    "hijri_date": "التاريخ الهجري",
+    "gregorian_date": "التاريخ الميلادي",
+    "pilgrim_name": "محمد أحمد الشامي",
+    "pilgrim_id": "SYR-2026-4521",
+    "cluster_label": "التكتل",
+    "cluster_value": "ارتقاء",
+    "group_label": "المجموعة",
+    "group_value": "التوفيق",
+    "view_full_card": "عرض البطاقة الكاملة",
+    "arafat_countdown": "الوقت المتبقي ليوم عرفة",
+    "day": "يوم",
+    "hour": "ساعة",
+    "minute": "دقيقة",
+    "second": "ثانية",
+    "prayer_times": "مواقيت الصلاة",
+    "prayer_location": "لم يتم تحديد الموقع",
+    "prayer_fajr": "الفجر",
+    "prayer_dhuhr": "الظهر",
+    "prayer_asr": "العصر",
+    "prayer_maghrib": "المغرب",
+    "prayer_isha": "العشاء",
+    "prayer_error": "تعذّر تحميل مواقيت الصلاة",
+    "prayer_enable_location": "تفعيل خدمة الموقع",
+    "prayer_retry": "إعادة المحاولة",
+    "quick_actions": "الخدمات السريعة",
+    "action_rituals_title": "مناسك الحج",
+    "action_rituals_subtitle": "تعلم مناسك الحج",
+    "action_survey_title": "استبيان الرضا",
+    "action_survey_subtitle": "شاركنا رأيك",
+    "action_certificate_title": "الشهادة",
+    "action_certificate_subtitle": "شهادة اتمام الحج",
+    "action_complaints_title": "الشكاوي",
+    "action_complaints_subtitle": "أرسل شكوى",
+    "daily_ayah": "\"وَأَتِمُّوا الْحَجَّ وَالْعُمْرَةَ لِلَّهِ\"",
+    "daily_ayah_source": "سورة البقرة - آية 196"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "training": "التدريب",
+    "support": "الدعم",
+    "more": "المزيد"
   },
   "validation": {
     "required": "هذا الحقل مطلوب",

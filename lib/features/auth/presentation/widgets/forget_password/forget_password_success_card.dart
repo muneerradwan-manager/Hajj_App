@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/shared/widgets/app_card_container.dart';
+import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:hajj_app/shared/widgets/gradient_elevated_button.dart';
+import 'package:hajj_app/shared/widgets/important_note_box.dart';
+import 'package:hajj_app/shared/widgets/numbered_steps_list.dart';
 
 class ForgetPasswordSuccessCard extends StatelessWidget {
   const ForgetPasswordSuccessCard({
@@ -19,36 +24,17 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
-    return Container(
-      width: double.infinity,
+    return AppCardContainer(
       padding: const EdgeInsets.all(17),
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: cs.primaryContainer),
-      ),
+      borderColor: cs.primaryContainer,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Align(
-            child: Container(
-              width: 92,
-              height: 92,
-              decoration: BoxDecoration(
-                color: cs.primary,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: cs.shadow.withValues(alpha: 0.22),
-                    blurRadius: 16,
-                    offset: const Offset(0, 7),
-                  ),
-                ],
-              ),
-              child: Icon(LucideIcons.check, color: cs.onPrimary, size: 56),
-            ),
+          const CircularIconBadge(
+            icon: LucideIcons.check,
+            size: 92,
+            iconSize: 56,
           ),
           const SizedBox(height: 14),
           const CustomText(
@@ -74,7 +60,7 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Container(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: cs.surfaceContainerLow,
               borderRadius: BorderRadius.circular(12),
@@ -83,85 +69,33 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                      'auth.forget.next_steps',
-                      type: CustomTextType.titleMedium,
-                      color: CustomTextColor.red,
-                    ),
+                const CustomText(
+                  'auth.forget.next_steps',
+                  type: CustomTextType.titleMedium,
+                  color: CustomTextColor.red,
+                ),
+                const SizedBox(height: 10),
+                NumberedStepsList(
+                  textColor: CustomTextColor.lightRed,
+                  steps: [
+                    'auth.forget.next_step_1'.tr(context),
+                    'auth.forget.next_step_2'.tr(context),
+                    'auth.forget.next_step_3'.tr(context),
+                    'auth.forget.next_step_4'.tr(context),
                   ],
                 ),
                 const SizedBox(height: 10),
-                _ForgetPasswordStepLine(
-                  number: 1,
-                  text: 'auth.forget.next_step_1'.tr(context),
-                ),
-                const SizedBox(height: 7),
-                _ForgetPasswordStepLine(
-                  number: 2,
-                  text: 'auth.forget.next_step_2'.tr(context),
-                ),
-                const SizedBox(height: 7),
-                _ForgetPasswordStepLine(
-                  number: 3,
-                  text: 'auth.forget.next_step_3'.tr(context),
-                ),
-                const SizedBox(height: 7),
-                _ForgetPasswordStepLine(
-                  number: 4,
-                  text: 'auth.forget.next_step_4'.tr(context),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                  decoration: BoxDecoration(
-                    color: cs.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(9),
-                    border: Border.all(color: cs.outlineVariant),
-                  ),
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'auth.forget.important_label'.tr(context),
-                          style: textTheme.titleSmall?.copyWith(
-                            color: cs.primary,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'auth.forget.important_body'.tr(context),
-                          style: textTheme.bodySmall?.copyWith(
-                            color: cs.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                const ImportantNoteBox(
+                  labelKey: 'auth.forget.important_label',
+                  bodyKey: 'auth.forget.important_body',
                 ),
               ],
             ),
           ),
           const SizedBox(height: 16),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [cs.primaryContainer, cs.primary],
-              ),
-            ),
-            child: ElevatedButton(
-              onPressed: onBackToLogin,
-              child: const CustomText(
-                'auth.forget.back_to_login',
-                type: CustomTextType.titleMedium,
-                color: CustomTextColor.white,
-              ),
-            ),
+          GradientElevatedButton(
+            textKey: 'auth.forget.back_to_login',
+            onPressed: onBackToLogin,
           ),
           const SizedBox(height: 10),
           TextButton(
@@ -174,45 +108,6 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _ForgetPasswordStepLine extends StatelessWidget {
-  const _ForgetPasswordStepLine({required this.number, required this.text});
-
-  final int number;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
-    return Row(
-      children: [
-        Container(
-          width: 18,
-          height: 18,
-          decoration: BoxDecoration(color: cs.primary, shape: BoxShape.circle),
-          alignment: Alignment.center,
-          child: CustomText(
-            '$number',
-            style: textTheme.labelSmall?.copyWith(color: cs.onPrimary),
-            translate: false,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: CustomText(
-            text,
-            textAlign: TextAlign.start,
-            type: CustomTextType.bodySmall,
-            color: CustomTextColor.lightRed,
-            translate: false,
-          ),
-        ),
-      ],
     );
   }
 }

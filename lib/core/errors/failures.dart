@@ -22,6 +22,10 @@ class UnknownFailure extends Failure {
   const UnknownFailure(super.message);
 }
 
+class LocationFailure extends Failure {
+  const LocationFailure(super.message);
+}
+
 /// Validation failure with field-specific errors
 class ValidationFailure extends Failure {
   final Map<String, List<String>> fieldErrors;

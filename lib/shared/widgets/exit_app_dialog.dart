@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+
 Future<bool> showExitAppDialog(BuildContext context) async {
   final colorScheme = Theme.of(context).colorScheme;
   final textTheme = Theme.of(context).textTheme;
@@ -8,8 +10,8 @@ Future<bool> showExitAppDialog(BuildContext context) async {
     context: context,
     builder: (dialogContext) {
       return AlertDialog(
-        title: const Text('Exit App'),
-        content: const Text('Do you want to close TRACKi?'),
+        title: Text('app.exit_title'.tr(context)),
+        content: Text('app.exit_message'.tr(context)),
         titleTextStyle: textTheme.titleLarge?.copyWith(
           color: colorScheme.onSurface,
           fontWeight: FontWeight.w700,
@@ -20,11 +22,11 @@ Future<bool> showExitAppDialog(BuildContext context) async {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: const Text('Cancel'),
+            child: Text('app.cancel'.tr(context)),
           ),
           FilledButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: const Text('Exit'),
+            child: Text('app.exit'.tr(context)),
           ),
         ],
       );

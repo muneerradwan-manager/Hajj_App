@@ -3,9 +3,10 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:hajj_app/core/validators/app_validators.dart';
+import 'package:hajj_app/shared/widgets/app_card_container.dart';
+import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
-
-import '../../views/register_view.dart';
+import 'package:hajj_app/shared/widgets/required_field_label.dart';
 
 class RegisterMainInfoCard extends StatelessWidget {
   const RegisterMainInfoCard({
@@ -27,37 +28,13 @@ class RegisterMainInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: cs.outlineVariant),
-      ),
+    return AppCardContainer(
       child: Form(
         key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Align(
-              child: Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: cs.primary,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: cs.shadow.withValues(alpha: 0.2),
-                      blurRadius: 14,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Icon(LucideIcons.user, color: cs.onPrimary, size: 24),
-              ),
-            ),
+            const CircularIconBadge(icon: LucideIcons.user),
             const SizedBox(height: 12),
             const CustomText(
               'auth.register.main_info_title',
@@ -73,7 +50,7 @@ class RegisterMainInfoCard extends StatelessWidget {
               color: CustomTextColor.lightGreen,
             ),
             const SizedBox(height: 24),
-            labelWithRedStar('auth.register.email_label'),
+            const RequiredFieldLabel('auth.register.email_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: emailCtrl,
@@ -88,7 +65,7 @@ class RegisterMainInfoCard extends StatelessWidget {
               validator: (value) => AppValidators.email(value, context),
             ),
             const SizedBox(height: 24),
-            labelWithRedStar('auth.register.national_id_label'),
+            const RequiredFieldLabel('auth.register.national_id_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: idCtrl,
@@ -100,10 +77,11 @@ class RegisterMainInfoCard extends StatelessWidget {
                 hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.user, color: cs.primary),
               ),
-              validator: (value) => AppValidators.nationalId(value, context),
+              validator: (value) =>
+                  AppValidators.nationalId(value, context),
             ),
             const SizedBox(height: 24),
-            labelWithRedStar('auth.register.phone_label'),
+            const RequiredFieldLabel('auth.register.phone_label'),
             const SizedBox(height: 10),
             TextFormField(
               controller: phoneCtrl,

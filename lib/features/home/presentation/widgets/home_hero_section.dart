@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../../core/functions/date_format.dart';
-import '../../../../shared/widgets/custom_text.dart';
+import 'package:hajj_app/core/constants/app_colors.dart';
+import 'package:hajj_app/core/functions/date_format.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class HomeHeroSection extends StatelessWidget {
   const HomeHeroSection({super.key});
@@ -22,14 +22,15 @@ class HomeHeroSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  'السلام عليكم محمد',
+                  'home.greeting',
+                  args: {'name': 'محمد'},
                   textAlign: TextAlign.center,
                   type: CustomTextType.headlineSmall,
                   color: CustomTextColor.white,
                 ),
                 SizedBox(height: 5),
                 CustomText(
-                  'أهلاً بك في رحلة الحج',
+                  'home.welcome_subtitle',
                   textAlign: TextAlign.center,
                   type: CustomTextType.bodyLarge,
                   color: CustomTextColor.lightGold,
@@ -38,7 +39,7 @@ class HomeHeroSection extends StatelessWidget {
             ),
             IconButton(
               style: IconButton.styleFrom(
-                backgroundColor: const Color(0xffE5E0D6).withValues(alpha: .23),
+                backgroundColor: AppColors.overlay.withValues(alpha: .23),
               ),
               onPressed: () {},
               icon: const Icon(LucideIcons.bell, color: Colors.white),
@@ -49,72 +50,69 @@ class HomeHeroSection extends StatelessWidget {
           spacing: 10,
           children: [
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white.withValues(alpha: 0.2),
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    const Row(
-                      spacing: 5,
-                      children: [
-                        Icon(LucideIcons.calendar, color: Colors.white),
-                        CustomText(
-                          'التاريخ الهجري',
-                          textAlign: TextAlign.center,
-                          type: CustomTextType.bodySmall,
-                          color: CustomTextColor.lightGold,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    CustomText(
-                      getHDate(),
-                      textAlign: TextAlign.center,
-                      type: CustomTextType.bodyMedium,
-                      color: CustomTextColor.white,
-                    ),
-                  ],
-                ),
+              child: _DateCard(
+                icon: LucideIcons.calendar,
+                labelKey: 'home.hijri_date',
+                value: getHDate(),
               ),
             ),
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white.withValues(alpha: 0.2),
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    const Row(
-                      spacing: 5,
-                      children: [
-                        Icon(LucideIcons.clock, color: Colors.white),
-                        CustomText(
-                          'التاريخ الميلادي',
-                          textAlign: TextAlign.center,
-                          type: CustomTextType.bodySmall,
-                          color: CustomTextColor.lightGold,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    CustomText(
-                      getMDate(),
-                      textAlign: TextAlign.center,
-                      type: CustomTextType.bodyMedium,
-                      color: CustomTextColor.white,
-                    ),
-                  ],
-                ),
+              child: _DateCard(
+                icon: LucideIcons.clock,
+                labelKey: 'home.gregorian_date',
+                value: getMDate(),
               ),
             ),
           ],
         ),
       ],
+    );
+  }
+}
+
+class _DateCard extends StatelessWidget {
+  const _DateCard({
+    required this.icon,
+    required this.labelKey,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String labelKey;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.white.withValues(alpha: 0.2),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            spacing: 5,
+            children: [
+              Icon(icon, color: cs.surfaceDim),
+              CustomText(
+                labelKey,
+                type: CustomTextType.labelSmall,
+                color: CustomTextColor.white,
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          CustomText(
+            value,
+            type: CustomTextType.bodyLarge,
+            color: CustomTextColor.white,
+            translate: false,
+          ),
+        ],
+      ),
     );
   }
 }
