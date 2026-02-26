@@ -107,7 +107,6 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
             state.errorMessage,
             type: CustomTextType.bodySmall,
             color: CustomTextColor.hint,
-            translate: false,
           ),
           if (state.isLocationError)
             SizedBox(

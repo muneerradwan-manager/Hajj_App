@@ -7,6 +7,7 @@ class AppRoutes {
   static const String registerName = 'register';
   static const String navigationBottomName = 'navigation-bottom';
   static const String homeName = 'home';
+  static const String profileName = 'profile';
 
   static const String splashPath = '/';
   static const String loginPath = '/login';
@@ -14,4 +15,5 @@ class AppRoutes {
   static const String forgetPasswordPath = '/forget-password';
   static const String navigationBottomPath = '/navigation-bottom';
   static const String homePath = '/home';
+  static const String profilePath = '/profile';
 }

@@ -9,6 +9,7 @@ import 'package:hajj_app/features/home/presentation/views/home_view.dart';
 import 'package:hajj_app/features/splash/presentation/views/splash_view.dart';
 
 import '../../features/home/presentation/views/navigation_bottom.dart';
+import '../../features/profile/presentation/views/profile_view.dart';
 
 enum PageTransitionDirection {
   rightToLeft,
@@ -72,7 +73,7 @@ class AppRouter {
   }
 
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.splashPath,
+    initialLocation: AppRoutes.profilePath,
     routes: <RouteBase>[
       GoRoute(
         name: AppRoutes.splashName,
@@ -114,7 +115,11 @@ class AppRouter {
       GoRoute(
         name: AppRoutes.navigationBottomName,
         path: AppRoutes.navigationBottomPath,
-        builder: (context, state) => const NavigationBottom(),
+        pageBuilder: (context, state) => fadeSlidePage(
+          state: state,
+          child: const NavigationBottom(),
+          direction: PageTransitionDirection.bottomToTop,
+        ),
       ),
 
       GoRoute(
@@ -123,6 +128,16 @@ class AppRouter {
         pageBuilder: (context, state) => fadeSlidePage(
           state: state,
           child: const HomeView(),
+          direction: PageTransitionDirection.bottomToTop,
+        ),
+      ),
+
+      GoRoute(
+        name: AppRoutes.profileName,
+        path: AppRoutes.profilePath,
+        pageBuilder: (context, state) => fadeSlidePage(
+          state: state,
+          child: const ProfileView(),
           direction: PageTransitionDirection.bottomToTop,
         ),
       ),

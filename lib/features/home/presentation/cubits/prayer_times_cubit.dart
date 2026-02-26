@@ -17,25 +17,37 @@ class PrayerTimesCubit extends SafeCubit<PrayerTimesState> {
     final result = await _service.getPrayerTimes();
 
     result.fold(
-      (failure) => safeEmit(state.copyWith(
-        status: PrayerTimesStatus.error,
-        errorMessage: failure.message,
-        isLocationError: failure is LocationFailure,
-      )),
-      (data) => safeEmit(state.copyWith(
-        status: PrayerTimesStatus.loaded,
-        prayerTimes: data,
-        isLocationError: false,
-      )),
+      (failure) => safeEmit(
+        state.copyWith(
+          status: PrayerTimesStatus.error,
+          errorMessage: failure.message,
+          isLocationError: failure is LocationFailure,
+        ),
+      ),
+      (data) => safeEmit(
+        state.copyWith(
+          status: PrayerTimesStatus.loaded,
+          prayerTimes: data,
+          isLocationError: false,
+        ),
+      ),
     );
   }
 
   Future<void> openLocationSettings() async {
-    final permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.deniedForever) {
-      await Geolocator.openAppSettings();
-    } else {
+    // 1. Check if the device GPS is completely turned off
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
       await Geolocator.openLocationSettings();
+      return;
+    }
+
+    // 2. Check app-specific permissions
+    final permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      // If GPS is on but we don't have access, they must grant it in App Settings
+      await Geolocator.openAppSettings();
     }
   }
 }

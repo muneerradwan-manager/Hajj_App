@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/shared/widgets/card_entry_animation.dart';
-import 'package:hajj_app/shared/widgets/hero_background.dart';
+import '../../../../shared/widgets/card_entry_animation.dart';
+import '../../../../shared/widgets/hero_background.dart';
+import '../widgets/profile_card.dart';
+import '../widgets/profile_hero_section.dart';
 
-import '../widgets/send_help_button.dart';
-import '../widgets/timer_lift.dart';
-import '../widgets/hajj_ayah.dart';
-import '../widgets/home_card.dart';
-import '../widgets/home_hero_section.dart';
-import '../widgets/prayer_times.dart';
-import '../widgets/quick_actions.dart';
-
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class ProfileView extends StatelessWidget {
+  const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +36,7 @@ class HomeView extends StatelessWidget {
                       Container(
                         height: heroHeight,
                         padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: const HomeHeroSection(),
+                        child: const ProfileHeroSection(),
                       ),
                       CardEntryAnimation(
                         overlap: overlap,
@@ -50,17 +44,7 @@ class HomeView extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                             horizontal: horizontalPadding,
                           ),
-                          child: Column(
-                            spacing: 30,
-                            children: [
-                              HomeCard(),
-                              SendHelpButton(),
-                              TimerLift(),
-                              PrayerTimesWidget(),
-                              QuickActions(),
-                              HajjAyah(),
-                            ],
-                          ),
+                          child: ProfileCard(),
                         ),
                       ),
                     ],

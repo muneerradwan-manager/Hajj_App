@@ -162,6 +162,22 @@
     "action_certificate_subtitle": "شهادة اتمام الحج",
     "action_complaints_title": "الشكاوي",
     "action_complaints_subtitle": "أرسل شكوى",
+    "help_title": "أحتاج مساعدة",
+    "help_subtitle": "إرسال موقعي الحالي",
+    "help_dialog_title": "هل تحتاج مساعدة؟",
+    "help_dialog_subtitle": "سيتم إرسال موقعك الحالي للمشرفين فوراً",
+    "help_dialog_gps_title": "سيتم تحديد موقعك",
+    "help_dialog_gps_subtitle": "باستخدام GPS الهاتف",
+    "help_dialog_send_title": "إرسال فوري للمشرفين",
+    "help_dialog_send_subtitle": "سيصلون إليك في أقرب وقت",
+    "help_dialog_map_title": "رابط مباشر للخريطة",
+    "help_dialog_map_subtitle": "يمكن فتحه في Google Maps",
+    "help_dialog_send_button": "إرسال الموقع",
+    "help_dialog_cancel": "إلغاء",
+    "help_dialog_settings": "تفعيل الموقع",
+    "help_dialog_sending": "جاري إرسال الموقع...",
+    "help_dialog_success": "تم إرسال موقعك بنجاح للمشرفين",
+    "help_dialog_location_error": "يرجى تفعيل خدمة الموقع أولاً",
     "daily_ayah": "\"وَأَتِمُّوا الْحَجَّ وَالْعُمْرَةَ لِلَّهِ\"",
     "daily_ayah_source": "سورة البقرة - آية 196"
   },
@@ -169,7 +185,8 @@
     "home": "الرئيسية",
     "training": "التدريب",
     "support": "الدعم",
-    "more": "المزيد"
+    "more": "المزيد",
+    "help": "مساعدة"
   },
   "validation": {
     "required": "هذا الحقل مطلوب",

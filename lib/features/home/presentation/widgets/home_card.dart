@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
+
+import '../../../../core/constants/app_routes.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({super.key});
@@ -82,7 +85,7 @@ class HomeCard extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                Divider(color: cs.brandGold, thickness: 1, height: 0),
+                Divider(color: cs.outline, thickness: 1, height: 0),
                 Container(
                   width: 10,
                   height: 10,
@@ -123,7 +126,9 @@ class HomeCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                context.push(AppRoutes.profilePath);
+              },
               icon: const Icon(LucideIcons.squareArrowRight, size: 18),
               label: const CustomText(
                 'home.view_full_card',

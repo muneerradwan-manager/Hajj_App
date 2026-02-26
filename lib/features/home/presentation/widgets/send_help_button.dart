@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../../core/constants/app_colors.dart';
+import 'package:hajj_app/core/constants/app_colors.dart';
+import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/features/home/presentation/widgets/send_help_dialog.dart';
+import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class SendHelpButton extends StatelessWidget {
   const SendHelpButton({super.key});
@@ -11,7 +13,17 @@ class SendHelpButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     return GestureDetector(
-      onTap: () {},
+      onTap: () async {
+        final success = await showSendHelpDialog(context);
+        if (success == true && context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('home.help_dialog_success'.tr(context)),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+            ),
+          );
+        }
+      },
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -56,12 +68,12 @@ class SendHelpButton extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    'أحتاج مساعدة',
+                    'home.help_title',
                     type: CustomTextType.bodyLarge,
                     color: CustomTextColor.white,
                   ),
                   CustomText(
-                    'إرسال موقعي الحالي',
+                    'home.help_subtitle',
                     type: CustomTextType.labelSmall,
                     color: CustomTextColor.white,
                   ),

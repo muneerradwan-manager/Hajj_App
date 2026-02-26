@@ -73,13 +73,8 @@ class _TimerLiftState extends State<TimerLift> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
+        color: AppColors.white,
         border: Border.all(color: cs.brandRed),
-        // gradient: LinearGradient(
-        //   begin: Alignment.topCenter,
-        //   end: Alignment.bottomCenter,
-        //   colors: [cs.brandRed, cs.brandRedAlt],
-        // ),
       ),
       padding: const EdgeInsets.all(20.0),
       child: Column(

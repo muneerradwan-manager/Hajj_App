@@ -162,6 +162,22 @@
     "action_certificate_subtitle": "Hajj completion certificate",
     "action_complaints_title": "Complaints",
     "action_complaints_subtitle": "Submit a complaint",
+    "help_title": "I Need Help",
+    "help_subtitle": "Send My Current Location",
+    "help_dialog_title": "Do you need help?",
+    "help_dialog_subtitle": "Your current location will be sent to supervisors immediately",
+    "help_dialog_gps_title": "Your location will be determined",
+    "help_dialog_gps_subtitle": "Using your phone's GPS",
+    "help_dialog_send_title": "Instant send to supervisors",
+    "help_dialog_send_subtitle": "They will reach you as soon as possible",
+    "help_dialog_map_title": "Direct map link",
+    "help_dialog_map_subtitle": "Can be opened in Google Maps",
+    "help_dialog_send_button": "Send Location",
+    "help_dialog_cancel": "Cancel",
+    "help_dialog_settings": "Enable Location",
+    "help_dialog_sending": "Sending location...",
+    "help_dialog_success": "Your location has been sent to supervisors successfully",
+    "help_dialog_location_error": "Please enable location services first",
     "daily_ayah": "\"And complete the Hajj and Umrah for Allah\"",
     "daily_ayah_source": "Surah Al-Baqarah - Ayah 196"
   },
@@ -169,7 +185,8 @@
     "home": "Home",
     "training": "Training",
     "support": "Support",
-    "more": "More"
+    "more": "More",
+    "help": "Help"
   },
   "validation": {
     "required": "This field is required",

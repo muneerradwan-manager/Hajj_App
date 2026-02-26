@@ -4,8 +4,14 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 class DirectionalBackArrow extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color? color;
+  final double? size;
 
-  const DirectionalBackArrow({super.key, this.onPressed, this.color});
+  const DirectionalBackArrow({
+    super.key,
+    this.onPressed,
+    this.color,
+    this.size,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +21,7 @@ class DirectionalBackArrow extends StatelessWidget {
     return IconButton(
       onPressed: onPressed,
       padding: EdgeInsets.zero,
-      icon: Icon(iconData, color: color),
+      icon: Icon(iconData, color: color, size: size),
     );
   }
 }

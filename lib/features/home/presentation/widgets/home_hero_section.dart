@@ -23,6 +23,7 @@ class HomeHeroSection extends StatelessWidget {
               children: [
                 CustomText(
                   'home.greeting',
+                  // TODO: replace with actual user name from backend
                   args: {'name': 'محمد'},
                   textAlign: TextAlign.center,
                   type: CustomTextType.headlineSmall,

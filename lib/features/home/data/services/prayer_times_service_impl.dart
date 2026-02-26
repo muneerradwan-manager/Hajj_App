@@ -14,7 +14,7 @@ class PrayerTimesServiceImpl implements PrayerTimesService {
       // 1. Check location service enabled
       final serviceEnabled = await geo.Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        return left(const LocationFailure('Location services are disabled.'));
+        return left(const LocationFailure('home.help_dialog_location_error'));
       }
 
       // 2. Check / request permission
