@@ -16,6 +16,7 @@ class _ProfileCardState extends State<ProfileCard> {
     'basic': true,
     'rezident': false,
     'flight': false,
+    'manasik': false,
   };
 
   void _toggleSection(String key) {
@@ -395,6 +396,101 @@ class _ProfileCardState extends State<ProfileCard> {
                       'مطار دمشق الدولي',
                       containerColor: Colors.white,
                       borderColor: cs.outline,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          _ProfileInfoSection(
+            title: 'مواقع المناسك',
+            icon: LucideIcons.hotel,
+            isExpanded: _expandedSections['manasik'] ?? false,
+            onToggle: () => _toggleSection('manasik'),
+            iconColor: cs.primary,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: cs.primary),
+                  color: cs.primary.withValues(alpha: .1),
+                ),
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 10,
+                  children: [
+                    CustomText(
+                      'عرفات',
+                      color: CustomTextColor.green,
+                      type: CustomTextType.bodyLarge,
+                    ),
+                    _buildInfoRow(
+                      cs,
+                      'رقم المخيم',
+                      'A-245',
+                      containerColor: Colors.white,
+                      borderColor: cs.outline,
+                    ),
+                    _buildInfoRow(
+                      cs,
+                      'موقع المخيم',
+                      'منطقة نمرة، عرفات',
+                      containerColor: Colors.white,
+                      borderColor: cs.outline,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () {},
+                      label: CustomText(
+                        'فتح الموقع في خرائط جوجل',
+                        color: CustomTextColor.white,
+                      ),
+                      icon: Icon(LucideIcons.arrowUpRight),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: cs.brandGold),
+                  color: cs.brandGold.withValues(alpha: .1),
+                ),
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 10,
+                  children: [
+                    CustomText(
+                      'المدينة المنورة',
+                      color: CustomTextColor.gold,
+                      type: CustomTextType.bodyLarge,
+                    ),
+                    _buildInfoRow(
+                      cs,
+                      'رقم المخيم',
+                      'M-189',
+                      containerColor: Colors.white,
+                      borderColor: cs.outline,
+                    ),
+                    _buildInfoRow(
+                      cs,
+                      'موقع المخيم',
+                      'الجمرات الوسطى، منى',
+                      containerColor: Colors.white,
+                      borderColor: cs.outline,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () {},
+                      label: CustomText(
+                        'فتح الموقع في خرائط جوجل',
+                        color: CustomTextColor.white,
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: cs.brandGold,
+                      ),
+                      icon: Icon(LucideIcons.arrowUpRight),
                     ),
                   ],
                 ),
