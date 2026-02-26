@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hajj_app/core/constants/app_images.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
+
+import '../../../../shared/widgets/custom_network_image.dart';
 
 class ProfileCard extends StatefulWidget {
   const ProfileCard({super.key});
@@ -11,13 +14,16 @@ class ProfileCard extends StatefulWidget {
 }
 
 class _ProfileCardState extends State<ProfileCard> {
-  // Track which sections are expanded (using a map for scalability)
+  final String _profileImage = '';
+  final String _passportImage = '';
+
   final Map<String, bool> _expandedSections = {
     'basic': true,
     'rezident': false,
     'flight': false,
     'manasik': false,
     'lead': false,
+    'passport': false,
   };
 
   void _toggleSection(String key) {
@@ -63,7 +69,13 @@ class _ProfileCardState extends State<ProfileCard> {
                     color: cs.primary,
                     border: Border.all(color: cs.brandGold, width: 3),
                   ),
-                  child: Icon(LucideIcons.user, size: 48, color: cs.onPrimary),
+                  child: _profileImage.isNotEmpty
+                      ? CustomCachedImage(
+                          imageUrl: _profileImage,
+                          borderRadius: 16,
+                          enableFullScreen: true,
+                        )
+                      : Icon(LucideIcons.user, size: 48, color: cs.onPrimary),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -603,6 +615,57 @@ class _ProfileCardState extends State<ProfileCard> {
                       containerColor: Colors.white,
                       borderColor: cs.outline,
                     ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          _ProfileInfoSection(
+            title: 'معلومات الجواز',
+            icon: LucideIcons.fileMinus,
+            isExpanded: _expandedSections['passport'] ?? false,
+            onToggle: () => _toggleSection('passport'),
+            iconColor: cs.brandGold,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: cs.brandGold),
+                  color: cs.brandGold.withValues(alpha: .1),
+                ),
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 10,
+                  children: [
+                    CustomText(
+                      'صورة الجواز',
+                      color: CustomTextColor.gold,
+                      type: CustomTextType.bodyLarge,
+                    ),
+                    CustomCachedImage(
+                      imageUrl: _passportImage,
+                      height: 184,
+                      borderRadius: 16,
+                      enableFullScreen: true,
+                      emptyWidget: (context) => Image.asset(
+                        fit: BoxFit.cover,
+                        AppImages.passportPlaceholder,
+                      ),
+                    ),
+                    _passportImage.isNotEmpty
+                        ? CustomText(
+                            'اضغط للمعاينة بالحجم الكامل',
+                            color: CustomTextColor.gold,
+                            type: CustomTextType.labelMedium,
+                            textAlign: TextAlign.center,
+                          )
+                        : CustomText(
+                            'لايوجد صورة لعرضها',
+                            color: CustomTextColor.gold,
+                            type: CustomTextType.labelMedium,
+                            textAlign: TextAlign.center,
+                          ),
                   ],
                 ),
               ),

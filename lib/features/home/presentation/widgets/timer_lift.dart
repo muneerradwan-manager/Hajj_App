@@ -50,7 +50,6 @@ class _TimerLiftState extends State<TimerLift> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-
     final units = [
       _CountdownUnit(
         value: _remaining.inDays.toString().padLeft(2, '0'),

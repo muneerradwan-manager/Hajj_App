@@ -6,6 +6,7 @@ import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 import '../../../../core/constants/app_routes.dart';
+import '../../../../shared/widgets/custom_network_image.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({super.key});
@@ -13,7 +14,7 @@ class HomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-
+    final String profileImage = '';
     return Container(
       width: double.infinity,
       clipBehavior: Clip.antiAlias,
@@ -46,7 +47,13 @@ class HomeCard extends StatelessWidget {
                     color: cs.primary,
                     border: Border.all(color: cs.brandGold, width: 3),
                   ),
-                  child: Icon(LucideIcons.user, size: 48, color: cs.onPrimary),
+                  child: profileImage.isNotEmpty
+                      ? CustomCachedImage(
+                          imageUrl: profileImage,
+                          borderRadius: 16,
+                          enableFullScreen: true,
+                        )
+                      : Icon(LucideIcons.user, size: 48, color: cs.onPrimary),
                 ),
                 Expanded(
                   child: Column(
