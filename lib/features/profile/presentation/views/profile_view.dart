@@ -18,11 +18,12 @@ class ProfileView extends StatelessWidget {
           builder: (context, constraints) {
             final viewportHeight = constraints.maxHeight;
             final viewportWidth = constraints.maxWidth;
+            final topPadding = MediaQuery.of(context).padding.top;
             final isDesktopLayout = viewportWidth >= 1040;
             final heroHeight = isDesktopLayout
                 ? (viewportHeight * 0.20).clamp(300.0, 420.0)
-                : (viewportHeight * 0.35).clamp(300.0, 420.0);
-            final overlap = (viewportHeight * 0.10).clamp(60.0, 90.0);
+                : (viewportHeight * 0.30).clamp(260.0, 380.0) + topPadding;
+            final overlap = (viewportHeight * 0.08).clamp(50.0, 80.0);
             const horizontalPadding = 20.0;
 
             return SingleChildScrollView(

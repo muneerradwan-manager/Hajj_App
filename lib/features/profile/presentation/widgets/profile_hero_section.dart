@@ -29,7 +29,7 @@ class ProfileHeroSection extends StatelessWidget {
                   },
                 ),
                 CustomText(
-                  'رجوع',
+                  'profile.back',
                   textAlign: TextAlign.center,
                   type: CustomTextType.bodyLarge,
                   color: CustomTextColor.white,
@@ -64,12 +64,12 @@ class ProfileHeroSection extends StatelessWidget {
           ],
         ),
         CustomText(
-          'البطاقة الشخصية الرقمية',
+          'profile.digital_card_title',
           color: CustomTextColor.white,
           type: CustomTextType.headlineSmall,
         ),
         CustomText(
-          'معلومات الحاج الكاملة',
+          'profile.complete_info',
           color: CustomTextColor.white,
           type: CustomTextType.bodyLarge,
         ),

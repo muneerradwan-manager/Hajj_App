@@ -162,9 +162,10 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
               // Opens the App-specific settings page so user can grant permission
               await Geolocator.openAppSettings();
             },
-            child: Text(
-              'App Settings',
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            child: CustomText(
+              'home.help_dialog_app_settings',
+              type: CustomTextType.bodyMedium,
+              color: CustomTextColor.green,
             ),
           ),
         ],
