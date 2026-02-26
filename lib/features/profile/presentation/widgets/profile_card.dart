@@ -17,6 +17,7 @@ class _ProfileCardState extends State<ProfileCard> {
     'rezident': false,
     'flight': false,
     'manasik': false,
+    'lead': false,
   };
 
   void _toggleSection(String key) {
@@ -404,7 +405,7 @@ class _ProfileCardState extends State<ProfileCard> {
           ),
           _ProfileInfoSection(
             title: 'مواقع المناسك',
-            icon: LucideIcons.hotel,
+            icon: LucideIcons.tent,
             isExpanded: _expandedSections['manasik'] ?? false,
             onToggle: () => _toggleSection('manasik'),
             iconColor: cs.primary,
@@ -491,6 +492,116 @@ class _ProfileCardState extends State<ProfileCard> {
                         backgroundColor: cs.brandGold,
                       ),
                       icon: Icon(LucideIcons.arrowUpRight),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          _ProfileInfoSection(
+            title: 'القيادة والاتصال',
+            icon: LucideIcons.phone,
+            isExpanded: _expandedSections['lead'] ?? false,
+            onToggle: () => _toggleSection('lead'),
+            iconColor: cs.brandRed,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: cs.primary),
+                  color: cs.primary.withValues(alpha: .1),
+                ),
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 10,
+                  children: [
+                    CustomText(
+                      'رئيس التكتل ',
+                      color: CustomTextColor.green,
+                      type: CustomTextType.bodyLarge,
+                    ),
+                    _buildInfoRow(
+                      cs,
+                      'الاسم',
+                      'عامر عمر مصطفى',
+                      containerColor: Colors.white,
+                      borderColor: cs.outline,
+                    ),
+                    _buildInfoRow(
+                      cs,
+                      'الهاتف',
+                      '+20 1158032715',
+                      containerColor: Colors.white,
+                      borderColor: cs.outline,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: cs.brandGold),
+                  color: cs.brandGold.withValues(alpha: .1),
+                ),
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 10,
+                  children: [
+                    CustomText(
+                      'رئيس المجموعة',
+                      color: CustomTextColor.gold,
+                      type: CustomTextType.bodyLarge,
+                    ),
+                    _buildInfoRow(
+                      cs,
+                      'الاسم',
+                      'توفيق يوسف العبيد',
+                      containerColor: Colors.white,
+                      borderColor: cs.outline,
+                    ),
+                    _buildInfoRow(
+                      cs,
+                      'الهاتف',
+                      '+20 1158032715',
+                      containerColor: Colors.white,
+                      borderColor: cs.outline,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: cs.brandRed),
+                  color: cs.brandRed.withValues(alpha: .1),
+                ),
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 10,
+                  children: [
+                    CustomText(
+                      'أرقام الطوارئ',
+                      color: CustomTextColor.gold,
+                      type: CustomTextType.bodyLarge,
+                    ),
+                    _buildInfoRow(
+                      cs,
+                      'الدفاع المدني',
+                      '998',
+                      containerColor: Colors.white,
+                      borderColor: cs.outline,
+                    ),
+                    _buildInfoRow(
+                      cs,
+                      'مكتب شؤون الحج',
+                      '+963 958006040',
+                      containerColor: Colors.white,
+                      borderColor: cs.outline,
                     ),
                   ],
                 ),

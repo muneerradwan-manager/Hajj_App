@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/shared/widgets/custom_text.dart';
@@ -21,7 +22,12 @@ class ProfileHeroSection extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                DirectionalBackArrow(color: Colors.white),
+                DirectionalBackArrow(
+                  color: Colors.white,
+                  onPressed: () {
+                    context.pop();
+                  },
+                ),
                 CustomText(
                   'رجوع',
                   textAlign: TextAlign.center,
