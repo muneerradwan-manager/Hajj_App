@@ -11,6 +11,8 @@ class AppValidators {
   static const String _emailRequiredKey =
       'auth.forget.validation_email_required';
   static const String _emailInvalidKey = 'auth.forget.validation_email_invalid';
+  static const String _loginEmailRequiredKey = 'auth.login.email_required';
+  static const String _loginEmailInvalidKey = 'auth.login.email_invalid';
   static const String _phoneRequiredKey = 'auth.login.phone_required';
   static const String _passwordRequiredKey = 'auth.login.password_required';
   static const String _passwordMinLengthKey = 'auth.login.password_min_length';
@@ -84,6 +86,20 @@ class AppValidators {
 
     if (!_emailRegex.hasMatch(_normalize(value))) {
       return _emailInvalidKey.tr(context);
+    }
+    return null;
+  }
+
+  static String? loginEmail(String? value, BuildContext context) {
+    final requiredError = _requiredWithKey(
+      value,
+      context,
+      _loginEmailRequiredKey,
+    );
+    if (requiredError != null) return requiredError;
+
+    if (!_emailRegex.hasMatch(_normalize(value))) {
+      return _loginEmailInvalidKey.tr(context);
     }
     return null;
   }

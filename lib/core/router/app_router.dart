@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:hajj_app/core/constants/app_routes.dart';
+import 'package:hajj_app/core/di/dependency_injection.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/forget_password/forget_password_cubit.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/register/register_cubit.dart';
 import 'package:hajj_app/features/auth/presentation/views/forget_password_view.dart';
 import 'package:hajj_app/features/auth/presentation/views/login_view.dart';
 import 'package:hajj_app/features/auth/presentation/views/register_view.dart';
@@ -97,7 +101,10 @@ class AppRouter {
         path: AppRoutes.forgetPasswordPath,
         pageBuilder: (context, state) => fadeSlidePage(
           state: state,
-          child: const ForgetPasswordView(),
+          child: BlocProvider(
+            create: (_) => getIt<ForgetPasswordCubit>(),
+            child: const ForgetPasswordView(),
+          ),
           direction: PageTransitionDirection.bottomToTop,
         ),
       ),
@@ -107,7 +114,10 @@ class AppRouter {
         path: AppRoutes.registerPath,
         pageBuilder: (context, state) => fadeSlidePage(
           state: state,
-          child: const RegisterView(),
+          child: BlocProvider(
+            create: (_) => getIt<RegisterCubit>()..initialize(),
+            child: const RegisterView(),
+          ),
           direction: PageTransitionDirection.bottomToTop,
         ),
       ),

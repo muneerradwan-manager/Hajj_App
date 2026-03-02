@@ -4,8 +4,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:hajj_app/core/constants/app_images.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
+
+import '../../../../shared/widgets/custom_snackbar.dart';
 
 /// Shows the "Send Help" confirmation dialog.
 ///
@@ -49,7 +50,12 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
           if (mounted) {
-            _showError('home.help_dialog_permission_error');
+            showMessage(
+              context,
+              'home.help_dialog_permission_error',
+              SnackBarType.failuer,
+              translate: true,
+            );
           }
           return;
         }
@@ -76,7 +82,12 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
       }
     } catch (_) {
       if (mounted) {
-        _showError('home.help_dialog_location_error');
+        showMessage(
+          context,
+          'home.help_dialog_location_error',
+          SnackBarType.failuer,
+          translate: true,
+        );
       }
     } finally {
       if (mounted) setState(() => _isSending = false);
@@ -149,15 +160,6 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
     );
   }
 
-  void _showError(String key) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(key.tr(context)),
-        backgroundColor: Theme.of(context).colorScheme.error,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -177,7 +179,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Container(
               decoration: BoxDecoration(
-                color: cs.surfaceContainerHighest.withValues(alpha: 0.5),
+                color: Color(0xffF9F8F6),
                 borderRadius: BorderRadius.circular(16),
               ),
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -230,12 +232,12 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    backgroundColor: cs.outline.withValues(alpha: .3),
-                    side: BorderSide(color: cs.outline),
+                    backgroundColor: cs.surfaceDim,
+                    side: BorderSide(color: cs.brandGold.withValues(alpha: .3)),
                   ),
                   child: const CustomText(
                     'home.help_dialog_cancel',
-                    type: CustomTextType.titleSmall,
+                    type: CustomTextType.bodyLarge,
                     color: CustomTextColor.green,
                   ),
                 ),
@@ -259,7 +261,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [cs.brandRed, cs.brandRedAlt],
+              colors: [Color(0xff7A2631), Color(0xff672146)],
             ),
           ),
           child: Stack(
@@ -339,7 +341,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [cs.brandRed, cs.brandRedAlt],
+          colors: [Color(0xff7A2631), Color(0xff672146)],
         ),
       ),
       child: ElevatedButton(
@@ -413,14 +415,14 @@ class _InfoTile extends StatelessWidget {
               children: [
                 CustomText(
                   titleKey,
-                  type: CustomTextType.titleSmall,
-                  color: CustomTextColor.black,
+                  type: CustomTextType.bodyLarge,
+                  color: CustomTextColor.green,
                 ),
                 const SizedBox(height: 2),
                 CustomText(
                   subtitleKey,
                   type: CustomTextType.bodySmall,
-                  color: CustomTextColor.hint,
+                  color: CustomTextColor.gold,
                 ),
               ],
             ),

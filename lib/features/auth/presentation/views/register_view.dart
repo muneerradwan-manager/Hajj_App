@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:hajj_app/core/constants/app_routes.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:hajj_app/features/auth/domain/entities/register_draft.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/register/register_cubit.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/register/register_state.dart';
 import 'package:hajj_app/shared/widgets/hero_background.dart';
 import 'package:hajj_app/shared/widgets/step_animated_switcher.dart';
 
+import '../../../../shared/widgets/custom_snackbar.dart';
 import '../widgets/register/register_hero_header.dart';
 import '../widgets/register/register_main_info_card.dart';
 import '../widgets/register/register_review_data_card.dart';
@@ -22,6 +25,8 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
+  bool _isDraftHydrated = false;
+
   // step one
   final _formMainInfoKey = GlobalKey<FormState>();
   final _emailCtrl = TextEditingController();
@@ -38,22 +43,16 @@ class _RegisterViewState extends State<RegisterView> {
   final _formVerifyAccountKey = GlobalKey<FormState>();
   final _pinput = TextEditingController();
 
-  int _stepNumber = 1;
-
   void _handleBack() {
-    if (_stepNumber <= 1) {
+    final stepNumber = context.read<RegisterCubit>().state.stepNumber;
+    if (stepNumber <= 1) {
       _goToLogin();
       return;
     }
-    setState(() => _stepNumber -= 1);
+    context.read<RegisterCubit>().goBackStep();
   }
 
   void _goToLogin() => context.go(AppRoutes.loginPath);
-
-  void _goNext() {
-    if (_stepNumber >= 5) return;
-    setState(() => _stepNumber += 1);
-  }
 
   bool _isFormValid(GlobalKey<FormState> formKey) {
     final state = formKey.currentState;
@@ -63,32 +62,47 @@ class _RegisterViewState extends State<RegisterView> {
 
   void _submitMainInfo() {
     if (!_isFormValid(_formMainInfoKey)) return;
-    _goNext();
+    context.read<RegisterCubit>().saveMainInfo(
+      email: _emailCtrl.text,
+      phone: _phoneCtrl.text,
+      nationalityNumber: _idCtrl.text,
+    );
   }
 
   void _submitSecurityCheck() {
     if (!_isFormValid(_formSecurityCheckKey)) return;
-    _goNext();
+    context.read<RegisterCubit>().saveSecurityInfo(
+      password: _passwordCtrl.text,
+      confirmPassword: _confirmCtrl.text,
+      barcode: _qrCodeCtrl.text,
+    );
   }
 
   void _submitReviewData() {
     if (!_isFormValid(_formSubmitKey)) return;
-    _goNext();
+    context.read<RegisterCubit>().submitRegister();
   }
 
-  void _submitVerificationCode(String _) => _goNext();
+  void _submitVerificationCode(String otp) {
+    context.read<RegisterCubit>().confirmEmail(otp);
+  }
+
+  void _hydrateControllers(RegisterDraft draft) {
+    if (_isDraftHydrated) return;
+
+    _emailCtrl.text = draft.email;
+    _idCtrl.text = draft.nationalityNumber;
+    _phoneCtrl.text = draft.phone;
+    _passwordCtrl.text = draft.password;
+    _confirmCtrl.text = draft.confirmPassword;
+    _qrCodeCtrl.text = draft.barcode;
+    _pinput.clear();
+
+    _isDraftHydrated = true;
+  }
 
   void _resendVerificationCode() {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: CustomText(
-            'auth.register.verify_resend_sent'.tr(context),
-            translate: false,
-          ),
-        ),
-      );
+    context.read<RegisterCubit>().resendConfirmEmail();
   }
 
   @override
@@ -105,45 +119,79 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    final viewport = MediaQuery.sizeOf(context);
-    final heroHeight = (viewport.height * 0.25).clamp(220.0, 300.0);
-    final overlap = (viewport.height * 0.03).clamp(16.0, 24.0);
-    final statusBarInset = MediaQuery.paddingOf(context).top;
-    final totalHeroHeight = heroHeight + statusBarInset;
+    return BlocConsumer<RegisterCubit, RegisterState>(
+      listenWhen: (previous, current) =>
+          previous.isHydrated != current.isHydrated ||
+          previous.errorMessage != current.errorMessage ||
+          previous.infoMessage != current.infoMessage,
+      listener: (context, state) {
+        if (state.isHydrated) {
+          _hydrateControllers(state.draft);
+        }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            ...HeroBackground.layers(context, totalHeroHeight),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                RegisterHeroHeader(
-                  height: heroHeight,
-                  stepNumber: _stepNumber,
-                  onBack: _handleBack,
-                ),
-                SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Transform.translate(
-                      offset: Offset(0, -overlap),
-                      child: StepAnimatedSwitcher(child: _buildStep()),
-                    ),
+        if (state.errorMessage.isNotEmpty) {
+          showMessage(context, state.errorMessage, SnackBarType.failuer);
+          context.read<RegisterCubit>().clearMessages();
+          return;
+        }
+
+        if (state.infoMessage.isNotEmpty) {
+          showMessage(context, state.infoMessage, SnackBarType.info);
+          context.read<RegisterCubit>().clearMessages();
+        }
+      },
+        builder: (context, state) {
+          final viewport = MediaQuery.sizeOf(context);
+          final heroHeight = (viewport.height * 0.25).clamp(220.0, 300.0);
+          final overlap = (viewport.height * 0.03).clamp(16.0, 24.0);
+          final statusBarInset = MediaQuery.paddingOf(context).top;
+          final totalHeroHeight = heroHeight + statusBarInset;
+
+          return Scaffold(
+            resizeToAvoidBottomInset: true,
+            body: SingleChildScrollView(
+              child: Stack(
+                children: [
+                  ...HeroBackground.layers(context, totalHeroHeight),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      RegisterHeroHeader(
+                        height: heroHeight,
+                        stepNumber: state.stepNumber,
+                        onBack: _handleBack,
+                      ),
+                      SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Transform.translate(
+                            offset: Offset(0, -overlap),
+                            child: StepAnimatedSwitcher(
+                              child: state.isHydrated
+                                  ? _buildStep(state)
+                                  : const SizedBox(
+                                      key: ValueKey('register-loading'),
+                                      height: 260,
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
+          );
+        },
     );
   }
 
-  Widget _buildStep() {
-    return switch (_stepNumber) {
+  Widget _buildStep(RegisterState state) {
+    return switch (state.stepNumber) {
       1 => RegisterMainInfoCard(
         key: const ValueKey('main-info-card'),
         formKey: _formMainInfoKey,
@@ -164,21 +212,23 @@ class _RegisterViewState extends State<RegisterView> {
       3 => RegisterReviewDataCard(
         key: const ValueKey('review-data-card'),
         formKey: _formSubmitKey,
-        email: _emailCtrl.text.trim(),
-        nationalId: _idCtrl.text.trim(),
-        phone: _phoneCtrl.text.trim(),
-        barcode: _qrCodeCtrl.text.trim(),
-        password: _passwordCtrl.text.trim(),
-        onSend: _submitReviewData,
-        onBack: _handleBack,
+        email: state.draft.email,
+        nationalId: state.draft.nationalityNumber,
+        phone: state.draft.phone,
+        barcode: state.draft.barcode,
+        password: state.draft.password,
+        onSend: state.isSubmitting ? null : _submitReviewData,
+        onBack: state.isSubmitting ? null : _handleBack,
       ),
       4 => RegisterVerifyAccountCard(
         key: const ValueKey('verify-account-card'),
         formKey: _formVerifyAccountKey,
         pinput: _pinput,
         onSubmit: _submitVerificationCode,
-        email: _emailCtrl.text.trim(),
+        email: state.draft.email,
         onResend: _resendVerificationCode,
+        isSubmitting: state.isConfirmingEmail,
+        isResending: state.isResendingCode,
       ),
       _ => RegisterSuccessCard(
         key: const ValueKey('success-card'),

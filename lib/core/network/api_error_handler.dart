@@ -73,6 +73,13 @@ class ApiErrorHandler {
           fieldErrors[key] = [value];
         }
       });
+    } else if (errors is List) {
+      final listErrors = errors.map((e) => e.toString()).toList();
+      if (listErrors.isNotEmpty) {
+        fieldErrors['general'] = listErrors;
+      }
+    } else if (errors is String) {
+      fieldErrors['general'] = [errors];
     }
 
     return ValidationFailure(message, fieldErrors: fieldErrors);
@@ -80,9 +87,21 @@ class ApiErrorHandler {
 
   /// Extract message from response data
   static String? _extractMessage(dynamic data) {
-    if (data is Map && data['message'] != null) {
+    if (data is! Map) return null;
+
+    if (data['message'] != null) {
       return data['message'].toString();
     }
+
+    if (data['title'] != null) {
+      return data['title'].toString();
+    }
+
+    final errors = data['errors'];
+    if (errors is List && errors.isNotEmpty) {
+      return errors.map((e) => e.toString()).join('\n');
+    }
+
     return null;
   }
 }

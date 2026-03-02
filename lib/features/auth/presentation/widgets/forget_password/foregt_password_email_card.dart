@@ -14,6 +14,7 @@ class ForgetPasswordEmailCard extends StatelessWidget {
     required this.decoration,
     required this.validateEmail,
     required this.onSend,
+    this.isLoading = false,
   });
 
   final GlobalKey<FormState> formKey;
@@ -21,6 +22,7 @@ class ForgetPasswordEmailCard extends StatelessWidget {
   final InputDecoration decoration;
   final String? Function(String?) validateEmail;
   final VoidCallback? onSend;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +72,24 @@ class ForgetPasswordEmailCard extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
-              label: const CustomText(
-                'auth.forget.send_button',
-                type: CustomTextType.titleMedium,
-                color: CustomTextColor.white,
-              ),
-              onPressed: onSend,
-              icon: Icon(LucideIcons.send, size: 18, color: cs.onPrimary),
+              label: isLoading
+                  ? SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: cs.onPrimary,
+                      ),
+                    )
+                  : const CustomText(
+                      'auth.forget.send_button',
+                      type: CustomTextType.titleMedium,
+                      color: CustomTextColor.white,
+                    ),
+              onPressed: isLoading ? null : onSend,
+              icon: isLoading
+                  ? const SizedBox.shrink()
+                  : Icon(LucideIcons.send, size: 18, color: cs.onPrimary),
             ),
             const SizedBox(height: 20),
             const CustomText(

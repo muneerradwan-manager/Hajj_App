@@ -21,6 +21,9 @@ class RegisterVerifyAccountCard extends StatefulWidget {
     required this.onResend,
     required this.pinput,
     this.resendIntervalSeconds = 113,
+    this.otpLength = 4,
+    this.isSubmitting = false,
+    this.isResending = false,
   });
 
   final GlobalKey<FormState> formKey;
@@ -29,14 +32,16 @@ class RegisterVerifyAccountCard extends StatefulWidget {
   final VoidCallback onResend;
   final TextEditingController pinput;
   final int resendIntervalSeconds;
+  final int otpLength;
+  final bool isSubmitting;
+  final bool isResending;
 
   @override
   State<RegisterVerifyAccountCard> createState() =>
       _RegisterVerifyAccountCardState();
 }
 
-class _RegisterVerifyAccountCardState
-    extends State<RegisterVerifyAccountCard> {
+class _RegisterVerifyAccountCardState extends State<RegisterVerifyAccountCard> {
   Timer? _resendTimer;
   late int _remainingSeconds;
 
@@ -48,6 +53,7 @@ class _RegisterVerifyAccountCardState
   }
 
   void _handleSubmit() {
+    if (widget.isSubmitting) return;
     if (widget.formKey.currentState?.validate() != true) return;
     widget.onSubmit(widget.pinput.text.trim());
   }
@@ -65,7 +71,7 @@ class _RegisterVerifyAccountCardState
   }
 
   void _handleResend() {
-    if (_remainingSeconds > 0) return;
+    if (_remainingSeconds > 0 || widget.isResending) return;
     widget.onResend();
     setState(() => _remainingSeconds = widget.resendIntervalSeconds);
     _startResendTimer();
@@ -124,7 +130,8 @@ class _RegisterVerifyAccountCardState
             key: widget.formKey,
             child: Pinput(
               controller: widget.pinput,
-              length: 4,
+              enabled: !widget.isSubmitting,
+              length: widget.otpLength,
               keyboardType: TextInputType.number,
               defaultPinTheme: PinTheme(
                 height: 50,
@@ -145,8 +152,11 @@ class _RegisterVerifyAccountCardState
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              validator: (value) =>
-                  AppValidators.verificationCode(value, context),
+              validator: (value) => AppValidators.verificationCode(
+                value,
+                context,
+                length: widget.otpLength,
+              ),
             ),
           ),
           const SizedBox(height: 10),
@@ -159,12 +169,21 @@ class _RegisterVerifyAccountCardState
                   color: CustomTextColor.lightGreen,
                 )
               : TextButton(
-                  onPressed: _handleResend,
-                  child: const CustomText(
-                    'auth.register.verify_resend_button',
-                    type: CustomTextType.titleSmall,
-                    color: CustomTextColor.gold,
-                  ),
+                  onPressed: widget.isResending ? null : _handleResend,
+                  child: widget.isResending
+                      ? SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: cs.brandGold,
+                          ),
+                        )
+                      : const CustomText(
+                          'auth.register.verify_resend_button',
+                          type: CustomTextType.titleSmall,
+                          color: CustomTextColor.gold,
+                        ),
                 ),
           const SizedBox(height: 20),
           Container(
@@ -194,6 +213,7 @@ class _RegisterVerifyAccountCardState
           GradientElevatedButton(
             textKey: 'auth.register.verify_button',
             onPressed: _handleSubmit,
+            isLoading: widget.isSubmitting,
           ),
         ],
       ),

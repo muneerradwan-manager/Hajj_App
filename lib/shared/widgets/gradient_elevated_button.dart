@@ -8,10 +8,12 @@ class GradientElevatedButton extends StatelessWidget {
     super.key,
     required this.textKey,
     required this.onPressed,
+    this.isLoading = false,
   });
 
   final String textKey;
   final VoidCallback? onPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +29,21 @@ class GradientElevatedButton extends StatelessWidget {
         ),
       ),
       child: ElevatedButton(
-        onPressed: onPressed,
-        child: CustomText(
-          textKey,
-          type: CustomTextType.titleMedium,
-          color: CustomTextColor.white,
-        ),
+        onPressed: isLoading ? null : onPressed,
+        child: isLoading
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+            : CustomText(
+                textKey,
+                type: CustomTextType.titleMedium,
+                color: CustomTextColor.white,
+              ),
       ),
     );
   }

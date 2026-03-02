@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
 import 'package:hajj_app/shared/widgets/app_card_container.dart';
 import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 import 'package:hajj_app/shared/widgets/gradient_elevated_button.dart';
-import 'package:hajj_app/shared/widgets/important_note_box.dart';
-import 'package:hajj_app/shared/widgets/numbered_steps_list.dart';
 
 class ForgetPasswordSuccessCard extends StatelessWidget {
   const ForgetPasswordSuccessCard({
     super.key,
     required this.email,
     required this.onBackToLogin,
-    required this.onResend,
   });
 
   final String email;
   final VoidCallback onBackToLogin;
-  final VoidCallback onResend;
 
   @override
   Widget build(BuildContext context) {
@@ -38,56 +33,47 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           const CustomText(
-            'auth.forget.success_title',
+            'تم بنجاح! ',
             textAlign: TextAlign.center,
             type: CustomTextType.headlineSmall,
             color: CustomTextColor.red,
           ),
           const SizedBox(height: 10),
           const CustomText(
-            'auth.forget.success_subtitle',
+            'تم تغيير كلمة المرور بنجاح',
             textAlign: TextAlign.center,
             type: CustomTextType.titleSmall,
             color: CustomTextColor.lightRed,
           ),
-          const SizedBox(height: 10),
-          CustomText(
-            email,
-            textAlign: TextAlign.center,
-            type: CustomTextType.titleSmall,
-            color: CustomTextColor.hint,
-            translate: false,
-          ),
+
           const SizedBox(height: 14),
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: cs.surfaceContainerLow,
+              color: cs.primary.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: cs.secondaryContainer),
+              border: Border.all(color: cs.primary),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              spacing: 20,
               children: [
-                const CustomText(
-                  'auth.forget.next_steps',
-                  type: CustomTextType.titleMedium,
-                  color: CustomTextColor.red,
-                ),
-                const SizedBox(height: 10),
-                NumberedStepsList(
-                  textColor: CustomTextColor.lightRed,
-                  steps: [
-                    'auth.forget.next_step_1'.tr(context),
-                    'auth.forget.next_step_2'.tr(context),
-                    'auth.forget.next_step_3'.tr(context),
-                    'auth.forget.next_step_4'.tr(context),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    Icon(LucideIcons.lock),
+                    CustomText(
+                      'يمكنك الآن تسجيل الدخول',
+                      color: CustomTextColor.red,
+                      type: CustomTextType.titleLarge,
+                    ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                const ImportantNoteBox(
-                  labelKey: 'auth.forget.important_label',
-                  bodyKey: 'auth.forget.important_body',
+                CustomText(
+                  'استخدم كلمة المرور الجديدة لتسجيل الدخول إلى حسابك',
+                  color: CustomTextColor.red,
+                  type: CustomTextType.labelMedium,
                 ),
               ],
             ),
@@ -96,15 +82,6 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
           GradientElevatedButton(
             textKey: 'auth.forget.back_to_login',
             onPressed: onBackToLogin,
-          ),
-          const SizedBox(height: 10),
-          TextButton(
-            onPressed: onResend,
-            child: const CustomText(
-              'auth.forget.resend',
-              type: CustomTextType.titleSmall,
-              color: CustomTextColor.green,
-            ),
           ),
         ],
       ),

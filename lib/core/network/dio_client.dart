@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../core/network/interceptors/auth_interceptor.dart';
 import '../../shared/services/storage/token_storage_service.dart';
+import '../constants/app_urls.dart';
 
 class DioClient {
   late final Dio dio;
@@ -20,7 +21,7 @@ class DioClient {
 
     dio = Dio(
       BaseOptions(
-        baseUrl: dotenv.env['BASE_URL'] ?? 'http://example.com/api',
+        baseUrl: AppUrls.baseUrl,
         connectTimeout: Duration(seconds: connectTimeoutSeconds),
         receiveTimeout: Duration(seconds: receiveTimeoutSeconds),
         headers: {

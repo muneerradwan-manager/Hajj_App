@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:hajj_app/core/di/dependency_injection.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/login/login_cubit.dart';
 import 'package:hajj_app/features/auth/presentation/widgets/login/login_card.dart';
 import 'package:hajj_app/features/auth/presentation/widgets/login/login_hero_section.dart';
 import 'package:hajj_app/shared/widgets/card_entry_animation.dart';
@@ -10,69 +13,72 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: SafeArea(
-        top: false,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final viewportHeight = constraints.maxHeight;
-            final viewportWidth = constraints.maxWidth;
-            final isTabletLayout = viewportWidth >= 700;
-            final isDesktopLayout = viewportWidth >= 1024;
+    return BlocProvider(
+      create: (_) => getIt<LoginCubit>(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: SafeArea(
+          top: false,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final viewportHeight = constraints.maxHeight;
+              final viewportWidth = constraints.maxWidth;
+              final isTabletLayout = viewportWidth >= 700;
+              final isDesktopLayout = viewportWidth >= 1024;
 
-            final heroHeight = isDesktopLayout
-                ? (viewportHeight * 0.50).clamp(360.0, 500.0)
-                : (viewportHeight * 0.45).clamp(320.0, 420.0);
-            final overlap = isDesktopLayout
-                ? (viewportHeight * 0.04).clamp(0.0, 28.0)
-                : (viewportHeight * 0.10).clamp(60.0, 90.0);
+              final heroHeight = isDesktopLayout
+                  ? (viewportHeight * 0.50).clamp(360.0, 500.0)
+                  : (viewportHeight * 0.45).clamp(320.0, 420.0);
+              final overlap = isDesktopLayout
+                  ? (viewportHeight * 0.04).clamp(0.0, 28.0)
+                  : (viewportHeight * 0.10).clamp(60.0, 90.0);
 
-            final horizontalPadding = viewportWidth < 390
-                ? 24.0
-                : isTabletLayout
-                    ? 28.0
-                    : 18.0;
-            final logoSize = (viewportWidth * 0.30).clamp(90.0, 120.0);
-            final cardMaxWidth = isDesktopLayout ? 560.0 : 720.0;
+              final horizontalPadding = viewportWidth < 390
+                  ? 24.0
+                  : isTabletLayout
+                  ? 28.0
+                  : 18.0;
+              final logoSize = (viewportWidth * 0.30).clamp(90.0, 120.0);
+              final cardMaxWidth = isDesktopLayout ? 560.0 : 720.0;
 
-            return SingleChildScrollView(
-              keyboardDismissBehavior:
-                  ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Stack(
-                children: [
-                  ...HeroBackground.layers(context, heroHeight),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        height: heroHeight,
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 24),
-                        child: LoginHeroSection(logoSize: logoSize),
-                      ),
-                      CardEntryAnimation(
-                        overlap: overlap,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: horizontalPadding,
-                          ),
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: ConstrainedBox(
-                              constraints:
-                                  BoxConstraints(maxWidth: cardMaxWidth),
-                              child: const LoginCard(),
+              return SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                child: Stack(
+                  children: [
+                    ...HeroBackground.layers(context, heroHeight),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          height: heroHeight,
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: LoginHeroSection(logoSize: logoSize),
+                        ),
+                        CardEntryAnimation(
+                          overlap: overlap,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: horizontalPadding,
+                            ),
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: cardMaxWidth,
+                                ),
+                                child: const LoginCard(),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../shared/widgets/custom_network_image.dart';
+import '../../../../shared/widgets/custom_snackbar.dart';
 
 class ProfileCard extends StatefulWidget {
   const ProfileCard({super.key});
@@ -903,9 +904,10 @@ class _UnavailableInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(),
+        border: Border.all(color: cs.brandGold),
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(
           colors: [Color(0xffF9F8F6), Color(0xffE3DDD2)],
@@ -918,7 +920,22 @@ class _UnavailableInfoCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 10,
         children: [
-          CustomText(titleKey, color: CustomTextColor.gold),
+          Row(
+            spacing: 10,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: cs.primary,
+                ),
+                padding: EdgeInsets.all(10),
+                child: Icon(LucideIcons.info, color: Colors.white),
+              ),
+              Expanded(
+                child: CustomText(titleKey, color: CustomTextColor.gold),
+              ),
+            ],
+          ),
           CustomText(
             subtitleKey,
             color: CustomTextColor.green,
@@ -1111,7 +1128,13 @@ class _InfoRow extends StatelessWidget {
   Future<void> _launchPhoneCall(BuildContext context) async {
     final phoneNumber = _normalizePhoneNumber(value);
     if (phoneNumber.isEmpty) {
-      _showCallError(context, 'profile.call_invalid_number');
+      showMessage(
+        context,
+        'profile.call_invalid_number',
+        SnackBarType.failuer,
+        translate: true,
+      );
+
       return;
     }
 
@@ -1119,14 +1142,24 @@ class _InfoRow extends StatelessWidget {
     final isSupported = await canLaunchUrl(uri);
     if (!isSupported) {
       if (context.mounted) {
-        _showCallError(context, 'profile.call_unavailable');
+        showMessage(
+          context,
+          'profile.call_unavailable',
+          SnackBarType.failuer,
+          translate: true,
+        );
       }
       return;
     }
 
     final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!launched && context.mounted) {
-      _showCallError(context, 'profile.call_unavailable');
+      showMessage(
+        context,
+        'profile.call_unavailable',
+        SnackBarType.failuer,
+        translate: true,
+      );
     }
   }
 
@@ -1140,16 +1173,6 @@ class _InfoRow extends StatelessWidget {
     }
 
     return hasLeadingPlus ? '+$digitsOnly' : digitsOnly;
-  }
-
-  void _showCallError(BuildContext context, String messageKey) {
-    final messenger = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
-    messenger.showSnackBar(
-      SnackBar(
-        content: CustomText(messageKey),
-        backgroundColor: Theme.of(context).colorScheme.error,
-      ),
-    );
   }
 }
 

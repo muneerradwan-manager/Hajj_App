@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/constants/app_colors.dart';
+import 'package:hajj_app/core/constants/app_routes.dart';
+import 'package:hajj_app/core/di/dependency_injection.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/login/login_cubit.dart';
 import 'package:hajj_app/shared/widgets/exit_app_dialog.dart';
 
 import '../../../../shared/widgets/custom_text.dart';
@@ -26,12 +30,12 @@ class _NavigationBottomState extends State<NavigationBottom> {
     _NavItemData(labelKey: 'nav.more', icon: LucideIcons.menu),
   ];
 
-  static const List<Widget> _pages = [
+  static final List<Widget> _pages = [
     HomeView(),
     _PlaceholderPage(titleKey: 'nav.training'),
     _PlaceholderPage(titleKey: 'nav.help'),
     _PlaceholderPage(titleKey: 'nav.support'),
-    _PlaceholderPage(titleKey: 'nav.more'),
+    MoreView(),
   ];
 
   late final PageController _pageController;
@@ -170,6 +174,32 @@ class _NavigationBottomState extends State<NavigationBottom> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MoreView extends StatelessWidget {
+  const MoreView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: cs.brandRed),
+            onPressed: () async {
+              await getIt<LoginCubit>().logout();
+              if (context.mounted) context.go(AppRoutes.loginPath);
+            },
+            child: CustomText('Logout', color: CustomTextColor.white),
+          ),
+        ],
       ),
     );
   }

@@ -42,37 +42,82 @@ class AuthInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    if (err.response?.statusCode == 401) {
-      final refreshToken = await _tokenStorage.getRefreshToken();
+    final requestPath = err.requestOptions.path;
+    final isRefreshRequest = requestPath.contains(AppUrls.refresh);
+    final isLogoutRequest = requestPath.contains(AppUrls.logout);
+    final isPublicRequest =
+        requestPath.contains(AppUrls.login) ||
+        requestPath.contains(AppUrls.register) ||
+        requestPath.contains(AppUrls.verifyOtp) ||
+        requestPath.contains(AppUrls.resendOtp) ||
+        requestPath.contains(AppUrls.sendResetLink) ||
+        requestPath.contains(AppUrls.resetPassword);
+    final isRetryAttempt = err.requestOptions.extra['is_retry'] == true;
 
-      if (refreshToken != null) {
-        try {
-          final response = await _dio.post(
-            AppUrls.refresh,
-            data: {'refresh': refreshToken},
-            options: Options(headers: {'Authorization': null}),
-          );
-
-          if (response.statusCode == 200) {
-            final data = response.data;
-            final newAccessToken = data['access'];
-            final newRefreshToken = data['refresh'];
-            await _tokenStorage.saveTokens(
-              accessToken: newAccessToken,
-              refreshToken: newRefreshToken,
-            );
-            final requestOptions = err.requestOptions;
-            requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
-            final retryResponse = await _dio.fetch(requestOptions);
-            return handler.resolve(retryResponse);
-          }
-        } catch (e) {
-          await _tokenStorage.deleteTokens();
-          return handler.next(err);
-        }
+    if (err.response?.statusCode != 401 ||
+        isRefreshRequest ||
+        isLogoutRequest ||
+        isPublicRequest ||
+        isRetryAttempt) {
+      if (isLogoutRequest) {
+        await _tokenStorage.deleteTokens();
+        // Token already expired/invalid — server can't use it anyway.
+        // Resolve as success so the UI treats logout as completed.
+        return handler.resolve(
+          Response(
+            requestOptions: err.requestOptions,
+            statusCode: 200,
+            data: {'message': 'Logged out (token was already invalid)'},
+          ),
+        );
       }
+      return handler.next(err);
     }
 
-    return handler.next(err);
+    final refreshToken = await _tokenStorage.getRefreshToken();
+    if (refreshToken == null || refreshToken.trim().isEmpty) {
+      await _tokenStorage.deleteTokens();
+      return handler.next(err);
+    }
+
+    try {
+      final refreshResponse = await _dio.post<dynamic>(
+        AppUrls.refresh,
+        data: {'refreshToken': refreshToken.trim()},
+        options: Options(
+          headers: {'Authorization': null},
+          validateStatus: (_) => true,
+          extra: {'is_retry': true},
+        ),
+      );
+
+      final data = refreshResponse.data;
+      final map = data is Map
+          ? data.map((key, value) => MapEntry(key.toString(), value))
+          : <String, dynamic>{};
+
+      final newAccessToken = (map['token'] ?? '').toString().trim();
+      final newRefreshToken = (map['refreshToken'] ?? '').toString().trim();
+
+      if (newAccessToken.isEmpty || newRefreshToken.isEmpty) {
+        await _tokenStorage.deleteTokens();
+        return handler.next(err);
+      }
+
+      await _tokenStorage.saveTokens(
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+      );
+
+      final requestOptions = err.requestOptions;
+      requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
+      requestOptions.extra['is_retry'] = true;
+
+      final retryResponse = await _dio.fetch(requestOptions);
+      return handler.resolve(retryResponse);
+    } catch (_) {
+      await _tokenStorage.deleteTokens();
+      return handler.next(err);
+    }
   }
 }

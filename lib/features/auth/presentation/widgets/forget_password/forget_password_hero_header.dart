@@ -7,12 +7,12 @@ class ForgetPasswordHeroHeader extends StatelessWidget {
   const ForgetPasswordHeroHeader({
     super.key,
     required this.height,
-    required this.isSent,
+    required this.stepNumber,
     required this.onBack,
   });
 
   final double height;
-  final bool isSent;
+  final int stepNumber;
   final VoidCallback onBack;
 
   @override
@@ -45,9 +45,7 @@ class ForgetPasswordHeroHeader extends StatelessWidget {
                     ),
                     const SizedBox(height: 7),
                     CustomText(
-                      isSent
-                          ? 'auth.forget.header_sent'
-                          : 'auth.forget.header_enter_email',
+                      _subtitleKey,
                       textAlign: TextAlign.center,
                       type: CustomTextType.titleSmall,
                       color: CustomTextColor.gold,
@@ -57,18 +55,24 @@ class ForgetPasswordHeroHeader extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-            _ForgetPasswordStepProgress(isSent: isSent),
+            _ForgetPasswordStepProgress(stepNumber: stepNumber),
           ],
         ),
       ),
     );
   }
+
+  String get _subtitleKey => switch (stepNumber) {
+    1 => 'auth.forget.header_enter_email',
+    2 => 'auth.forget.header_enter_code',
+    _ => 'auth.forget.header_done',
+  };
 }
 
 class _ForgetPasswordStepProgress extends StatelessWidget {
-  const _ForgetPasswordStepProgress({required this.isSent});
+  const _ForgetPasswordStepProgress({required this.stepNumber});
 
-  final bool isSent;
+  final int stepNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +90,7 @@ class _ForgetPasswordStepProgress extends StatelessWidget {
             borderRadius: BorderRadius.circular(50),
             child: TweenAnimationBuilder<double>(
               duration: const Duration(milliseconds: 240),
-              tween: Tween<double>(begin: 0, end: isSent ? 1 : 0.5),
+              tween: Tween<double>(begin: 0, end: (stepNumber.clamp(1, 3) / 3)),
               curve: Curves.easeOut,
               builder: (context, value, child) {
                 return LinearProgressIndicator(
@@ -101,7 +105,7 @@ class _ForgetPasswordStepProgress extends StatelessWidget {
           const SizedBox(height: 8),
           CustomText(
             'auth.forget.step_indicator',
-            args: {'current': isSent ? 2 : 1, 'total': 2},
+            args: {'current': stepNumber.clamp(1, 3), 'total': 3},
             type: CustomTextType.bodySmall,
             style: Theme.of(
               context,
