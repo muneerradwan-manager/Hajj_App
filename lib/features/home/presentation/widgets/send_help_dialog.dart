@@ -49,7 +49,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
           if (mounted) {
-            _showError('home.help_dialog_location_error');
+            _showError('home.help_dialog_permission_error');
           }
           return;
         }
@@ -83,53 +83,30 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
     }
   }
 
-  // Dialog for hardware GPS being turned off
-  Future<void> _promptEnableLocationService() async {
-    if (!mounted) return;
-
-    await showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const CustomText(
-          'home.help_dialog_gps_title',
-          type: CustomTextType.titleMedium,
-          color: CustomTextColor.black,
-        ),
-        content: const CustomText(
-          'home.help_dialog_location_error',
-          type: CustomTextType.bodyMedium,
-          color: CustomTextColor.black,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const CustomText(
-              'home.help_dialog_cancel',
-              type: CustomTextType.bodyMedium,
-              color: CustomTextColor.black,
-            ),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.of(ctx).pop();
-              // Opens the Android Location Settings page
-              await Geolocator.openLocationSettings();
-            },
-            child: CustomText(
-              'home.help_dialog_settings',
-              type: CustomTextType.bodyMedium,
-              color: CustomTextColor.green,
-            ),
-          ),
-        ],
-      ),
+  Future<void> _promptEnableLocationService() {
+    return _showSettingsDialog(
+      titleKey: 'home.help_dialog_gps_title',
+      contentKey: 'home.help_dialog_location_error',
+      actionKey: 'home.help_dialog_settings',
+      onOpenSettings: Geolocator.openLocationSettings,
     );
   }
 
-  // Dialog for App permissions being denied permanently
-  Future<void> _promptOpenAppSettings() async {
+  Future<void> _promptOpenAppSettings() {
+    return _showSettingsDialog(
+      titleKey: 'home.help_dialog_permission_title',
+      contentKey: 'home.help_dialog_permission_error',
+      actionKey: 'home.help_dialog_app_settings',
+      onOpenSettings: Geolocator.openAppSettings,
+    );
+  }
+
+  Future<void> _showSettingsDialog({
+    required String titleKey,
+    required String contentKey,
+    required String actionKey,
+    required Future<bool> Function() onOpenSettings,
+  }) async {
     if (!mounted) return;
 
     await showDialog(
@@ -137,13 +114,13 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
       builder: (ctx) => AlertDialog(
         backgroundColor: AppColors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const CustomText(
-          'home.help_dialog_gps_title',
+        title: CustomText(
+          titleKey,
           type: CustomTextType.titleMedium,
           color: CustomTextColor.black,
         ),
-        content: const CustomText(
-          'home.help_dialog_location_error',
+        content: CustomText(
+          contentKey,
           type: CustomTextType.bodyMedium,
           color: CustomTextColor.black,
         ),
@@ -159,11 +136,10 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
           TextButton(
             onPressed: () async {
               Navigator.of(ctx).pop();
-              // Opens the App-specific settings page so user can grant permission
-              await Geolocator.openAppSettings();
+              await onOpenSettings();
             },
             child: CustomText(
-              'home.help_dialog_app_settings',
+              actionKey,
               type: CustomTextType.bodyMedium,
               color: CustomTextColor.green,
             ),
@@ -321,7 +297,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
                   ),
                   const SizedBox(height: 16),
                   const CustomText(
-                    'هل أنت ضائع؟',
+                    'home.help_title',
                     type: CustomTextType.titleLarge,
                     color: CustomTextColor.white,
                   ),
@@ -329,7 +305,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: CustomText(
-                      'سيتم إرسال موقعك الحالي للتبليغ عن حالة ضياع',
+                      'home.help_dialog_subtitle',
                       type: CustomTextType.bodyMedium,
                       color: CustomTextColor.lightGold,
                       textAlign: TextAlign.center,
@@ -392,7 +368,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
                 children: [
                   Icon(LucideIcons.mapPin, color: AppColors.white, size: 18),
                   CustomText(
-                    'نعم، أنا ضائع - أرسل موقعي',
+                    'home.help_dialog_send_button',
                     type: CustomTextType.titleSmall,
                     color: CustomTextColor.white,
                   ),

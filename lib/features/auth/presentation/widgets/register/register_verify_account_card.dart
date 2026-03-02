@@ -124,7 +124,7 @@ class _RegisterVerifyAccountCardState
             key: widget.formKey,
             child: Pinput(
               controller: widget.pinput,
-              length: 6,
+              length: 4,
               keyboardType: TextInputType.number,
               defaultPinTheme: PinTheme(
                 height: 50,

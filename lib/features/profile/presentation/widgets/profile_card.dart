@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hajj_app/core/constants/app_images.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:hajj_app/core/constants/app_colors.dart';
+import 'package:hajj_app/core/constants/app_images.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../shared/widgets/custom_network_image.dart';
 
@@ -17,18 +18,18 @@ class _ProfileCardState extends State<ProfileCard> {
   final String _profileImage = '';
   final String _passportImage = '';
   String? _saudiNumber;
-  bool _isOpenToEdit = false;
-  final bool _rezidentAvilable = false;
-  final bool _flightAvilable = false;
-  final bool _manasikAvilable = false;
+  bool _isSaudiNumberEditing = false;
+  final bool _isResidenceAvailable = false;
+  final bool _isFlightAvailable = false;
+  final bool _isRitualsAvailable = false;
 
   final Map<String, bool> _expandedSections = {
     'basic': true,
     'team': false,
-    'rezident': false,
-    'flight': false,
-    'manasik': false,
-    'lead': false,
+    'residence': false,
+    'flights': false,
+    'rituals': false,
+    'leadership': false,
     'passport': false,
   };
 
@@ -38,20 +39,17 @@ class _ProfileCardState extends State<ProfileCard> {
     });
   }
 
-  void initSaudiNumber() {
+  void _initializeSaudiNumber() {
     _saudiNumber = '0954565464';
-    setState(() {});
   }
 
-  void isOpenToEdit() {
-    _isOpenToEdit = !_isOpenToEdit;
-    setState(() {});
-  }
+  void _toggleSaudiNumberEditing() =>
+      setState(() => _isSaudiNumberEditing = !_isSaudiNumberEditing);
 
   @override
   void initState() {
     super.initState();
-    initSaudiNumber();
+    _initializeSaudiNumber();
   }
 
   @override
@@ -76,49 +74,63 @@ class _ProfileCardState extends State<ProfileCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _GradientStripe(cs: cs),
-          _buildHeader(cs),
-          _buildDivider(cs),
-          _buildBasicInfoSection(cs),
-          _ProfileInfoSection(
-            titleKey: 'كادر حملة الحج',
-            icon: LucideIcons.user,
+          const _GradientStripe(),
+          _ProfileHeader(profileImage: _profileImage),
+          const _ProfileDivider(),
+          _BasicInfoSection(
+            isExpanded: _expandedSections['basic'] ?? false,
+            onToggle: () => _toggleSection('basic'),
+            isSaudiNumberEditing: _isSaudiNumberEditing,
+            saudiNumber: _saudiNumber,
+            onToggleSaudiNumberEditing: _toggleSaudiNumberEditing,
+          ),
+          _CampaignStaffSection(
             isExpanded: _expandedSections['team'] ?? false,
             onToggle: () => _toggleSection('team'),
-            iconColor: cs.brandGold,
-            children: [
-              _InfoRow(labelKey: 'رئيس الحملة', value: 'د. أحمد محمود الحلبي'),
-              const SizedBox(height: 10),
-              _InfoRow(
-                labelKey: 'معاون رئيس الحملة',
-                value: 'محمد خالد الشامي',
-              ),
-              const SizedBox(height: 10),
-              _InfoRow(labelKey: 'الموجه الديني', value: 'عمر يوسف الحموي'),
-              const SizedBox(height: 10),
-              _InfoRow(
-                labelKey: 'الموجهة الدينية',
-                value: 'فاطمة علي الدمشقية',
-              ),
-            ],
           ),
-          _buildResidenceSection(cs),
-          _buildFlightsSection(cs),
-          _buildRitualsSection(cs),
-          _buildLeadershipSection(cs),
-          _buildPassportSection(cs),
+          _ResidenceSection(
+            isExpanded: _expandedSections['residence'] ?? false,
+            onToggle: () => _toggleSection('residence'),
+            isAvailable: _isResidenceAvailable,
+          ),
+          _FlightsSection(
+            isExpanded: _expandedSections['flights'] ?? false,
+            onToggle: () => _toggleSection('flights'),
+            isAvailable: _isFlightAvailable,
+          ),
+          _RitualsSection(
+            isExpanded: _expandedSections['rituals'] ?? false,
+            onToggle: () => _toggleSection('rituals'),
+            isAvailable: _isRitualsAvailable,
+          ),
+          _LeadershipSection(
+            isExpanded: _expandedSections['leadership'] ?? false,
+            onToggle: () => _toggleSection('leadership'),
+          ),
+          _PassportSection(
+            isExpanded: _expandedSections['passport'] ?? false,
+            onToggle: () => _toggleSection('passport'),
+            passportImage: _passportImage,
+          ),
           const SizedBox(height: 10),
-          _GradientStripe(cs: cs),
+          const _GradientStripe(),
         ],
       ),
     );
   }
+}
 
-  // ── Header ──
+class _ProfileHeader extends StatelessWidget {
+  const _ProfileHeader({required this.profileImage});
 
-  Widget _buildHeader(ColorScheme cs) {
+  final String profileImage;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20),
       child: Row(
         children: [
           Container(
@@ -129,9 +141,9 @@ class _ProfileCardState extends State<ProfileCard> {
               color: cs.primary,
               border: Border.all(color: cs.brandGold, width: 3),
             ),
-            child: _profileImage.isNotEmpty
+            child: profileImage.isNotEmpty
                 ? CustomCachedImage(
-                    imageUrl: _profileImage,
+                    imageUrl: profileImage,
                     borderRadius: 16,
                     enableFullScreen: true,
                   )
@@ -171,8 +183,15 @@ class _ProfileCardState extends State<ProfileCard> {
       ),
     );
   }
+}
 
-  Widget _buildDivider(ColorScheme cs) {
+class _ProfileDivider extends StatelessWidget {
+  const _ProfileDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Stack(
@@ -191,173 +210,258 @@ class _ProfileCardState extends State<ProfileCard> {
       ),
     );
   }
+}
 
-  // ── Basic Info Section ──
+class _BasicInfoSection extends StatelessWidget {
+  const _BasicInfoSection({
+    required this.isExpanded,
+    required this.onToggle,
+    required this.isSaudiNumberEditing,
+    required this.saudiNumber,
+    required this.onToggleSaudiNumberEditing,
+  });
 
-  Widget _buildBasicInfoSection(ColorScheme cs) {
+  final bool isExpanded;
+  final VoidCallback onToggle;
+  final bool isSaudiNumberEditing;
+  final String? saudiNumber;
+  final VoidCallback onToggleSaudiNumberEditing;
+
+  @override
+  Widget build(BuildContext context) {
     return _ProfileInfoSection(
       titleKey: 'profile.section_basic_info',
       icon: LucideIcons.user,
-      isExpanded: _expandedSections['basic'] ?? false,
-      onToggle: () => _toggleSection('basic'),
-      iconColor: cs.primary,
+      isExpanded: isExpanded,
+      onToggle: onToggle,
+      iconColor: Theme.of(context).colorScheme.primary,
       children: [
-        _InfoRow(labelKey: 'profile.full_name', value: 'محمد أحمد الشامي'),
+        const _InfoRow(
+          labelKey: 'profile.full_name',
+          value: 'محمد أحمد الشامي',
+        ),
         const SizedBox(height: 10),
-        _InfoRow(labelKey: 'profile.group_name', value: 'التوفيق'),
+        const _InfoRow(labelKey: 'profile.group_name', value: 'التوفيق'),
         const SizedBox(height: 10),
-        _InfoRow(labelKey: 'profile.cluster_name', value: 'ارتقاء'),
+        const _InfoRow(labelKey: 'profile.cluster_name', value: 'ارتقاء'),
         const SizedBox(height: 10),
-        _InfoRow(labelKey: 'profile.office_name', value: 'دمشق'),
+        const _InfoRow(labelKey: 'profile.office_name', value: 'دمشق'),
         const SizedBox(height: 10),
-        // _InfoRow(labelKey: 'profile.office_phone', value: '+963 11 234 5678'),
-        // const SizedBox(height: 10),
-        _InfoRow(
+        const _InfoRow(
           labelKey: 'profile.mutawwif_name',
           value: 'عبدالرحمن بن خالد المطوف',
         ),
         const SizedBox(height: 10),
-
-        // saudi-number
-        _isOpenToEdit
-            ? Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: cs.primary.withValues(alpha: 0.5)),
-                  color: cs.primary.withValues(alpha: 0.05),
-                ),
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  spacing: 10,
-                  children: [
-                    CustomText(
-                      'أدخل رقم الخط السعودي الجديد',
-                      color: CustomTextColor.green,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hint: CustomText(
-                          '+966 5X XXX XXXX',
-                          color: CustomTextColor.hint,
-                        ),
-                      ),
-                    ),
-                    CustomText(
-                      'مثال: +966 50 123 4567 أو 0501234567',
-                      color: CustomTextColor.gold,
-                    ),
-                    Row(
-                      spacing: 10,
-                      children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: cs.outline.withValues(alpha: .7),
-                            ),
-                            onPressed: isOpenToEdit,
-                            label: CustomText(
-                              'إلغاء',
-                              color: CustomTextColor.green,
-                            ),
-                            icon: Icon(LucideIcons.x, color: cs.primary),
-                          ),
-                        ),
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              // if success then -> isOpenToEdit if not dont do -> isOpenToEdit
-                            },
-                            label: CustomText(
-                              'حفظ',
-                              color: CustomTextColor.white,
-                            ),
-                            icon: Icon(LucideIcons.check),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            : Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: cs.brandGold.withValues(alpha: 0.5),
-                  ),
-                ),
-                padding: const EdgeInsets.all(14),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: CustomText(
-                        'الرقم السعودي',
-                        color: CustomTextColor.gold,
-                      ),
-                    ),
-                    _saudiNumber != null && _saudiNumber != ''
-                        ? Expanded(
-                            child: Row(
-                              spacing: 10,
-                              children: [
-                                CustomText(
-                                  _saudiNumber ?? '',
-                                  color: CustomTextColor.green,
-                                ),
-                                IconButton.filled(
-                                  style: IconButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    backgroundColor: cs.brandGold,
-                                  ),
-                                  onPressed: isOpenToEdit,
-                                  icon: Icon(
-                                    LucideIcons.pen,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Expanded(
-                            child: ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: cs.brandRed,
-                              ),
-                              onPressed: isOpenToEdit,
-                              label: CustomText(
-                                'إضافة الرقم السعودي',
-                                color: CustomTextColor.white,
-                                type: CustomTextType.labelSmall,
-                              ),
-                              icon: Icon(LucideIcons.pen),
-                            ),
-                          ),
-                  ],
-                ),
-              ),
-
-        // _InfoRow(
-        //   labelKey: 'profile.emergency_phone',
-        //   value: '+963 944 123 456',
-        // ),
+        _SaudiNumberCard(
+          isEditing: isSaudiNumberEditing,
+          saudiNumber: saudiNumber,
+          onToggleEditing: onToggleSaudiNumberEditing,
+        ),
       ],
     );
   }
+}
 
-  // ── Residence Section ──
+class _SaudiNumberCard extends StatelessWidget {
+  const _SaudiNumberCard({
+    required this.isEditing,
+    required this.saudiNumber,
+    required this.onToggleEditing,
+  });
 
-  Widget _buildResidenceSection(ColorScheme cs) {
+  final bool isEditing;
+  final String? saudiNumber;
+  final VoidCallback onToggleEditing;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final hasSaudiNumber = (saudiNumber ?? '').isNotEmpty;
+
+    if (isEditing) {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: cs.primary.withValues(alpha: 0.5)),
+          color: cs.primary.withValues(alpha: 0.05),
+        ),
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: 10,
+          children: [
+            const CustomText(
+              'profile.saudi_number_edit_label',
+              color: CustomTextColor.green,
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                hint: CustomText(
+                  'profile.saudi_number_hint',
+                  color: CustomTextColor.hint,
+                ),
+              ),
+            ),
+            const CustomText(
+              'profile.saudi_number_example',
+              color: CustomTextColor.gold,
+            ),
+            Row(
+              spacing: 10,
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: cs.outline.withValues(alpha: .7),
+                    ),
+                    onPressed: onToggleEditing,
+                    label: const CustomText(
+                      'app.cancel',
+                      color: CustomTextColor.green,
+                    ),
+                    icon: Icon(LucideIcons.x, color: cs.primary),
+                  ),
+                ),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // Save edited saudi number when API is ready.
+                    },
+                    label: const CustomText(
+                      'profile.save',
+                      color: CustomTextColor.white,
+                    ),
+                    icon: const Icon(LucideIcons.check),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: cs.brandGold.withValues(alpha: 0.5)),
+      ),
+      padding: const EdgeInsets.all(14),
+      child: Row(
+        children: [
+          const Expanded(
+            child: CustomText(
+              'profile.saudi_number',
+              color: CustomTextColor.gold,
+            ),
+          ),
+          hasSaudiNumber
+              ? Expanded(
+                  child: Row(
+                    spacing: 10,
+                    children: [
+                      CustomText(
+                        saudiNumber ?? '',
+                        color: CustomTextColor.green,
+                        translate: false,
+                      ),
+                      IconButton.filled(
+                        style: IconButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          backgroundColor: cs.brandGold,
+                        ),
+                        onPressed: onToggleEditing,
+                        icon: const Icon(LucideIcons.pen, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                )
+              : Expanded(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: cs.brandRed,
+                    ),
+                    onPressed: onToggleEditing,
+                    label: const CustomText(
+                      'profile.add_saudi_number',
+                      color: CustomTextColor.white,
+                      type: CustomTextType.labelSmall,
+                    ),
+                    icon: const Icon(LucideIcons.pen),
+                  ),
+                ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CampaignStaffSection extends StatelessWidget {
+  const _CampaignStaffSection({
+    required this.isExpanded,
+    required this.onToggle,
+  });
+
+  final bool isExpanded;
+  final VoidCallback onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    return _ProfileInfoSection(
+      titleKey: 'profile.section_campaign_staff',
+      icon: LucideIcons.user,
+      isExpanded: isExpanded,
+      onToggle: onToggle,
+      iconColor: cs.brandGold,
+      children: const [
+        _InfoRow(
+          labelKey: 'profile.campaign_leader',
+          value: 'د. أحمد محمود الحلبي',
+        ),
+        SizedBox(height: 10),
+        _InfoRow(
+          labelKey: 'profile.campaign_assistant_leader',
+          value: 'محمد خالد الشامي',
+        ),
+        SizedBox(height: 10),
+        _InfoRow(labelKey: 'profile.religious_guide', value: 'عمر يوسف الحموي'),
+        SizedBox(height: 10),
+        _InfoRow(
+          labelKey: 'profile.religious_guide_female',
+          value: 'فاطمة علي الدمشقية',
+        ),
+      ],
+    );
+  }
+}
+
+class _ResidenceSection extends StatelessWidget {
+  const _ResidenceSection({
+    required this.isExpanded,
+    required this.onToggle,
+    required this.isAvailable,
+  });
+
+  final bool isExpanded;
+  final VoidCallback onToggle;
+  final bool isAvailable;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return _ProfileInfoSection(
       titleKey: 'profile.section_residence',
       icon: LucideIcons.hotel,
-      isExpanded: _expandedSections['rezident'] ?? false,
-      onToggle: () => _toggleSection('rezident'),
+      isExpanded: isExpanded,
+      onToggle: onToggle,
       iconColor: cs.brandRed,
       children: [
-        if (_rezidentAvilable) ...[
+        if (isAvailable) ...[
           _ColoredSection(
             borderColor: cs.brandRed,
             titleKey: 'profile.makkah',
@@ -396,53 +500,43 @@ class _ProfileCardState extends State<ProfileCard> {
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
-              _MapButton(),
+              const _MapButton(),
             ],
           ),
         ] else ...[
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                colors: [Color(0xffF9F8F6), Color(0xffE3DDD2)],
-                begin: AlignmentGeometry.topCenter,
-                end: AlignmentGeometry.bottomCenter,
-              ),
-            ),
-            padding: EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: 10,
-              children: [
-                CustomText(
-                  'معلومات الإقامة في مكة والمدينة غير متوفرة حالياً',
-                  color: CustomTextColor.gold,
-                ),
-                CustomText(
-                  'سيتم تزويدك بتفاصيل الفنادق، العنوانين قريباً',
-                  color: CustomTextColor.green,
-                  type: CustomTextType.bodySmall,
-                ),
-              ],
-            ),
+          const _UnavailableInfoCard(
+            titleKey: 'profile.residence_unavailable_title',
+            subtitleKey: 'profile.residence_unavailable_subtitle',
           ),
         ],
       ],
     );
   }
+}
 
-  // ── Flights Section ──
+class _FlightsSection extends StatelessWidget {
+  const _FlightsSection({
+    required this.isExpanded,
+    required this.onToggle,
+    required this.isAvailable,
+  });
 
-  Widget _buildFlightsSection(ColorScheme cs) {
+  final bool isExpanded;
+  final VoidCallback onToggle;
+  final bool isAvailable;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return _ProfileInfoSection(
       titleKey: 'profile.section_flights',
       icon: LucideIcons.plane,
-      isExpanded: _expandedSections['flight'] ?? false,
-      onToggle: () => _toggleSection('flight'),
+      isExpanded: isExpanded,
+      onToggle: onToggle,
       iconColor: cs.brandGold,
       children: [
-        if (_flightAvilable) ...[
+        if (isAvailable) ...[
           _ColoredSection(
             borderColor: cs.primary,
             titleKey: 'profile.departure_flight',
@@ -527,49 +621,39 @@ class _ProfileCardState extends State<ProfileCard> {
             ],
           ),
         ] else ...[
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                colors: [Color(0xffF9F8F6), Color(0xffE3DDD2)],
-                begin: AlignmentGeometry.topCenter,
-                end: AlignmentGeometry.bottomCenter,
-              ),
-            ),
-            padding: EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: 10,
-              children: [
-                CustomText(
-                  'معلومات رحلات الطيران غير متوفرة حالياً',
-                  color: CustomTextColor.gold,
-                ),
-                CustomText(
-                  'سيتم تزويدك بتفاصيل رحلات الذهاب والعودة قريباً',
-                  color: CustomTextColor.green,
-                  type: CustomTextType.bodySmall,
-                ),
-              ],
-            ),
+          const _UnavailableInfoCard(
+            titleKey: 'profile.flights_unavailable_title',
+            subtitleKey: 'profile.flights_unavailable_subtitle',
           ),
         ],
       ],
     );
   }
+}
 
-  // ── Rituals Section ──
+class _RitualsSection extends StatelessWidget {
+  const _RitualsSection({
+    required this.isExpanded,
+    required this.onToggle,
+    required this.isAvailable,
+  });
 
-  Widget _buildRitualsSection(ColorScheme cs) {
+  final bool isExpanded;
+  final VoidCallback onToggle;
+  final bool isAvailable;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return _ProfileInfoSection(
       titleKey: 'profile.section_rituals',
       icon: LucideIcons.tent,
-      isExpanded: _expandedSections['manasik'] ?? false,
-      onToggle: () => _toggleSection('manasik'),
+      isExpanded: isExpanded,
+      onToggle: onToggle,
       iconColor: cs.primary,
       children: [
-        if (_manasikAvilable) ...[
+        if (isAvailable) ...[
           _ColoredSection(
             borderColor: cs.primary,
             titleKey: 'profile.arafat',
@@ -587,13 +671,13 @@ class _ProfileCardState extends State<ProfileCard> {
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
-              _MapButton(),
+              const _MapButton(),
             ],
           ),
           const SizedBox(height: 20),
           _ColoredSection(
             borderColor: cs.brandGold,
-            titleKey: 'منى',
+            titleKey: 'profile.mina',
             titleColor: CustomTextColor.gold,
             children: [
               _InfoRow(
@@ -612,46 +696,31 @@ class _ProfileCardState extends State<ProfileCard> {
             ],
           ),
         ] else ...[
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                colors: [Color(0xffF9F8F6), Color(0xffE3DDD2)],
-                begin: AlignmentGeometry.topCenter,
-                end: AlignmentGeometry.bottomCenter,
-              ),
-            ),
-            padding: EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: 10,
-              children: [
-                CustomText(
-                  'معلومات مواقع المناسك غير متوفرة حالياً',
-                  color: CustomTextColor.gold,
-                ),
-                CustomText(
-                  'سيتم تزويدك بتفاصيل مخيمات عرفات ومنى قريباً',
-                  color: CustomTextColor.green,
-                  type: CustomTextType.bodySmall,
-                ),
-              ],
-            ),
+          const _UnavailableInfoCard(
+            titleKey: 'profile.rituals_unavailable_title',
+            subtitleKey: 'profile.rituals_unavailable_subtitle',
           ),
         ],
       ],
     );
   }
+}
 
-  // ── Leadership Section ──
+class _LeadershipSection extends StatelessWidget {
+  const _LeadershipSection({required this.isExpanded, required this.onToggle});
 
-  Widget _buildLeadershipSection(ColorScheme cs) {
+  final bool isExpanded;
+  final VoidCallback onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return _ProfileInfoSection(
       titleKey: 'profile.section_leadership',
       icon: LucideIcons.phone,
-      isExpanded: _expandedSections['lead'] ?? false,
-      onToggle: () => _toggleSection('lead'),
+      isExpanded: isExpanded,
+      onToggle: onToggle,
       iconColor: cs.brandRed,
       children: [
         _ColoredSection(
@@ -702,14 +771,14 @@ class _ProfileCardState extends State<ProfileCard> {
           titleColor: CustomTextColor.gold,
           children: [
             _InfoRow(
-              labelKey: 'رقم مكتب مكة',
+              labelKey: 'profile.makkah_office_phone',
               value: '+966 12 556 7890',
               containerColor: Colors.white,
               borderColor: cs.outline,
               isPhoneNumber: true,
             ),
             _InfoRow(
-              labelKey: 'رقم المطوف',
+              labelKey: 'profile.mutawwif_phone',
               value: '+963 958006040',
               containerColor: Colors.white,
               borderColor: cs.outline,
@@ -742,15 +811,28 @@ class _ProfileCardState extends State<ProfileCard> {
       ],
     );
   }
+}
 
-  // ── Passport Section ──
+class _PassportSection extends StatelessWidget {
+  const _PassportSection({
+    required this.isExpanded,
+    required this.onToggle,
+    required this.passportImage,
+  });
 
-  Widget _buildPassportSection(ColorScheme cs) {
+  final bool isExpanded;
+  final VoidCallback onToggle;
+  final String passportImage;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return _ProfileInfoSection(
       titleKey: 'profile.section_passport',
       icon: LucideIcons.fileMinus,
-      isExpanded: _expandedSections['passport'] ?? false,
-      onToggle: () => _toggleSection('passport'),
+      isExpanded: isExpanded,
+      onToggle: onToggle,
       iconColor: cs.brandGold,
       children: [
         _ColoredSection(
@@ -759,7 +841,7 @@ class _ProfileCardState extends State<ProfileCard> {
           titleColor: CustomTextColor.gold,
           children: [
             CustomCachedImage(
-              imageUrl: _passportImage,
+              imageUrl: passportImage,
               height: 184,
               borderRadius: 16,
               enableFullScreen: true,
@@ -767,7 +849,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   Image.asset(fit: BoxFit.cover, AppImages.passportPlaceholder),
             ),
             CustomText(
-              _passportImage.isNotEmpty
+              passportImage.isNotEmpty
                   ? 'profile.tap_to_preview'
                   : 'profile.no_image',
               color: CustomTextColor.gold,
@@ -776,7 +858,7 @@ class _ProfileCardState extends State<ProfileCard> {
             ),
           ],
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Row(
           spacing: 10,
           children: [
@@ -784,28 +866,66 @@ class _ProfileCardState extends State<ProfileCard> {
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(backgroundColor: cs.brandRed),
                 onPressed: () {},
-                label: CustomText(
-                  'تحميل PDF',
+                label: const CustomText(
+                  'profile.download_pdf',
                   color: CustomTextColor.white,
                   type: CustomTextType.bodySmall,
                 ),
-                icon: Icon(LucideIcons.download),
+                icon: const Icon(LucideIcons.download),
               ),
             ),
             Expanded(
               child: ElevatedButton.icon(
                 onPressed: () {},
-                label: CustomText(
-                  'مشاركة PDF',
+                label: const CustomText(
+                  'profile.share_pdf',
                   color: CustomTextColor.white,
                   type: CustomTextType.bodySmall,
                 ),
-                icon: Icon(LucideIcons.download),
+                icon: const Icon(LucideIcons.download),
               ),
             ),
           ],
         ),
       ],
+    );
+  }
+}
+
+class _UnavailableInfoCard extends StatelessWidget {
+  const _UnavailableInfoCard({
+    required this.titleKey,
+    required this.subtitleKey,
+  });
+
+  final String titleKey;
+  final String subtitleKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(),
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          colors: [Color(0xffF9F8F6), Color(0xffE3DDD2)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: 10,
+        children: [
+          CustomText(titleKey, color: CustomTextColor.gold),
+          CustomText(
+            subtitleKey,
+            color: CustomTextColor.green,
+            type: CustomTextType.bodySmall,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -838,13 +958,12 @@ class _ColoredSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 10,
         children: [
-          titleKey != null
-              ? CustomText(
-                  titleKey ?? '',
-                  color: titleColor,
-                  type: CustomTextType.bodyLarge,
-                )
-              : SizedBox.shrink(),
+          if (titleKey != null)
+            CustomText(
+              titleKey!,
+              color: titleColor,
+              type: CustomTextType.bodyLarge,
+            ),
           ...children,
         ],
       ),
@@ -969,10 +1088,11 @@ class _InfoRow extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        onPressed: () {
-                          // make a call
-                        },
-                        icon: Icon(LucideIcons.phone, color: Colors.white),
+                        onPressed: () => _launchPhoneCall(context),
+                        icon: const Icon(
+                          LucideIcons.phone,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   )
@@ -987,16 +1107,53 @@ class _InfoRow extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> _launchPhoneCall(BuildContext context) async {
+    final phoneNumber = _normalizePhoneNumber(value);
+    if (phoneNumber.isEmpty) {
+      _showCallError(context, 'profile.call_invalid_number');
+      return;
+    }
+
+    final uri = Uri.parse('tel:$phoneNumber');
+    final isSupported = await canLaunchUrl(uri);
+    if (!isSupported) {
+      if (context.mounted) {
+        _showCallError(context, 'profile.call_unavailable');
+      }
+      return;
+    }
+
+    final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!launched && context.mounted) {
+      _showCallError(context, 'profile.call_unavailable');
+    }
+  }
+
+  String _normalizePhoneNumber(String input) {
+    final trimmed = input.trim();
+    final hasLeadingPlus = trimmed.startsWith('+');
+    final digitsOnly = trimmed.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (digitsOnly.isEmpty) {
+      return '';
+    }
+
+    return hasLeadingPlus ? '+$digitsOnly' : digitsOnly;
+  }
+
+  void _showCallError(BuildContext context, String messageKey) {
+    final messenger = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        content: CustomText(messageKey),
+        backgroundColor: Theme.of(context).colorScheme.error,
+      ),
+    );
+  }
 }
 
 class _ProfileInfoSection extends StatelessWidget {
-  final String titleKey;
-  final IconData icon;
-  final bool isExpanded;
-  final VoidCallback onToggle;
-  final List<Widget> children;
-  final Color iconColor;
-
   const _ProfileInfoSection({
     required this.titleKey,
     required this.icon,
@@ -1005,6 +1162,13 @@ class _ProfileInfoSection extends StatelessWidget {
     required this.children,
     required this.iconColor,
   });
+
+  final String titleKey;
+  final IconData icon;
+  final bool isExpanded;
+  final VoidCallback onToggle;
+  final List<Widget> children;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -1063,11 +1227,12 @@ class _ProfileInfoSection extends StatelessWidget {
 }
 
 class _GradientStripe extends StatelessWidget {
-  const _GradientStripe({required this.cs});
-  final ColorScheme cs;
+  const _GradientStripe();
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Container(
       height: 5,
       decoration: BoxDecoration(
