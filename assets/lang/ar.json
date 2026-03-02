@@ -162,8 +162,8 @@
     "action_certificate_subtitle": "شهادة اتمام الحج",
     "action_complaints_title": "الشكاوي",
     "action_complaints_subtitle": "أرسل شكوى",
-    "help_title": "أحتاج مساعدة",
-    "help_subtitle": "إرسال موقعي الحالي",
+    "help_title": "هل أنت ضائع؟",
+    "help_subtitle": "اضغط هنا لإرسال موقعك الحالي",
     "help_dialog_title": "هل تحتاج مساعدة؟",
     "help_dialog_subtitle": "سيتم إرسال موقعك الحالي للمشرفين فوراً",
     "help_dialog_gps_title": "سيتم تحديد موقعك",
@@ -231,7 +231,7 @@
     "training": "التدريب",
     "support": "الدعم",
     "more": "المزيد",
-    "help": "مساعدة"
+    "help": "أنا ضائع"
   },
   "validation": {
     "required": "هذا الحقل مطلوب",

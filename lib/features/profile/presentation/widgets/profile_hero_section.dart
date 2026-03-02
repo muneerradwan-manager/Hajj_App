@@ -13,9 +13,8 @@ class ProfileHeroSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-      spacing: 20,
       children: [
-        SizedBox(height: MediaQuery.of(context).padding.top),
+        SizedBox(height: MediaQuery.of(context).padding.top + 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -63,15 +62,17 @@ class ProfileHeroSection extends StatelessWidget {
             ),
           ],
         ),
+        SizedBox(height: 20),
         CustomText(
           'profile.digital_card_title',
           color: CustomTextColor.white,
           type: CustomTextType.headlineSmall,
         ),
+        SizedBox(height: 10),
         CustomText(
           'profile.complete_info',
-          color: CustomTextColor.white,
-          type: CustomTextType.bodyLarge,
+          type: CustomTextType.labelLarge,
+          color: CustomTextColor.lightGold,
         ),
       ],
     );

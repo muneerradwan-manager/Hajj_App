@@ -16,9 +16,15 @@ class ProfileCard extends StatefulWidget {
 class _ProfileCardState extends State<ProfileCard> {
   final String _profileImage = '';
   final String _passportImage = '';
+  String? _saudiNumber;
+  bool _isOpenToEdit = false;
+  final bool _rezidentAvilable = false;
+  final bool _flightAvilable = false;
+  final bool _manasikAvilable = false;
 
   final Map<String, bool> _expandedSections = {
     'basic': true,
+    'team': false,
     'rezident': false,
     'flight': false,
     'manasik': false,
@@ -30,6 +36,22 @@ class _ProfileCardState extends State<ProfileCard> {
     setState(() {
       _expandedSections[key] = !(_expandedSections[key] ?? false);
     });
+  }
+
+  void initSaudiNumber() {
+    _saudiNumber = '0954565464';
+    setState(() {});
+  }
+
+  void isOpenToEdit() {
+    _isOpenToEdit = !_isOpenToEdit;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initSaudiNumber();
   }
 
   @override
@@ -58,6 +80,28 @@ class _ProfileCardState extends State<ProfileCard> {
           _buildHeader(cs),
           _buildDivider(cs),
           _buildBasicInfoSection(cs),
+          _ProfileInfoSection(
+            titleKey: 'كادر حملة الحج',
+            icon: LucideIcons.user,
+            isExpanded: _expandedSections['team'] ?? false,
+            onToggle: () => _toggleSection('team'),
+            iconColor: cs.brandGold,
+            children: [
+              _InfoRow(labelKey: 'رئيس الحملة', value: 'د. أحمد محمود الحلبي'),
+              const SizedBox(height: 10),
+              _InfoRow(
+                labelKey: 'معاون رئيس الحملة',
+                value: 'محمد خالد الشامي',
+              ),
+              const SizedBox(height: 10),
+              _InfoRow(labelKey: 'الموجه الديني', value: 'عمر يوسف الحموي'),
+              const SizedBox(height: 10),
+              _InfoRow(
+                labelKey: 'الموجهة الدينية',
+                value: 'فاطمة علي الدمشقية',
+              ),
+            ],
+          ),
           _buildResidenceSection(cs),
           _buildFlightsSection(cs),
           _buildRitualsSection(cs),
@@ -108,9 +152,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   decoration: BoxDecoration(
                     color: cs.primary.withValues(alpha: .1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: cs.primary.withValues(alpha: .3),
-                    ),
+                    border: Border.all(color: cs.primary.withValues(alpha: .3)),
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -168,17 +210,139 @@ class _ProfileCardState extends State<ProfileCard> {
         const SizedBox(height: 10),
         _InfoRow(labelKey: 'profile.office_name', value: 'دمشق'),
         const SizedBox(height: 10),
-        _InfoRow(labelKey: 'profile.office_phone', value: '+963 11 234 5678'),
-        const SizedBox(height: 10),
+        // _InfoRow(labelKey: 'profile.office_phone', value: '+963 11 234 5678'),
+        // const SizedBox(height: 10),
         _InfoRow(
           labelKey: 'profile.mutawwif_name',
           value: 'عبدالرحمن بن خالد المطوف',
         ),
         const SizedBox(height: 10),
-        _InfoRow(
-          labelKey: 'profile.emergency_phone',
-          value: '+963 944 123 456',
-        ),
+
+        // saudi-number
+        _isOpenToEdit
+            ? Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: cs.primary.withValues(alpha: 0.5)),
+                  color: cs.primary.withValues(alpha: 0.05),
+                ),
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 10,
+                  children: [
+                    CustomText(
+                      'أدخل رقم الخط السعودي الجديد',
+                      color: CustomTextColor.green,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hint: CustomText(
+                          '+966 5X XXX XXXX',
+                          color: CustomTextColor.hint,
+                        ),
+                      ),
+                    ),
+                    CustomText(
+                      'مثال: +966 50 123 4567 أو 0501234567',
+                      color: CustomTextColor.gold,
+                    ),
+                    Row(
+                      spacing: 10,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: cs.outline.withValues(alpha: .7),
+                            ),
+                            onPressed: isOpenToEdit,
+                            label: CustomText(
+                              'إلغاء',
+                              color: CustomTextColor.green,
+                            ),
+                            icon: Icon(LucideIcons.x, color: cs.primary),
+                          ),
+                        ),
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              // if success then -> isOpenToEdit if not dont do -> isOpenToEdit
+                            },
+                            label: CustomText(
+                              'حفظ',
+                              color: CustomTextColor.white,
+                            ),
+                            icon: Icon(LucideIcons.check),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: cs.brandGold.withValues(alpha: 0.5),
+                  ),
+                ),
+                padding: const EdgeInsets.all(14),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomText(
+                        'الرقم السعودي',
+                        color: CustomTextColor.gold,
+                      ),
+                    ),
+                    _saudiNumber != null && _saudiNumber != ''
+                        ? Expanded(
+                            child: Row(
+                              spacing: 10,
+                              children: [
+                                CustomText(
+                                  _saudiNumber ?? '',
+                                  color: CustomTextColor.green,
+                                ),
+                                IconButton.filled(
+                                  style: IconButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    backgroundColor: cs.brandGold,
+                                  ),
+                                  onPressed: isOpenToEdit,
+                                  icon: Icon(
+                                    LucideIcons.pen,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Expanded(
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: cs.brandRed,
+                              ),
+                              onPressed: isOpenToEdit,
+                              label: CustomText(
+                                'إضافة الرقم السعودي',
+                                color: CustomTextColor.white,
+                                type: CustomTextType.labelSmall,
+                              ),
+                              icon: Icon(LucideIcons.pen),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+
+        // _InfoRow(
+        //   labelKey: 'profile.emergency_phone',
+        //   value: '+963 944 123 456',
+        // ),
       ],
     );
   }
@@ -193,47 +357,77 @@ class _ProfileCardState extends State<ProfileCard> {
       onToggle: () => _toggleSection('rezident'),
       iconColor: cs.brandRed,
       children: [
-        _ColoredSection(
-          borderColor: cs.brandRed,
-          titleKey: 'profile.makkah',
-          titleColor: CustomTextColor.red,
-          children: [
-            _InfoRow(
-              labelKey: 'profile.hotel_name',
-              value: 'فندق مكة هيلتون',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
+        if (_rezidentAvilable) ...[
+          _ColoredSection(
+            borderColor: cs.brandRed,
+            titleKey: 'profile.makkah',
+            titleColor: CustomTextColor.red,
+            children: [
+              _InfoRow(
+                labelKey: 'profile.hotel_name',
+                value: 'فندق مكة هيلتون',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.location',
+                value: 'شارع إبراهيم الخليل',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _MapButton(backgroundColor: cs.brandRed),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _ColoredSection(
+            borderColor: cs.primary,
+            titleKey: 'profile.madinah',
+            titleColor: CustomTextColor.red,
+            children: [
+              _InfoRow(
+                labelKey: 'profile.hotel_name',
+                value: 'فندق المدينة موفنبيك',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.location',
+                value: 'طريق الملك فهد',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _MapButton(),
+            ],
+          ),
+        ] else ...[
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                colors: [Color(0xffF9F8F6), Color(0xffE3DDD2)],
+                begin: AlignmentGeometry.topCenter,
+                end: AlignmentGeometry.bottomCenter,
+              ),
             ),
-            _InfoRow(
-              labelKey: 'profile.location',
-              value: 'شارع إبراهيم الخليل',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
+            padding: EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 10,
+              children: [
+                CustomText(
+                  'معلومات الإقامة في مكة والمدينة غير متوفرة حالياً',
+                  color: CustomTextColor.gold,
+                ),
+                CustomText(
+                  'سيتم تزويدك بتفاصيل الفنادق، العنوانين قريباً',
+                  color: CustomTextColor.green,
+                  type: CustomTextType.bodySmall,
+                ),
+              ],
             ),
-            _MapButton(backgroundColor: cs.brandRed),
-          ],
-        ),
-        const SizedBox(height: 20),
-        _ColoredSection(
-          borderColor: cs.primary,
-          titleKey: 'profile.madinah',
-          titleColor: CustomTextColor.red,
-          children: [
-            _InfoRow(
-              labelKey: 'profile.hotel_name',
-              value: 'فندق المدينة موفنبيك',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _InfoRow(
-              labelKey: 'profile.location',
-              value: 'طريق الملك فهد',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _MapButton(),
-          ],
-        ),
+          ),
+        ],
       ],
     );
   }
@@ -248,89 +442,119 @@ class _ProfileCardState extends State<ProfileCard> {
       onToggle: () => _toggleSection('flight'),
       iconColor: cs.brandGold,
       children: [
-        _ColoredSection(
-          borderColor: cs.primary,
-          titleKey: 'profile.departure_flight',
-          titleColor: CustomTextColor.green,
-          children: [
-            _FlightNumberBadge(
-              flightNumber: 'SYR-1234',
-              backgroundColor: cs.primary,
+        if (_flightAvilable) ...[
+          _ColoredSection(
+            borderColor: cs.primary,
+            titleKey: 'profile.departure_flight',
+            titleColor: CustomTextColor.green,
+            children: [
+              _FlightNumberBadge(
+                flightNumber: 'SYR-1234',
+                backgroundColor: cs.primary,
+              ),
+              _InfoRow(
+                labelKey: 'profile.airline',
+                value: 'الخطوط الجوية السورية',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.departure_time',
+                value: '10 يونيو 2026 - 14:30',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.arrival_time',
+                value: '10 يونيو 2026 - 18:45',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.departure_airport',
+                value: 'مطار دمشق الدولي',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.arrival_airport',
+                value: 'مطار الملك عبدالعزيز - جدة',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _ColoredSection(
+            borderColor: cs.primary,
+            titleKey: 'profile.return_flight',
+            titleColor: CustomTextColor.gold,
+            children: [
+              _FlightNumberBadge(
+                flightNumber: 'SYR-5678',
+                backgroundColor: cs.brandGold,
+              ),
+              _InfoRow(
+                labelKey: 'profile.airline',
+                value: 'الخطوط الجوية السورية',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.departure_time',
+                value: '10 يونيو 2026 - 14:30',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.arrival_time',
+                value: '10 يونيو 2026 - 18:45',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.departure_airport',
+                value: 'مطار الملك عبدالعزيز - جدة',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.arrival_airport',
+                value: 'مطار دمشق الدولي',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+            ],
+          ),
+        ] else ...[
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                colors: [Color(0xffF9F8F6), Color(0xffE3DDD2)],
+                begin: AlignmentGeometry.topCenter,
+                end: AlignmentGeometry.bottomCenter,
+              ),
             ),
-            _InfoRow(
-              labelKey: 'profile.airline',
-              value: 'الخطوط الجوية السورية',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
+            padding: EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 10,
+              children: [
+                CustomText(
+                  'معلومات رحلات الطيران غير متوفرة حالياً',
+                  color: CustomTextColor.gold,
+                ),
+                CustomText(
+                  'سيتم تزويدك بتفاصيل رحلات الذهاب والعودة قريباً',
+                  color: CustomTextColor.green,
+                  type: CustomTextType.bodySmall,
+                ),
+              ],
             ),
-            _InfoRow(
-              labelKey: 'profile.departure_time',
-              value: '10 يونيو 2026 - 14:30',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _InfoRow(
-              labelKey: 'profile.arrival_time',
-              value: '10 يونيو 2026 - 18:45',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _InfoRow(
-              labelKey: 'profile.departure_airport',
-              value: 'مطار دمشق الدولي',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _InfoRow(
-              labelKey: 'profile.arrival_airport',
-              value: 'مطار الملك عبدالعزيز - جدة',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        _ColoredSection(
-          borderColor: cs.primary,
-          titleKey: 'profile.return_flight',
-          titleColor: CustomTextColor.gold,
-          children: [
-            _FlightNumberBadge(
-              flightNumber: 'SYR-5678',
-              backgroundColor: cs.brandGold,
-            ),
-            _InfoRow(
-              labelKey: 'profile.airline',
-              value: 'الخطوط الجوية السورية',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _InfoRow(
-              labelKey: 'profile.departure_time',
-              value: '10 يونيو 2026 - 14:30',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _InfoRow(
-              labelKey: 'profile.arrival_time',
-              value: '10 يونيو 2026 - 18:45',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _InfoRow(
-              labelKey: 'profile.departure_airport',
-              value: 'مطار الملك عبدالعزيز - جدة',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _InfoRow(
-              labelKey: 'profile.arrival_airport',
-              value: 'مطار دمشق الدولي',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-          ],
-        ),
+          ),
+        ],
       ],
     );
   }
@@ -345,47 +569,77 @@ class _ProfileCardState extends State<ProfileCard> {
       onToggle: () => _toggleSection('manasik'),
       iconColor: cs.primary,
       children: [
-        _ColoredSection(
-          borderColor: cs.primary,
-          titleKey: 'profile.arafat',
-          titleColor: CustomTextColor.green,
-          children: [
-            _InfoRow(
-              labelKey: 'profile.camp_number',
-              value: 'A-245',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
+        if (_manasikAvilable) ...[
+          _ColoredSection(
+            borderColor: cs.primary,
+            titleKey: 'profile.arafat',
+            titleColor: CustomTextColor.green,
+            children: [
+              _InfoRow(
+                labelKey: 'profile.camp_number',
+                value: 'A-245',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.camp_location',
+                value: 'منطقة نمرة، عرفات',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _MapButton(),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _ColoredSection(
+            borderColor: cs.brandGold,
+            titleKey: 'منى',
+            titleColor: CustomTextColor.gold,
+            children: [
+              _InfoRow(
+                labelKey: 'profile.camp_number',
+                value: 'M-189',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _InfoRow(
+                labelKey: 'profile.camp_location',
+                value: 'الجمرات الوسطى، منى',
+                containerColor: Colors.white,
+                borderColor: cs.outline,
+              ),
+              _MapButton(backgroundColor: cs.brandGold),
+            ],
+          ),
+        ] else ...[
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                colors: [Color(0xffF9F8F6), Color(0xffE3DDD2)],
+                begin: AlignmentGeometry.topCenter,
+                end: AlignmentGeometry.bottomCenter,
+              ),
             ),
-            _InfoRow(
-              labelKey: 'profile.camp_location',
-              value: 'منطقة نمرة، عرفات',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
+            padding: EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 10,
+              children: [
+                CustomText(
+                  'معلومات مواقع المناسك غير متوفرة حالياً',
+                  color: CustomTextColor.gold,
+                ),
+                CustomText(
+                  'سيتم تزويدك بتفاصيل مخيمات عرفات ومنى قريباً',
+                  color: CustomTextColor.green,
+                  type: CustomTextType.bodySmall,
+                ),
+              ],
             ),
-            _MapButton(),
-          ],
-        ),
-        const SizedBox(height: 20),
-        _ColoredSection(
-          borderColor: cs.brandGold,
-          titleKey: 'profile.madinah',
-          titleColor: CustomTextColor.gold,
-          children: [
-            _InfoRow(
-              labelKey: 'profile.camp_number',
-              value: 'M-189',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _InfoRow(
-              labelKey: 'profile.camp_location',
-              value: 'الجمرات الوسطى، منى',
-              containerColor: Colors.white,
-              borderColor: cs.outline,
-            ),
-            _MapButton(backgroundColor: cs.brandGold),
-          ],
-        ),
+          ),
+        ],
       ],
     );
   }
@@ -416,14 +670,15 @@ class _ProfileCardState extends State<ProfileCard> {
               value: '+20 1158032715',
               containerColor: Colors.white,
               borderColor: cs.outline,
+              isPhoneNumber: true,
             ),
           ],
         ),
         const SizedBox(height: 20),
         _ColoredSection(
-          borderColor: cs.brandGold,
+          borderColor: cs.brandRed,
           titleKey: 'profile.group_leader',
-          titleColor: CustomTextColor.gold,
+          titleColor: CustomTextColor.red,
           children: [
             _InfoRow(
               labelKey: 'profile.name',
@@ -436,6 +691,29 @@ class _ProfileCardState extends State<ProfileCard> {
               value: '+20 1158032715',
               containerColor: Colors.white,
               borderColor: cs.outline,
+              isPhoneNumber: true,
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        _ColoredSection(
+          borderColor: cs.brandGold,
+          titleKey: null,
+          titleColor: CustomTextColor.gold,
+          children: [
+            _InfoRow(
+              labelKey: 'رقم مكتب مكة',
+              value: '+966 12 556 7890',
+              containerColor: Colors.white,
+              borderColor: cs.outline,
+              isPhoneNumber: true,
+            ),
+            _InfoRow(
+              labelKey: 'رقم المطوف',
+              value: '+963 958006040',
+              containerColor: Colors.white,
+              borderColor: cs.outline,
+              isPhoneNumber: true,
             ),
           ],
         ),
@@ -443,19 +721,21 @@ class _ProfileCardState extends State<ProfileCard> {
         _ColoredSection(
           borderColor: cs.brandRed,
           titleKey: 'profile.emergency_numbers',
-          titleColor: CustomTextColor.gold,
+          titleColor: CustomTextColor.red,
           children: [
             _InfoRow(
               labelKey: 'profile.civil_defense',
               value: '998',
               containerColor: Colors.white,
               borderColor: cs.outline,
+              isPhoneNumber: true,
             ),
             _InfoRow(
               labelKey: 'profile.hajj_office',
               value: '+963 958006040',
               containerColor: Colors.white,
               borderColor: cs.outline,
+              isPhoneNumber: true,
             ),
           ],
         ),
@@ -483,10 +763,8 @@ class _ProfileCardState extends State<ProfileCard> {
               height: 184,
               borderRadius: 16,
               enableFullScreen: true,
-              emptyWidget: (context) => Image.asset(
-                fit: BoxFit.cover,
-                AppImages.passportPlaceholder,
-              ),
+              emptyWidget: (context) =>
+                  Image.asset(fit: BoxFit.cover, AppImages.passportPlaceholder),
             ),
             CustomText(
               _passportImage.isNotEmpty
@@ -495,6 +773,35 @@ class _ProfileCardState extends State<ProfileCard> {
               color: CustomTextColor.gold,
               type: CustomTextType.labelMedium,
               textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        SizedBox(height: 20),
+        Row(
+          spacing: 10,
+          children: [
+            Expanded(
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(backgroundColor: cs.brandRed),
+                onPressed: () {},
+                label: CustomText(
+                  'تحميل PDF',
+                  color: CustomTextColor.white,
+                  type: CustomTextType.bodySmall,
+                ),
+                icon: Icon(LucideIcons.download),
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                label: CustomText(
+                  'مشاركة PDF',
+                  color: CustomTextColor.white,
+                  type: CustomTextType.bodySmall,
+                ),
+                icon: Icon(LucideIcons.download),
+              ),
             ),
           ],
         ),
@@ -508,13 +815,13 @@ class _ProfileCardState extends State<ProfileCard> {
 class _ColoredSection extends StatelessWidget {
   const _ColoredSection({
     required this.borderColor,
-    required this.titleKey,
+    this.titleKey,
     required this.titleColor,
     required this.children,
   });
 
   final Color borderColor;
-  final String titleKey;
+  final String? titleKey;
   final CustomTextColor titleColor;
   final List<Widget> children;
 
@@ -531,11 +838,13 @@ class _ColoredSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 10,
         children: [
-          CustomText(
-            titleKey,
-            color: titleColor,
-            type: CustomTextType.bodyLarge,
-          ),
+          titleKey != null
+              ? CustomText(
+                  titleKey ?? '',
+                  color: titleColor,
+                  type: CustomTextType.bodyLarge,
+                )
+              : SizedBox.shrink(),
           ...children,
         ],
       ),
@@ -608,12 +917,14 @@ class _InfoRow extends StatelessWidget {
     required this.value,
     this.containerColor,
     this.borderColor,
+    this.isPhoneNumber = false,
   });
 
   final String labelKey;
   final String value;
   final Color? containerColor;
   final Color? borderColor;
+  final bool isPhoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -629,16 +940,48 @@ class _InfoRow extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(14),
       child: Row(
+        spacing: 10,
         children: [
           Expanded(
-            child: CustomText(labelKey, color: CustomTextColor.gold),
+            flex: 1,
+            child: CustomText(
+              labelKey,
+              color: CustomTextColor.gold,
+              type: CustomTextType.labelMedium,
+            ),
           ),
           Expanded(
-            child: CustomText(
-              value,
-              color: CustomTextColor.green,
-              translate: false,
-            ),
+            flex: 2,
+            child: isPhoneNumber
+                ? Row(
+                    children: [
+                      Expanded(
+                        child: CustomText(
+                          value,
+                          color: CustomTextColor.green,
+                          translate: false,
+                          type: CustomTextType.labelMedium,
+                        ),
+                      ),
+                      IconButton.filled(
+                        style: IconButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        onPressed: () {
+                          // make a call
+                        },
+                        icon: Icon(LucideIcons.phone, color: Colors.white),
+                      ),
+                    ],
+                  )
+                : CustomText(
+                    value,
+                    color: CustomTextColor.green,
+                    translate: false,
+                    type: CustomTextType.labelMedium,
+                  ),
           ),
         ],
       ),
@@ -683,16 +1026,13 @@ class _ProfileInfoSection extends StatelessWidget {
                     height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: iconColor.withValues(alpha: 0.1),
+                      color: iconColor,
                     ),
-                    child: Icon(icon, color: iconColor, size: 20),
+                    child: Icon(icon, color: Colors.white, size: 20),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: CustomText(
-                      titleKey,
-                      color: CustomTextColor.green,
-                    ),
+                    child: CustomText(titleKey, color: CustomTextColor.green),
                   ),
                   Icon(
                     isExpanded

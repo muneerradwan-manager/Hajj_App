@@ -238,30 +238,29 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
           // ── Buttons ──
           Padding(
             padding: const EdgeInsets.all(20),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               spacing: 12,
               children: [
                 // Send location button
-                Expanded(flex: 3, child: _buildSendButton(cs)),
+                _buildSendButton(cs),
                 // Cancel button
-                Expanded(
-                  flex: 2,
-                  child: OutlinedButton(
-                    onPressed: _isSending
-                        ? null
-                        : () => Navigator.of(context).pop(),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      side: BorderSide(color: cs.outline),
+                OutlinedButton(
+                  onPressed: _isSending
+                      ? null
+                      : () => Navigator.of(context).pop(),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const CustomText(
-                      'home.help_dialog_cancel',
-                      type: CustomTextType.titleSmall,
-                      color: CustomTextColor.black,
-                    ),
+                    backgroundColor: cs.outline.withValues(alpha: .3),
+                    side: BorderSide(color: cs.outline),
+                  ),
+                  child: const CustomText(
+                    'home.help_dialog_cancel',
+                    type: CustomTextType.titleSmall,
+                    color: CustomTextColor.green,
                   ),
                 ),
               ],
@@ -322,7 +321,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
                   ),
                   const SizedBox(height: 16),
                   const CustomText(
-                    'home.help_dialog_title',
+                    'هل أنت ضائع؟',
                     type: CustomTextType.titleLarge,
                     color: CustomTextColor.white,
                   ),
@@ -330,7 +329,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: CustomText(
-                      'home.help_dialog_subtitle',
+                      'سيتم إرسال موقعك الحالي للتبليغ عن حالة ضياع',
                       type: CustomTextType.bodyMedium,
                       color: CustomTextColor.lightGold,
                       textAlign: TextAlign.center,
@@ -364,7 +363,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [cs.primaryContainer, cs.primary],
+          colors: [cs.brandRed, cs.brandRedAlt],
         ),
       ),
       child: ElevatedButton(
@@ -393,7 +392,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
                 children: [
                   Icon(LucideIcons.mapPin, color: AppColors.white, size: 18),
                   CustomText(
-                    'home.help_dialog_send_button',
+                    'نعم، أنا ضائع - أرسل موقعي',
                     type: CustomTextType.titleSmall,
                     color: CustomTextColor.white,
                   ),
@@ -417,7 +416,21 @@ class _InfoTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
+        spacing: 10,
         children: [
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: cs.primaryContainer,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              LucideIcons.check,
+              color: AppColors.white,
+              size: 16,
+            ),
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -434,19 +447,6 @@ class _InfoTile extends StatelessWidget {
                   color: CustomTextColor.hint,
                 ),
               ],
-            ),
-          ),
-          Container(
-            width: 28,
-            height: 28,
-            decoration: BoxDecoration(
-              color: cs.primary,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              LucideIcons.check,
-              color: AppColors.white,
-              size: 16,
             ),
           ),
         ],

@@ -136,11 +136,12 @@ class _NavigationBottomState extends State<NavigationBottom> {
                 child: Column(
                   children: [
                     Container(
-                      width: 56,
-                      height: 56,
+                      width: 65,
+                      height: 65,
                       decoration: BoxDecoration(
                         color: cs.brandRed,
                         shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
                         boxShadow: [
                           BoxShadow(
                             color: cs.brandRed.withValues(alpha: 0.3),
@@ -190,9 +191,9 @@ class _BottomNavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final activeColor = colorScheme.primary;
-    final inactiveColor = colorScheme.brandGold;
+    final cs = theme.colorScheme;
+    final activeColor = cs.primary;
+    final inactiveColor = cs.brandGold;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 3),
@@ -201,43 +202,43 @@ class _BottomNavItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
           onTap: onTap,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 220),
-            curve: Curves.easeOutCubic,
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? activeColor.withValues(alpha: 0.12)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeOutCubic,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? activeColor
+                      : cs.outline.withValues(alpha: .3),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Icon(
                   icon,
                   size: 22,
-                  color: isSelected ? activeColor : inactiveColor,
+                  color: isSelected ? Colors.white : inactiveColor,
                 ),
-                const SizedBox(height: 4),
-                AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 220),
-                  curve: Curves.easeOutCubic,
-                  style: (theme.textTheme.labelSmall ?? const TextStyle())
-                      .copyWith(
-                        color: isSelected ? activeColor : inactiveColor,
-                        fontWeight: isSelected
-                            ? FontWeight.w600
-                            : FontWeight.w500,
-                      ),
-                  child: Text(
-                    labelKey.tr(context),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+              ),
+              const SizedBox(height: 4),
+              AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeOutCubic,
+                style: (theme.textTheme.labelSmall ?? const TextStyle())
+                    .copyWith(
+                      color: isSelected ? activeColor : inactiveColor,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w500,
+                    ),
+                child: Text(
+                  labelKey.tr(context),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

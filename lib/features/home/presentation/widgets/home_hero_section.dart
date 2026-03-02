@@ -28,11 +28,11 @@ class HomeHeroSection extends StatelessWidget {
                   type: CustomTextType.headlineSmall,
                   color: CustomTextColor.white,
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 10),
                 CustomText(
                   'home.welcome_subtitle',
                   textAlign: TextAlign.center,
-                  type: CustomTextType.bodyLarge,
+                  type: CustomTextType.labelLarge,
                   color: CustomTextColor.lightGold,
                 ),
               ],

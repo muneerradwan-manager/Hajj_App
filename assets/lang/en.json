@@ -162,8 +162,8 @@
     "action_certificate_subtitle": "Hajj completion certificate",
     "action_complaints_title": "Complaints",
     "action_complaints_subtitle": "Submit a complaint",
-    "help_title": "I Need Help",
-    "help_subtitle": "Send My Current Location",
+    "help_title": "Are You Lost ?!",
+    "help_subtitle": "Clich Here To Send Your Current Location",
     "help_dialog_title": "Do you need help?",
     "help_dialog_subtitle": "Your current location will be sent to supervisors immediately",
     "help_dialog_gps_title": "Your location will be determined",
@@ -231,7 +231,7 @@
     "training": "Training",
     "support": "Support",
     "more": "More",
-    "help": "Help"
+    "help": "I am Lost"
   },
   "validation": {
     "required": "This field is required",
