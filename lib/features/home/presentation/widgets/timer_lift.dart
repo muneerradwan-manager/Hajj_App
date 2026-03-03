@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hijri/hijri_calendar.dart';
 
 import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:hijri_date/hijri.dart';
 
 class TimerLift extends StatefulWidget {
   const TimerLift({super.key});
@@ -25,7 +25,7 @@ class _TimerLiftState extends State<TimerLift> {
   @override
   void initState() {
     super.initState();
-    _targetDate = HijriCalendar().hijriToGregorian(
+    _targetDate = HijriDate().hijriToGregorian(
       _targetHijriYear,
       _targetHijriMonth,
       _targetHijriDay,

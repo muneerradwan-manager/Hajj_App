@@ -62,7 +62,7 @@ abstract final class HeroBackground {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(AppImages.background),
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
             ),
           ),
         ),
