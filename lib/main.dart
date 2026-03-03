@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hajj_app/core/bloc/app_bloc_observer.dart';
 import 'package:hajj_app/core/bootstrap/app_bootstrap.dart';
 import 'package:hajj_app/core/di/dependency_injection.dart';
 import 'package:hajj_app/core/localization/app_localizations_setup.dart';
@@ -32,6 +33,7 @@ bool get _enableDevicePreview {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = AppBlocObserver();
   await bootstrapApp();
 
   final app = _enableDevicePreview

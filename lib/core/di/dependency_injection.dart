@@ -11,6 +11,7 @@ import 'package:hajj_app/features/auth/domain/repositories/auth_repository.dart'
 import 'package:hajj_app/features/auth/domain/usecases/clear_register_draft_usecase.dart';
 import 'package:hajj_app/features/auth/domain/usecases/confirm_email_usecase.dart';
 import 'package:hajj_app/features/auth/domain/usecases/forgot_password_usecase.dart';
+import 'package:hajj_app/features/auth/domain/usecases/get_me_usecase.dart';
 import 'package:hajj_app/features/auth/domain/usecases/load_register_draft_usecase.dart';
 import 'package:hajj_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:hajj_app/features/auth/domain/usecases/logout_usecase.dart';
@@ -21,6 +22,7 @@ import 'package:hajj_app/features/auth/domain/usecases/save_register_draft_useca
 import 'package:hajj_app/features/auth/domain/usecases/submit_register_usecase.dart';
 import 'package:hajj_app/features/auth/presentation/cubits/forget_password/forget_password_cubit.dart';
 import 'package:hajj_app/features/auth/presentation/cubits/login/login_cubit.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/me/me_cubit.dart';
 import 'package:hajj_app/features/auth/presentation/cubits/register/register_cubit.dart';
 import 'package:hajj_app/features/home/data/services/prayer_times_service_impl.dart';
 import 'package:hajj_app/features/home/domain/services/prayer_times_service.dart';
@@ -85,6 +87,12 @@ void setupDependencies() {
   if (!getIt.isRegistered<LoginUseCase>()) {
     getIt.registerLazySingleton<LoginUseCase>(
       () => LoginUseCase(getIt<AuthRepository>()),
+    );
+  }
+
+  if (!getIt.isRegistered<GetMeUseCase>()) {
+    getIt.registerLazySingleton<GetMeUseCase>(
+      () => GetMeUseCase(getIt<AuthRepository>()),
     );
   }
 
@@ -165,6 +173,10 @@ void setupDependencies() {
     getIt.registerFactory<LoginCubit>(
       () => LoginCubit(getIt<LoginUseCase>(), getIt<LogoutUseCase>()),
     );
+  }
+
+  if (!getIt.isRegistered<MeCubit>()) {
+    getIt.registerFactory<MeCubit>(() => MeCubit(getIt<GetMeUseCase>()));
   }
 
   if (!getIt.isRegistered<ForgetPasswordCubit>()) {

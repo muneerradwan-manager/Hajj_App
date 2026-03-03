@@ -132,14 +132,22 @@ class HomeCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
-            child: ElevatedButton.icon(
+            child: ElevatedButton(
               onPressed: () {
                 context.push(AppRoutes.profilePath);
               },
-              icon: const Icon(LucideIcons.squareArrowRight, size: 18),
-              label: const CustomText(
-                'home.view_full_card',
-                color: CustomTextColor.white,
+
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 10,
+                children: [
+                  Icon(LucideIcons.chevronLeft, size: 18),
+                  CustomText(
+                    'home.view_full_card',
+                    color: CustomTextColor.white,
+                  ),
+                  Icon(LucideIcons.eye, size: 18),
+                ],
               ),
             ),
           ),

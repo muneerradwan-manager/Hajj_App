@@ -14,6 +14,7 @@ import 'package:hajj_app/features/auth/data/models/register_request_model.dart';
 import 'package:hajj_app/features/auth/data/models/refresh_token_request_model.dart';
 import 'package:hajj_app/features/auth/data/models/reset_password_request_model.dart';
 import 'package:hajj_app/features/auth/data/models/resend_confirm_email_request_model.dart';
+import 'package:hajj_app/features/auth/domain/entities/user_profile.dart';
 import 'package:hajj_app/features/auth/domain/entities/auth_session.dart';
 import 'package:hajj_app/features/auth/domain/entities/register_draft.dart';
 import 'package:hajj_app/features/auth/domain/repositories/auth_repository.dart';
@@ -41,6 +42,16 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       final model = await _remoteDataSource.login(request);
       await _saveSessionTokens(model);
+      return right(model.toEntity());
+    } on Exception catch (error) {
+      return left(ApiErrorHandler.handle(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserProfile>> getMe() async {
+    try {
+      final model = await _remoteDataSource.getMe();
       return right(model.toEntity());
     } on Exception catch (error) {
       return left(ApiErrorHandler.handle(error));

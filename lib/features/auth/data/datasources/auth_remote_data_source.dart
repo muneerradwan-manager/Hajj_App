@@ -9,6 +9,7 @@ import 'package:hajj_app/features/auth/data/models/register_request_model.dart';
 import 'package:hajj_app/features/auth/data/models/refresh_token_request_model.dart';
 import 'package:hajj_app/features/auth/data/models/reset_password_request_model.dart';
 import 'package:hajj_app/features/auth/data/models/resend_confirm_email_request_model.dart';
+import 'package:hajj_app/features/auth/data/models/user_profile_model.dart';
 
 class AuthRemoteDataSource {
   final DioClient _dioClient;
@@ -32,6 +33,12 @@ class AuthRemoteDataSource {
 
     final map = _extractMap(response.data);
     return AuthSessionModel.fromJson(map);
+  }
+
+  Future<UserProfileModel> getMe() async {
+    final response = await _dioClient.get<dynamic>(AppUrls.me);
+    final map = _extractMap(response.data);
+    return UserProfileModel.fromJson(map);
   }
 
   Future<String> logout() async {

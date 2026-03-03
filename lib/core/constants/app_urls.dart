@@ -3,6 +3,7 @@ import '../config/env_config.dart';
 class AppUrls {
   static String get baseUrl => EnvConfig.apiBaseUrl;
   static const String login = '/Auth/login';
+  static const String me = '/Auth/me';
   static const String logout = '/Auth/logout';
   static const String register = '/Auth/register';
   static const String verifyOtp = '/Auth/confirm-email';

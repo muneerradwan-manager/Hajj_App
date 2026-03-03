@@ -1,5 +1,8 @@
+import 'dart:io' show Platform;
+
 import 'package:adhan/adhan.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:geocoding/geocoding.dart' as geocoding;
 
@@ -43,16 +46,36 @@ class PrayerTimesServiceImpl implements PrayerTimesService {
       // 4. Reverse geocode to get city name in Arabic
       String locationName = '';
       try {
-        await geocoding.setLocaleIdentifier('ar');
-        final placemarks = await geocoding.placemarkFromCoordinates(
-          position.latitude,
-          position.longitude,
-        );
-        if (placemarks.isNotEmpty) {
-          locationName =
-              placemarks.first.locality ??
-              placemarks.first.subAdministrativeArea ??
-              '';
+        if (Platform.isAndroid || Platform.isIOS) {
+          await geocoding.setLocaleIdentifier('ar');
+          final placemarks = await geocoding.placemarkFromCoordinates(
+            position.latitude,
+            position.longitude,
+          );
+          if (placemarks.isNotEmpty) {
+            locationName =
+                placemarks.first.locality ??
+                placemarks.first.subAdministrativeArea ??
+                '';
+          }
+        } else {
+          // Fallback for desktop: use OpenStreetMap Nominatim API
+          final response = await Dio().get(
+            'https://nominatim.openstreetmap.org/reverse',
+            queryParameters: {
+              'lat': position.latitude,
+              'lon': position.longitude,
+              'format': 'json',
+              'accept-language': 'ar',
+            },
+            options: Options(headers: {'User-Agent': 'hajj_app/1.0'}),
+          );
+          final address = response.data['address'] as Map<String, dynamic>?;
+          if (address != null) {
+            locationName =
+                (address['city'] ?? address['town'] ?? address['state'] ?? '')
+                    as String;
+          }
         }
       } catch (_) {
         // Silently fail — location name is a nice-to-have
@@ -64,6 +87,14 @@ class PrayerTimesServiceImpl implements PrayerTimesService {
       params.madhab = Madhab.shafi;
       final prayerTimes = PrayerTimes.today(coordinates, params);
 
+      // Map non-salah values to the last actual prayer for UI display
+      var currentPrayer = prayerTimes.currentPrayer();
+      if (currentPrayer == Prayer.sunrise) {
+        currentPrayer = Prayer.fajr;
+      } else if (currentPrayer == Prayer.none) {
+        currentPrayer = Prayer.isha;
+      }
+
       return right(
         PrayerTimesModel(
           fajr: prayerTimes.fajr,
@@ -72,7 +103,7 @@ class PrayerTimesServiceImpl implements PrayerTimesService {
           asr: prayerTimes.asr,
           maghrib: prayerTimes.maghrib,
           isha: prayerTimes.isha,
-          currentPrayer: prayerTimes.currentPrayer(),
+          currentPrayer: currentPrayer,
           nextPrayer: prayerTimes.nextPrayer(),
           locationName: locationName,
         ),
