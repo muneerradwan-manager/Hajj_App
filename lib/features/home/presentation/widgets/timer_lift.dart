@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -14,31 +15,109 @@ class TimerLift extends StatefulWidget {
 }
 
 class _TimerLiftState extends State<TimerLift> {
-  static const _targetHijriDay = 9;
-  static const _targetHijriMonth = 12;
-  static const _targetHijriYear = 1447;
-
-  late final DateTime _targetDate;
+  _EventCountdownTarget? _activeTarget;
   late Duration _remaining;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    _targetDate = HijriDate().hijriToGregorian(
-      _targetHijriYear,
-      _targetHijriMonth,
-      _targetHijriDay,
-    );
-    _remaining = _calculateRemaining();
+    _remaining = Duration.zero;
+    _refreshCountdown();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() => _remaining = _calculateRemaining());
+      if (!mounted) return;
+      setState(_refreshCountdown);
     });
   }
 
-  Duration _calculateRemaining() {
-    final diff = _targetDate.difference(DateTime.now());
-    return diff.isNegative ? Duration.zero : diff;
+  void _refreshCountdown() {
+    final now = DateTime.now();
+    final nextTarget = _resolveCurrentOrNextTarget(now);
+    _activeTarget = nextTarget;
+    if (nextTarget == null) {
+      _remaining = Duration.zero;
+      return;
+    }
+
+    final diff = nextTarget.targetDate.difference(now);
+    _remaining = diff.isNegative ? Duration.zero : diff;
+  }
+
+  _EventCountdownTarget? _resolveCurrentOrNextTarget(DateTime now) {
+    final currentHijriYear = HijriDate.fromDate(now).hYear;
+    final ongoingTargets = <_EventCountdownTarget>[];
+    final upcomingTargets = <_EventCountdownTarget>[];
+
+    for (final event in IslamicEventsManager.allEvents) {
+      for (final year in [currentHijriYear, currentHijriYear + 1]) {
+        final validDays =
+            event.days
+                .where(
+                  (day) => _tryHijriToGregorian(year, event.month, day) != null,
+                )
+                .toList()
+              ..sort();
+
+        if (validDays.isEmpty) continue;
+
+        final startDay = validDays.first;
+        final endDay = validDays.last;
+        final startDate = _tryHijriToGregorian(year, event.month, startDay);
+        final endDate = _tryHijriToGregorian(year, event.month, endDay);
+        if (startDate == null || endDate == null) continue;
+
+        final eventEndExclusive = endDate.add(const Duration(days: 1));
+        final isOngoing =
+            !now.isBefore(startDate) && now.isBefore(eventEndExclusive);
+
+        if (isOngoing) {
+          ongoingTargets.add(
+            _EventCountdownTarget(
+              event: event,
+              targetDate: eventEndExclusive,
+              isEnding: true,
+            ),
+          );
+          continue;
+        }
+
+        if (startDate.isAfter(now)) {
+          upcomingTargets.add(
+            _EventCountdownTarget(
+              event: event,
+              targetDate: startDate,
+              isEnding: false,
+            ),
+          );
+        }
+      }
+    }
+
+    if (ongoingTargets.isNotEmpty) {
+      ongoingTargets.sort((a, b) {
+        final byDate = a.targetDate.compareTo(b.targetDate);
+        if (byDate != 0) return byDate;
+        return a.event.id.compareTo(b.event.id);
+      });
+      return ongoingTargets.first;
+    }
+
+    if (upcomingTargets.isEmpty) return null;
+    upcomingTargets.sort((a, b) {
+      final byDate = a.targetDate.compareTo(b.targetDate);
+      if (byDate != 0) return byDate;
+      return a.event.id.compareTo(b.event.id);
+    });
+    return upcomingTargets.first;
+  }
+
+  DateTime? _tryHijriToGregorian(int year, int month, int day) {
+    try {
+      final hijriDate = HijriDate.fromHijri(year, month, day);
+      return hijriDate.hijriToGregorian(year, month, day);
+    } catch (_) {
+      return null;
+    }
   }
 
   @override
@@ -50,21 +129,30 @@ class _TimerLiftState extends State<TimerLift> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final locale = languageCode == 'ar' ? 'ar' : 'en';
+    final eventTitle = _activeTarget?.event.getTitle(locale) ?? '';
+    final headerKey = _activeTarget == null
+        ? 'home.no_upcoming_events'
+        : _activeTarget!.isEnding
+        ? 'home.event_ends_in'
+        : 'home.event_starts_in';
+
     final units = [
       _CountdownUnit(
-        value: _remaining.inDays.toString().padLeft(2, '0'),
+        value: max(0, _remaining.inDays).toString().padLeft(2, '0'),
         labelKey: 'home.day',
       ),
       _CountdownUnit(
-        value: (_remaining.inHours % 24).toString().padLeft(2, '0'),
+        value: max(0, _remaining.inHours % 24).toString().padLeft(2, '0'),
         labelKey: 'home.hour',
       ),
       _CountdownUnit(
-        value: (_remaining.inMinutes % 60).toString().padLeft(2, '0'),
+        value: max(0, _remaining.inMinutes % 60).toString().padLeft(2, '0'),
         labelKey: 'home.minute',
       ),
       _CountdownUnit(
-        value: (_remaining.inSeconds % 60).toString().padLeft(2, '0'),
+        value: max(0, _remaining.inSeconds % 60).toString().padLeft(2, '0'),
         labelKey: 'home.second',
       ),
     ];
@@ -80,8 +168,9 @@ class _TimerLiftState extends State<TimerLift> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 20,
         children: [
-          const CustomText(
-            'home.arafat_countdown',
+          CustomText(
+            headerKey,
+            args: _activeTarget == null ? null : {'event': eventTitle},
             type: CustomTextType.titleMedium,
             color: CustomTextColor.red,
           ),
@@ -132,4 +221,16 @@ class _CountdownUnit {
   const _CountdownUnit({required this.value, required this.labelKey});
   final String value;
   final String labelKey;
+}
+
+class _EventCountdownTarget {
+  const _EventCountdownTarget({
+    required this.event,
+    required this.targetDate,
+    required this.isEnding,
+  });
+
+  final IslamicEvent event;
+  final DateTime targetDate;
+  final bool isEnding;
 }

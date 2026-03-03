@@ -1116,7 +1116,7 @@ class _PassportSection extends StatelessWidget {
                   color: CustomTextColor.white,
                   type: CustomTextType.bodySmall,
                 ),
-                icon: const Icon(LucideIcons.download),
+                icon: const Icon(LucideIcons.share2),
               ),
             ),
           ],
