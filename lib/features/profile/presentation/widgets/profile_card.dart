@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:hajj_app/features/auth/presentation/cubits/me/me_state.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -1149,6 +1151,18 @@ class _PassportSection extends StatelessWidget {
     }
 
     try {
+      final hasAccess = await _ensureStorageAccessForDownload();
+      if (!hasAccess) {
+        if (!context.mounted) return;
+        showMessage(
+          context,
+          'profile.storage_permission_denied',
+          SnackBarType.failuer,
+          translate: true,
+        );
+        return;
+      }
+
       final downloadDirectory = await _resolveAppDownloadsDirectory();
       await _downloadImageToDirectory(
         imageUrl: imageUrl,
@@ -1192,7 +1206,14 @@ class _PassportSection extends StatelessWidget {
         directory: tempDirectory,
       );
 
-      await Share.shareXFiles([XFile(file.path)], text: 'Passport Image');
+      if (!context.mounted) return;
+      final lang = Localizations.localeOf(context).languageCode;
+      final title = (lang == 'ar') ? 'صورة جواز السفر' : 'Passport Image';
+      final resolvedName = _resolveShareNameFromFile(file.path);
+
+      await Share.shareXFiles([
+        XFile(file.path),
+      ], text: '$resolvedName - $title');
     } catch (_) {
       if (!context.mounted) return;
       showMessage(
@@ -1202,6 +1223,24 @@ class _PassportSection extends StatelessWidget {
         translate: true,
       );
     }
+  }
+
+  Future<bool> _ensureStorageAccessForDownload() async {
+    if (!Platform.isAndroid) {
+      // iOS app-documents write does not require runtime storage permission.
+      return true;
+    }
+
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    final sdkInt = androidInfo.version.sdkInt;
+
+    // App-specific external storage on Android 10+ does not require storage permission.
+    if (sdkInt >= 29) {
+      return true;
+    }
+
+    final status = await Permission.storage.request();
+    return status.isGranted;
   }
 
   Future<Directory> _resolveAppDownloadsDirectory() async {
@@ -1256,6 +1295,17 @@ class _PassportSection extends StatelessWidget {
     } catch (_) {}
 
     return 'passport_${DateTime.now().millisecondsSinceEpoch}.jpg';
+  }
+
+  String _resolveShareNameFromFile(String filePath) {
+    final fileName = filePath.split(Platform.pathSeparator).last.trim();
+    if (fileName.isEmpty) return 'Passport';
+
+    final dotIndex = fileName.lastIndexOf('.');
+    if (dotIndex <= 0) return fileName;
+
+    final withoutExtension = fileName.substring(0, dotIndex).trim();
+    return withoutExtension.isEmpty ? 'Passport' : withoutExtension;
   }
 }
 

@@ -278,6 +278,7 @@
     "passport_download_success": "تم تنزيل صورة الجواز داخل مجلد Downloads/Hajj App",
     "passport_download_failed": "فشل تنزيل صورة الجواز",
     "passport_share_failed": "فشلت مشاركة صورة الجواز",
+    "storage_permission_denied": "تم رفض إذن التخزين، لا يمكن تنزيل الصورة",
     "call_invalid_number": "رقم الهاتف غير صالح",
     "call_unavailable": "تعذر فتح تطبيق الاتصال"
   },

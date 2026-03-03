@@ -45,7 +45,8 @@ class CustomCachedImage extends StatelessWidget {
     if (!_hasValidUrl) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius),
-        child: emptyWidget?.call(context) ??
+        child:
+            emptyWidget?.call(context) ??
             _DefaultEmpty(width: width, height: height),
       );
     }
@@ -104,19 +105,23 @@ class _FullScreenImageViewer extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Center(
-          child: Hero(
-            tag: heroTag,
-            child: InteractiveViewer(
+        child: Hero(
+          tag: heroTag,
+          child: LayoutBuilder(
+            builder: (context, constraints) => InteractiveViewer(
               minScale: 1.0,
               maxScale: 4.0,
               panEnabled: true,
               scaleEnabled: true,
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
-                fit: BoxFit.contain,
-                placeholder: (context, _) => const _FullScreenLoader(),
-                errorWidget: (context, _, _) => const _DefaultError(),
+              child: SizedBox(
+                width: constraints.maxWidth,
+                height: constraints.maxHeight,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  fit: BoxFit.contain,
+                  placeholder: (context, _) => const _FullScreenLoader(),
+                  errorWidget: (context, _, _) => const _DefaultError(),
+                ),
               ),
             ),
           ),
