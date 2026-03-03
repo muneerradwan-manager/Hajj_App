@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:hajj_app/core/functions/date_format.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/me/me_cubit.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 class HomeHeroSection extends StatelessWidget {
@@ -10,6 +12,12 @@ class HomeHeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fullName = context.select(
+      (MeCubit cubit) => cubit.state.profile?.fullName ?? '',
+    );
+    final firstName = _extractFirstName(fullName);
+    final greetingName = firstName.isEmpty ? '-' : firstName;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 15,
@@ -18,18 +26,18 @@ class HomeHeroSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
                   'home.greeting',
-                  args: {'name': 'محمد'},
+                  args: {'name': greetingName},
                   textAlign: TextAlign.center,
                   type: CustomTextType.headlineSmall,
                   color: CustomTextColor.white,
                 ),
-                SizedBox(height: 10),
-                CustomText(
+                const SizedBox(height: 10),
+                const CustomText(
                   'home.welcome_subtitle',
                   textAlign: TextAlign.center,
                   type: CustomTextType.labelLarge,
@@ -67,6 +75,16 @@ class HomeHeroSection extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _extractFirstName(String fullName) {
+    final parts = fullName
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((part) => part.isNotEmpty)
+        .toList();
+    if (parts.isEmpty) return '';
+    return parts.first;
   }
 }
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:hajj_app/core/constants/app_colors.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/me/me_cubit.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 
 import '../../../../core/constants/app_routes.dart';
@@ -14,7 +16,16 @@ class HomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final String profileImage = '';
+    final profile = context.select((MeCubit cubit) => cubit.state.profile);
+    final profileImage = profile?.imgPath ?? '';
+    final fullName = _fallback(profile?.fullName);
+    final pilgrimId = _formatPilgrimId(
+      pilgrimId: profile?.pilgrimId,
+      barcode: profile?.barcode,
+    );
+    final masterGroupName = _fallback(profile?.masterGroup.masterGroupName);
+    final groupName = _fallback(profile?.group.groupName);
+
     return Container(
       width: double.infinity,
       clipBehavior: Clip.antiAlias,
@@ -59,8 +70,9 @@ class HomeCard extends StatelessWidget {
                   child: Column(
                     spacing: 12,
                     children: [
-                      const CustomText(
-                        'home.pilgrim_name',
+                      CustomText(
+                        fullName,
+                        translate: false,
                         textAlign: TextAlign.center,
                         type: CustomTextType.bodyLarge,
                         color: CustomTextColor.green,
@@ -74,8 +86,9 @@ class HomeCard extends StatelessWidget {
                           ),
                         ),
                         padding: const EdgeInsets.all(5),
-                        child: const CustomText(
-                          'home.pilgrim_id',
+                        child: CustomText(
+                          pilgrimId,
+                          translate: false,
                           textAlign: TextAlign.center,
                           type: CustomTextType.bodyMedium,
                           color: CustomTextColor.lightGreen,
@@ -114,7 +127,7 @@ class HomeCard extends StatelessWidget {
                     icon: LucideIcons.layers,
                     iconBgColor: cs.brandRed,
                     labelKey: 'home.cluster_label',
-                    valueKey: 'home.cluster_value',
+                    value: masterGroupName,
                     bgColor: cs.brandGold.withValues(alpha: .1),
                   ),
                 ),
@@ -123,7 +136,7 @@ class HomeCard extends StatelessWidget {
                     icon: LucideIcons.grid3x3,
                     iconBgColor: cs.primary,
                     labelKey: 'home.group_label',
-                    valueKey: 'home.group_value',
+                    value: groupName,
                     bgColor: cs.brandGold.withValues(alpha: .1),
                   ),
                 ),
@@ -156,6 +169,19 @@ class HomeCard extends StatelessWidget {
       ),
     );
   }
+
+  String _fallback(String? value) {
+    final normalized = value?.trim() ?? '';
+    return normalized.isEmpty ? '-' : normalized;
+  }
+
+  String _formatPilgrimId({int? pilgrimId, int? barcode}) {
+    final id = pilgrimId ?? 0;
+    if (id > 0) return id.toString();
+    final code = barcode ?? 0;
+    if (code > 0) return code.toString();
+    return '-';
+  }
 }
 
 class _GradientStripe extends StatelessWidget {
@@ -182,14 +208,14 @@ class _InfoChip extends StatelessWidget {
     required this.icon,
     required this.iconBgColor,
     required this.labelKey,
-    required this.valueKey,
+    required this.value,
     required this.bgColor,
   });
 
   final IconData icon;
   final Color iconBgColor;
   final String labelKey;
-  final String valueKey;
+  final String value;
   final Color bgColor;
 
   @override
@@ -223,9 +249,10 @@ class _InfoChip extends StatelessWidget {
             ],
           ),
           CustomText(
-            valueKey,
+            value,
             type: CustomTextType.bodyMedium,
             color: CustomTextColor.lightGreen,
+            translate: false,
           ),
         ],
       ),

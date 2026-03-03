@@ -1,12 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hajj_app/core/constants/app_colors.dart';
 import 'package:hajj_app/core/constants/app_images.dart';
+import 'package:hajj_app/features/auth/domain/entities/user_profile.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/me/me_cubit.dart';
+import 'package:hajj_app/features/auth/presentation/cubits/me/me_state.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../shared/widgets/custom_network_image.dart';
 import '../../../../shared/widgets/custom_snackbar.dart';
+
+const UserProfile _emptyProfile = UserProfile(
+  userId: '',
+  email: '',
+  phone: '',
+  barcode: 0,
+  pilgrimId: 0,
+  fullName: '',
+  nationalityNumber: '',
+  isMale: true,
+  imgPath: '',
+  passPath: '',
+  officeName: '',
+  officePhone: '',
+  group: UserGroup(
+    groupName: '',
+    maccaHotel: '',
+    maccaHotelLocation: '',
+    madinaHotel: '',
+    madinaHotelLocation: '',
+    mutawwef: '',
+    arrafatCampNo: '',
+    arrafatCompLocation: '',
+    minaCampNo: '',
+    minaCampLocation: '',
+    applicants: [],
+  ),
+  masterGroup: UserMasterGroup(masterGroupName: '', applicants: []),
+  departureFlight: null,
+  returnFlight: null,
+);
 
 class ProfileCard extends StatefulWidget {
   const ProfileCard({super.key});
@@ -16,13 +51,8 @@ class ProfileCard extends StatefulWidget {
 }
 
 class _ProfileCardState extends State<ProfileCard> {
-  final String _profileImage = '';
-  final String _passportImage = '';
   String? _saudiNumber;
   bool _isSaudiNumberEditing = false;
-  final bool _isResidenceAvailable = false;
-  final bool _isFlightAvailable = false;
-  final bool _isRitualsAvailable = false;
 
   final Map<String, bool> _expandedSections = {
     'basic': true,
@@ -40,22 +70,21 @@ class _ProfileCardState extends State<ProfileCard> {
     });
   }
 
-  void _initializeSaudiNumber() {
-    _saudiNumber = '0954565464';
-  }
-
   void _toggleSaudiNumberEditing() =>
       setState(() => _isSaudiNumberEditing = !_isSaudiNumberEditing);
 
   @override
-  void initState() {
-    super.initState();
-    _initializeSaudiNumber();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final meState = context.watch<MeCubit>().state;
+    final profile = meState.profile ?? _emptyProfile;
+    final resolvedSaudiNumber =
+        _saudiNumber ??
+        _extractSaudiNumber(profile.group.applicants, profile.fullName);
+    final isResidenceAvailable = _hasResidenceData(profile.group);
+    final isFlightAvailable =
+        profile.departureFlight != null || profile.returnFlight != null;
+    final isRitualsAvailable = _hasRitualsData(profile.group);
 
     return Container(
       width: double.infinity,
@@ -76,42 +105,79 @@ class _ProfileCardState extends State<ProfileCard> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const _GradientStripe(),
-          _ProfileHeader(profileImage: _profileImage),
+          _ProfileHeader(
+            profileImage: profile.imgPath,
+            fullName: _fallback(profile.fullName),
+            pilgrimId: _pilgrimId(profile),
+          ),
           const _ProfileDivider(),
+          if (meState.status == MeStatus.loading) ...[
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              child: LinearProgressIndicator(minHeight: 3),
+            ),
+          ],
+          if (meState.status == MeStatus.error &&
+              meState.errorMessage.isNotEmpty) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 6, 20, 0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: cs.errorContainer.withValues(alpha: 0.2),
+                  border: Border.all(color: cs.errorContainer),
+                ),
+                padding: const EdgeInsets.all(12),
+                child: CustomText(
+                  meState.errorMessage,
+                  color: CustomTextColor.red,
+                  translate: false,
+                ),
+              ),
+            ),
+          ],
           _BasicInfoSection(
             isExpanded: _expandedSections['basic'] ?? false,
             onToggle: () => _toggleSection('basic'),
+            profile: profile,
             isSaudiNumberEditing: _isSaudiNumberEditing,
-            saudiNumber: _saudiNumber,
+            saudiNumber: resolvedSaudiNumber.isEmpty
+                ? null
+                : resolvedSaudiNumber,
             onToggleSaudiNumberEditing: _toggleSaudiNumberEditing,
           ),
           _CampaignStaffSection(
             isExpanded: _expandedSections['team'] ?? false,
             onToggle: () => _toggleSection('team'),
+            profile: profile,
           ),
           _ResidenceSection(
             isExpanded: _expandedSections['residence'] ?? false,
             onToggle: () => _toggleSection('residence'),
-            isAvailable: _isResidenceAvailable,
+            profile: profile,
+            isAvailable: isResidenceAvailable,
           ),
           _FlightsSection(
             isExpanded: _expandedSections['flights'] ?? false,
             onToggle: () => _toggleSection('flights'),
-            isAvailable: _isFlightAvailable,
+            profile: profile,
+            isAvailable: isFlightAvailable,
           ),
           _RitualsSection(
             isExpanded: _expandedSections['rituals'] ?? false,
             onToggle: () => _toggleSection('rituals'),
-            isAvailable: _isRitualsAvailable,
+            profile: profile,
+            isAvailable: isRitualsAvailable,
           ),
           _LeadershipSection(
             isExpanded: _expandedSections['leadership'] ?? false,
             onToggle: () => _toggleSection('leadership'),
+            profile: profile,
           ),
           _PassportSection(
             isExpanded: _expandedSections['passport'] ?? false,
             onToggle: () => _toggleSection('passport'),
-            passportImage: _passportImage,
+            passportImage: profile.passPath,
           ),
           const SizedBox(height: 10),
           const _GradientStripe(),
@@ -119,12 +185,59 @@ class _ProfileCardState extends State<ProfileCard> {
       ),
     );
   }
+
+  String _fallback(String value) {
+    final normalized = value.trim();
+    return normalized.isEmpty ? '-' : normalized;
+  }
+
+  String _pilgrimId(UserProfile profile) {
+    if (profile.pilgrimId > 0) return profile.pilgrimId.toString();
+    if (profile.barcode > 0) return profile.barcode.toString();
+    return '-';
+  }
+
+  String _extractSaudiNumber(List<UserApplicant> applicants, String fullName) {
+    final normalizedName = fullName.trim();
+    for (final applicant in applicants) {
+      final isCurrentUser = applicant.fullName.trim() == normalizedName;
+      final saudiNumber = applicant.saudiNum.trim();
+      if (isCurrentUser && saudiNumber.isNotEmpty) {
+        return saudiNumber;
+      }
+    }
+    for (final applicant in applicants) {
+      final saudiNumber = applicant.saudiNum.trim();
+      if (saudiNumber.isNotEmpty) return saudiNumber;
+    }
+    return '';
+  }
+
+  bool _hasResidenceData(UserGroup group) {
+    return group.maccaHotel.trim().isNotEmpty ||
+        group.maccaHotelLocation.trim().isNotEmpty ||
+        group.madinaHotel.trim().isNotEmpty ||
+        group.madinaHotelLocation.trim().isNotEmpty;
+  }
+
+  bool _hasRitualsData(UserGroup group) {
+    return group.arrafatCampNo.trim().isNotEmpty ||
+        group.arrafatCompLocation.trim().isNotEmpty ||
+        group.minaCampNo.trim().isNotEmpty ||
+        group.minaCampLocation.trim().isNotEmpty;
+  }
 }
 
 class _ProfileHeader extends StatelessWidget {
-  const _ProfileHeader({required this.profileImage});
+  const _ProfileHeader({
+    required this.profileImage,
+    required this.fullName,
+    required this.pilgrimId,
+  });
 
   final String profileImage;
+  final String fullName;
+  final String pilgrimId;
 
   @override
   Widget build(BuildContext context) {
@@ -155,8 +268,9 @@ class _ProfileHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CustomText(
-                  'home.pilgrim_name',
+                CustomText(
+                  fullName,
+                  translate: false,
                   type: CustomTextType.bodyLarge,
                   color: CustomTextColor.green,
                 ),
@@ -171,8 +285,9 @@ class _ProfileHeader extends StatelessWidget {
                     horizontal: 12,
                     vertical: 6,
                   ),
-                  child: const CustomText(
-                    'home.pilgrim_id',
+                  child: CustomText(
+                    pilgrimId,
+                    translate: false,
                     type: CustomTextType.bodyMedium,
                     color: CustomTextColor.lightGreen,
                   ),
@@ -217,6 +332,7 @@ class _BasicInfoSection extends StatelessWidget {
   const _BasicInfoSection({
     required this.isExpanded,
     required this.onToggle,
+    required this.profile,
     required this.isSaudiNumberEditing,
     required this.saudiNumber,
     required this.onToggleSaudiNumberEditing,
@@ -224,6 +340,7 @@ class _BasicInfoSection extends StatelessWidget {
 
   final bool isExpanded;
   final VoidCallback onToggle;
+  final UserProfile profile;
   final bool isSaudiNumberEditing;
   final String? saudiNumber;
   final VoidCallback onToggleSaudiNumberEditing;
@@ -237,20 +354,29 @@ class _BasicInfoSection extends StatelessWidget {
       onToggle: onToggle,
       iconColor: Theme.of(context).colorScheme.primary,
       children: [
-        const _InfoRow(
+        _InfoRow(
           labelKey: 'profile.full_name',
-          value: 'محمد أحمد الشامي',
+          value: _fallback(profile.fullName),
         ),
         const SizedBox(height: 10),
-        const _InfoRow(labelKey: 'profile.group_name', value: 'التوفيق'),
+        _InfoRow(
+          labelKey: 'profile.group_name',
+          value: _fallback(profile.group.groupName),
+        ),
         const SizedBox(height: 10),
-        const _InfoRow(labelKey: 'profile.cluster_name', value: 'ارتقاء'),
+        _InfoRow(
+          labelKey: 'profile.cluster_name',
+          value: _fallback(profile.masterGroup.masterGroupName),
+        ),
         const SizedBox(height: 10),
-        const _InfoRow(labelKey: 'profile.office_name', value: 'دمشق'),
+        _InfoRow(
+          labelKey: 'profile.office_name',
+          value: _fallback(profile.officeName),
+        ),
         const SizedBox(height: 10),
-        const _InfoRow(
+        _InfoRow(
           labelKey: 'profile.mutawwif_name',
-          value: 'عبدالرحمن بن خالد المطوف',
+          value: _fallback(profile.group.mutawwef),
         ),
         const SizedBox(height: 10),
         _SaudiNumberCard(
@@ -260,6 +386,11 @@ class _BasicInfoSection extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _fallback(String value) {
+    final normalized = value.trim();
+    return normalized.isEmpty ? '-' : normalized;
   }
 }
 
@@ -403,10 +534,12 @@ class _CampaignStaffSection extends StatelessWidget {
   const _CampaignStaffSection({
     required this.isExpanded,
     required this.onToggle,
+    required this.profile,
   });
 
   final bool isExpanded;
   final VoidCallback onToggle;
+  final UserProfile profile;
 
   @override
   Widget build(BuildContext context) {
@@ -418,25 +551,41 @@ class _CampaignStaffSection extends StatelessWidget {
       isExpanded: isExpanded,
       onToggle: onToggle,
       iconColor: cs.brandGold,
-      children: const [
-        _InfoRow(
-          labelKey: 'profile.campaign_leader',
-          value: 'د. أحمد محمود الحلبي',
-        ),
-        SizedBox(height: 10),
-        _InfoRow(
-          labelKey: 'profile.campaign_assistant_leader',
-          value: 'محمد خالد الشامي',
-        ),
-        SizedBox(height: 10),
-        _InfoRow(labelKey: 'profile.religious_guide', value: 'عمر يوسف الحموي'),
-        SizedBox(height: 10),
-        _InfoRow(
-          labelKey: 'profile.religious_guide_female',
-          value: 'فاطمة علي الدمشقية',
-        ),
-      ],
+      children: _buildStaffRows(),
     );
+  }
+
+  List<Widget> _buildStaffRows() {
+    final rows = <Widget>[];
+    final applicants = profile.group.applicants;
+
+    if (applicants.isEmpty) {
+      rows.add(const _InfoRow(labelKey: 'profile.name', value: '-'));
+      return rows;
+    }
+
+    for (var index = 0; index < applicants.length; index++) {
+      final applicant = applicants[index];
+      rows.add(
+        _InfoRow(
+          labelKey: applicant.applicantType.trim().isEmpty
+              ? 'profile.name'
+              : applicant.applicantType,
+          value: _fallback(applicant.fullName),
+          translateLabel: applicant.applicantType.trim().isEmpty,
+        ),
+      );
+      if (index < applicants.length - 1) {
+        rows.add(const SizedBox(height: 10));
+      }
+    }
+
+    return rows;
+  }
+
+  String _fallback(String value) {
+    final normalized = value.trim();
+    return normalized.isEmpty ? '-' : normalized;
   }
 }
 
@@ -444,11 +593,13 @@ class _ResidenceSection extends StatelessWidget {
   const _ResidenceSection({
     required this.isExpanded,
     required this.onToggle,
+    required this.profile,
     required this.isAvailable,
   });
 
   final bool isExpanded;
   final VoidCallback onToggle;
+  final UserProfile profile;
   final bool isAvailable;
 
   @override
@@ -470,13 +621,13 @@ class _ResidenceSection extends StatelessWidget {
             children: [
               _InfoRow(
                 labelKey: 'profile.hotel_name',
-                value: 'فندق مكة هيلتون',
+                value: _fallback(profile.group.maccaHotel),
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
               _InfoRow(
                 labelKey: 'profile.location',
-                value: 'شارع إبراهيم الخليل',
+                value: _fallback(profile.group.maccaHotelLocation),
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
@@ -491,13 +642,13 @@ class _ResidenceSection extends StatelessWidget {
             children: [
               _InfoRow(
                 labelKey: 'profile.hotel_name',
-                value: 'فندق المدينة موفنبيك',
+                value: _fallback(profile.group.madinaHotel),
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
               _InfoRow(
                 labelKey: 'profile.location',
-                value: 'طريق الملك فهد',
+                value: _fallback(profile.group.madinaHotelLocation),
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
@@ -513,17 +664,24 @@ class _ResidenceSection extends StatelessWidget {
       ],
     );
   }
+
+  String _fallback(String value) {
+    final normalized = value.trim();
+    return normalized.isEmpty ? '-' : normalized;
+  }
 }
 
 class _FlightsSection extends StatelessWidget {
   const _FlightsSection({
     required this.isExpanded,
     required this.onToggle,
+    required this.profile,
     required this.isAvailable,
   });
 
   final bool isExpanded;
   final VoidCallback onToggle;
+  final UserProfile profile;
   final bool isAvailable;
 
   @override
@@ -538,89 +696,104 @@ class _FlightsSection extends StatelessWidget {
       iconColor: cs.brandGold,
       children: [
         if (isAvailable) ...[
-          _ColoredSection(
-            borderColor: cs.primary,
-            titleKey: 'profile.departure_flight',
-            titleColor: CustomTextColor.green,
-            children: [
-              _FlightNumberBadge(
-                flightNumber: 'SYR-1234',
-                backgroundColor: cs.primary,
-              ),
-              _InfoRow(
-                labelKey: 'profile.airline',
-                value: 'الخطوط الجوية السورية',
-                containerColor: Colors.white,
-                borderColor: cs.outline,
-              ),
-              _InfoRow(
-                labelKey: 'profile.departure_time',
-                value: '10 يونيو 2026 - 14:30',
-                containerColor: Colors.white,
-                borderColor: cs.outline,
-              ),
-              _InfoRow(
-                labelKey: 'profile.arrival_time',
-                value: '10 يونيو 2026 - 18:45',
-                containerColor: Colors.white,
-                borderColor: cs.outline,
-              ),
-              _InfoRow(
-                labelKey: 'profile.departure_airport',
-                value: 'مطار دمشق الدولي',
-                containerColor: Colors.white,
-                borderColor: cs.outline,
-              ),
-              _InfoRow(
-                labelKey: 'profile.arrival_airport',
-                value: 'مطار الملك عبدالعزيز - جدة',
-                containerColor: Colors.white,
-                borderColor: cs.outline,
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          _ColoredSection(
-            borderColor: cs.primary,
-            titleKey: 'profile.return_flight',
-            titleColor: CustomTextColor.gold,
-            children: [
-              _FlightNumberBadge(
-                flightNumber: 'SYR-5678',
-                backgroundColor: cs.brandGold,
-              ),
-              _InfoRow(
-                labelKey: 'profile.airline',
-                value: 'الخطوط الجوية السورية',
-                containerColor: Colors.white,
-                borderColor: cs.outline,
-              ),
-              _InfoRow(
-                labelKey: 'profile.departure_time',
-                value: '10 يونيو 2026 - 14:30',
-                containerColor: Colors.white,
-                borderColor: cs.outline,
-              ),
-              _InfoRow(
-                labelKey: 'profile.arrival_time',
-                value: '10 يونيو 2026 - 18:45',
-                containerColor: Colors.white,
-                borderColor: cs.outline,
-              ),
-              _InfoRow(
-                labelKey: 'profile.departure_airport',
-                value: 'مطار الملك عبدالعزيز - جدة',
-                containerColor: Colors.white,
-                borderColor: cs.outline,
-              ),
-              _InfoRow(
-                labelKey: 'profile.arrival_airport',
-                value: 'مطار دمشق الدولي',
-                containerColor: Colors.white,
-                borderColor: cs.outline,
-              ),
-            ],
-          ),
+          if (profile.departureFlight != null)
+            _ColoredSection(
+              borderColor: cs.primary,
+              titleKey: 'profile.departure_flight',
+              titleColor: CustomTextColor.green,
+              children: [
+                _FlightNumberBadge(
+                  flightNumber: _fallback(profile.departureFlight!.flightName),
+                  backgroundColor: cs.primary,
+                ),
+                _InfoRow(
+                  labelKey: 'profile.airline',
+                  value: _fallback(profile.departureFlight!.airlineCompany),
+                  containerColor: Colors.white,
+                  borderColor: cs.outline,
+                ),
+                _InfoRow(
+                  labelKey: 'profile.departure_time',
+                  value: _dateTimeText(
+                    profile.departureFlight!.departureDate,
+                    profile.departureFlight!.departureTime,
+                  ),
+                  containerColor: Colors.white,
+                  borderColor: cs.outline,
+                ),
+                _InfoRow(
+                  labelKey: 'profile.arrival_time',
+                  value: _dateTimeText(
+                    profile.departureFlight!.arrivalDate,
+                    profile.departureFlight!.arrivalTime,
+                  ),
+                  containerColor: Colors.white,
+                  borderColor: cs.outline,
+                ),
+                _InfoRow(
+                  labelKey: 'profile.departure_airport',
+                  value: _fallback(profile.departureFlight!.departureAirport),
+                  containerColor: Colors.white,
+                  borderColor: cs.outline,
+                ),
+                _InfoRow(
+                  labelKey: 'profile.arrival_airport',
+                  value: _fallback(profile.departureFlight!.arrivalAirport),
+                  containerColor: Colors.white,
+                  borderColor: cs.outline,
+                ),
+              ],
+            ),
+          if (profile.departureFlight != null && profile.returnFlight != null)
+            const SizedBox(height: 20),
+          if (profile.returnFlight != null)
+            _ColoredSection(
+              borderColor: cs.primary,
+              titleKey: 'profile.return_flight',
+              titleColor: CustomTextColor.gold,
+              children: [
+                _FlightNumberBadge(
+                  flightNumber: _fallback(profile.returnFlight!.flightName),
+                  backgroundColor: cs.brandGold,
+                ),
+                _InfoRow(
+                  labelKey: 'profile.airline',
+                  value: _fallback(profile.returnFlight!.airlineCompany),
+                  containerColor: Colors.white,
+                  borderColor: cs.outline,
+                ),
+                _InfoRow(
+                  labelKey: 'profile.departure_time',
+                  value: _dateTimeText(
+                    profile.returnFlight!.departureDate,
+                    profile.returnFlight!.departureTime,
+                  ),
+                  containerColor: Colors.white,
+                  borderColor: cs.outline,
+                ),
+                _InfoRow(
+                  labelKey: 'profile.arrival_time',
+                  value: _dateTimeText(
+                    profile.returnFlight!.arrivalDate,
+                    profile.returnFlight!.arrivalTime,
+                  ),
+                  containerColor: Colors.white,
+                  borderColor: cs.outline,
+                ),
+                _InfoRow(
+                  labelKey: 'profile.departure_airport',
+                  value: _fallback(profile.returnFlight!.departureAirport),
+                  containerColor: Colors.white,
+                  borderColor: cs.outline,
+                ),
+                _InfoRow(
+                  labelKey: 'profile.arrival_airport',
+                  value: _fallback(profile.returnFlight!.arrivalAirport),
+                  containerColor: Colors.white,
+                  borderColor: cs.outline,
+                ),
+              ],
+            ),
         ] else ...[
           const _UnavailableInfoCard(
             titleKey: 'profile.flights_unavailable_title',
@@ -630,17 +803,39 @@ class _FlightsSection extends StatelessWidget {
       ],
     );
   }
+
+  String _dateTimeText(DateTime? date, String time) {
+    final datePart = date != null ? _formatDate(date) : '';
+    final timePart = time.trim();
+    if (datePart.isEmpty && timePart.isEmpty) return '-';
+    if (datePart.isEmpty) return timePart;
+    if (timePart.isEmpty) return datePart;
+    return '$datePart - $timePart';
+  }
+
+  String _formatDate(DateTime date) {
+    final month = date.month.toString().padLeft(2, '0');
+    final day = date.day.toString().padLeft(2, '0');
+    return '${date.year}-$month-$day';
+  }
+
+  String _fallback(String value) {
+    final normalized = value.trim();
+    return normalized.isEmpty ? '-' : normalized;
+  }
 }
 
 class _RitualsSection extends StatelessWidget {
   const _RitualsSection({
     required this.isExpanded,
     required this.onToggle,
+    required this.profile,
     required this.isAvailable,
   });
 
   final bool isExpanded;
   final VoidCallback onToggle;
+  final UserProfile profile;
   final bool isAvailable;
 
   @override
@@ -662,13 +857,13 @@ class _RitualsSection extends StatelessWidget {
             children: [
               _InfoRow(
                 labelKey: 'profile.camp_number',
-                value: 'A-245',
+                value: _fallback(profile.group.arrafatCampNo),
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
               _InfoRow(
                 labelKey: 'profile.camp_location',
-                value: 'منطقة نمرة، عرفات',
+                value: _fallback(profile.group.arrafatCompLocation),
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
@@ -683,13 +878,13 @@ class _RitualsSection extends StatelessWidget {
             children: [
               _InfoRow(
                 labelKey: 'profile.camp_number',
-                value: 'M-189',
+                value: _fallback(profile.group.minaCampNo),
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
               _InfoRow(
                 labelKey: 'profile.camp_location',
-                value: 'الجمرات الوسطى، منى',
+                value: _fallback(profile.group.minaCampLocation),
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
@@ -705,17 +900,29 @@ class _RitualsSection extends StatelessWidget {
       ],
     );
   }
+
+  String _fallback(String value) {
+    final normalized = value.trim();
+    return normalized.isEmpty ? '-' : normalized;
+  }
 }
 
 class _LeadershipSection extends StatelessWidget {
-  const _LeadershipSection({required this.isExpanded, required this.onToggle});
+  const _LeadershipSection({
+    required this.isExpanded,
+    required this.onToggle,
+    required this.profile,
+  });
 
   final bool isExpanded;
   final VoidCallback onToggle;
+  final UserProfile profile;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final clusterLeader = _pickLeader(profile.masterGroup.applicants);
+    final groupLeader = _pickLeader(profile.group.applicants);
 
     return _ProfileInfoSection(
       titleKey: 'profile.section_leadership',
@@ -731,13 +938,13 @@ class _LeadershipSection extends StatelessWidget {
           children: [
             _InfoRow(
               labelKey: 'profile.name',
-              value: 'عامر عمر مصطفى',
+              value: _fallback(clusterLeader?.fullName ?? ''),
               containerColor: Colors.white,
               borderColor: cs.outline,
             ),
             _InfoRow(
               labelKey: 'profile.phone',
-              value: '+20 1158032715',
+              value: _fallback(clusterLeader?.telNum ?? ''),
               containerColor: Colors.white,
               borderColor: cs.outline,
               isPhoneNumber: true,
@@ -752,13 +959,13 @@ class _LeadershipSection extends StatelessWidget {
           children: [
             _InfoRow(
               labelKey: 'profile.name',
-              value: 'توفيق يوسف العبيد',
+              value: _fallback(groupLeader?.fullName ?? ''),
               containerColor: Colors.white,
               borderColor: cs.outline,
             ),
             _InfoRow(
               labelKey: 'profile.phone',
-              value: '+20 1158032715',
+              value: _fallback(groupLeader?.telNum ?? ''),
               containerColor: Colors.white,
               borderColor: cs.outline,
               isPhoneNumber: true,
@@ -773,14 +980,14 @@ class _LeadershipSection extends StatelessWidget {
           children: [
             _InfoRow(
               labelKey: 'profile.makkah_office_phone',
-              value: '+966 12 556 7890',
+              value: _fallback(profile.officePhone),
               containerColor: Colors.white,
               borderColor: cs.outline,
               isPhoneNumber: true,
             ),
             _InfoRow(
               labelKey: 'profile.mutawwif_phone',
-              value: '+963 958006040',
+              value: _fallback(_pickMutawwefPhone(profile.group.applicants)),
               containerColor: Colors.white,
               borderColor: cs.outline,
               isPhoneNumber: true,
@@ -802,7 +1009,7 @@ class _LeadershipSection extends StatelessWidget {
             ),
             _InfoRow(
               labelKey: 'profile.hajj_office',
-              value: '+963 958006040',
+              value: _fallback(profile.officePhone),
               containerColor: Colors.white,
               borderColor: cs.outline,
               isPhoneNumber: true,
@@ -811,6 +1018,32 @@ class _LeadershipSection extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  UserApplicant? _pickLeader(List<UserApplicant> applicants) {
+    for (final applicant in applicants) {
+      final type = applicant.applicantType.toLowerCase();
+      if (type.contains('رئيس') || type.contains('leader')) return applicant;
+    }
+    if (applicants.isEmpty) return null;
+    return applicants.first;
+  }
+
+  String _pickMutawwefPhone(List<UserApplicant> applicants) {
+    for (final applicant in applicants) {
+      final type = applicant.applicantType.toLowerCase();
+      if (type.contains('مطوف') ||
+          type.contains('mutaw') ||
+          type.contains('guide')) {
+        return applicant.telNum;
+      }
+    }
+    return '';
+  }
+
+  String _fallback(String value) {
+    final normalized = value.trim();
+    return normalized.isEmpty ? '-' : normalized;
   }
 }
 
@@ -1054,6 +1287,7 @@ class _InfoRow extends StatelessWidget {
     this.containerColor,
     this.borderColor,
     this.isPhoneNumber = false,
+    this.translateLabel = true,
   });
 
   final String labelKey;
@@ -1061,6 +1295,7 @@ class _InfoRow extends StatelessWidget {
   final Color? containerColor;
   final Color? borderColor;
   final bool isPhoneNumber;
+  final bool translateLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -1084,6 +1319,7 @@ class _InfoRow extends StatelessWidget {
               labelKey,
               color: CustomTextColor.gold,
               type: CustomTextType.labelMedium,
+              translate: translateLabel,
             ),
           ),
           Expanded(
@@ -1105,7 +1341,9 @@ class _InfoRow extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        onPressed: () => _launchPhoneCall(context),
+                        onPressed: _normalizePhoneNumber(value).isEmpty
+                            ? null
+                            : () => _launchPhoneCall(context),
                         icon: const Icon(
                           LucideIcons.phone,
                           color: Colors.white,
