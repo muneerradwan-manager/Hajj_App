@@ -68,6 +68,7 @@ class HomeCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 12,
                     children: [
                       CustomText(
@@ -85,11 +86,13 @@ class HomeCard extends StatelessWidget {
                             color: cs.primary.withValues(alpha: .3),
                           ),
                         ),
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         child: CustomText(
                           pilgrimId,
                           translate: false,
-                          textAlign: TextAlign.center,
                           type: CustomTextType.bodyMedium,
                           color: CustomTextColor.lightGreen,
                         ),
