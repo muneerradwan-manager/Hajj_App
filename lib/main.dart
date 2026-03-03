@@ -11,7 +11,6 @@ import 'package:hajj_app/core/localization/localization_state.dart';
 import 'package:hajj_app/core/theme/app_theme.dart';
 import 'package:hajj_app/core/theme/theme_cubit.dart';
 import 'package:hajj_app/core/theme/theme_state.dart';
-import 'package:hajj_app/features/home/presentation/cubits/prayer_times_cubit.dart';
 
 import 'core/router/app_router.dart';
 
@@ -54,7 +53,7 @@ class MainApp extends StatelessWidget {
         BlocProvider<LocalizationCubit>.value(
           value: getIt<LocalizationCubit>(),
         ),
-        BlocProvider<PrayerTimesCubit>.value(value: getIt<PrayerTimesCubit>()),
+        
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {

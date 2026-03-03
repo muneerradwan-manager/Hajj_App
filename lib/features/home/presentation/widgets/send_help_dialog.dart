@@ -256,7 +256,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
         // Gradient + pattern background
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.only(top: 40, bottom: 30),
+
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -274,46 +274,49 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
                   child: Image.asset(AppImages.background, fit: BoxFit.cover),
                 ),
               ),
-              Column(
-                children: [
-                  // Location icon badge
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.3),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: cs.shadow.withValues(alpha: 0.3),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+              Padding(
+                padding: const EdgeInsets.only(top: 40, bottom: 30),
+                child: Column(
+                  children: [
+                    // Location icon badge
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.3),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: cs.shadow.withValues(alpha: 0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        LucideIcons.mapPin,
+                        color: AppColors.white,
+                        size: 28,
+                      ),
                     ),
-                    child: const Icon(
-                      LucideIcons.mapPin,
-                      color: AppColors.white,
-                      size: 28,
+                    const SizedBox(height: 16),
+                    const CustomText(
+                      'home.help_title',
+                      type: CustomTextType.titleLarge,
+                      color: CustomTextColor.white,
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  const CustomText(
-                    'home.help_title',
-                    type: CustomTextType.titleLarge,
-                    color: CustomTextColor.white,
-                  ),
-                  const SizedBox(height: 6),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: CustomText(
-                      'home.help_dialog_subtitle',
-                      type: CustomTextType.bodyMedium,
-                      color: CustomTextColor.lightGold,
-                      textAlign: TextAlign.center,
+                    const SizedBox(height: 6),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: CustomText(
+                        'home.help_dialog_subtitle',
+                        type: CustomTextType.bodyMedium,
+                        color: CustomTextColor.lightGold,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

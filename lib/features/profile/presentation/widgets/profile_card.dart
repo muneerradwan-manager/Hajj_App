@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hajj_app/core/constants/app_colors.dart';
@@ -7,6 +10,8 @@ import 'package:hajj_app/features/auth/presentation/cubits/me/me_cubit.dart';
 import 'package:hajj_app/features/auth/presentation/cubits/me/me_state.dart';
 import 'package:hajj_app/shared/widgets/custom_text.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../shared/widgets/custom_network_image.dart';
@@ -192,8 +197,8 @@ class _ProfileCardState extends State<ProfileCard> {
   }
 
   String _pilgrimId(UserProfile profile) {
-    if (profile.pilgrimId > 0) return profile.pilgrimId.toString();
     if (profile.barcode > 0) return profile.barcode.toString();
+    if (profile.pilgrimId > 0) return profile.pilgrimId.toString();
     return '-';
   }
 
@@ -1058,6 +1063,8 @@ class _PassportSection extends StatelessWidget {
   final VoidCallback onToggle;
   final String passportImage;
 
+  bool get _hasPassportImage => passportImage.trim().isNotEmpty;
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -1099,7 +1106,9 @@ class _PassportSection extends StatelessWidget {
             Expanded(
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(backgroundColor: cs.brandRed),
-                onPressed: () {},
+                onPressed: _hasPassportImage
+                    ? () => _downloadPassportImage(context)
+                    : null,
                 label: const CustomText(
                   'profile.download_pdf',
                   color: CustomTextColor.white,
@@ -1110,7 +1119,9 @@ class _PassportSection extends StatelessWidget {
             ),
             Expanded(
               child: ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: _hasPassportImage
+                    ? () => _sharePassportImage(context)
+                    : null,
                 label: const CustomText(
                   'profile.share_pdf',
                   color: CustomTextColor.white,
@@ -1123,6 +1134,128 @@ class _PassportSection extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _downloadPassportImage(BuildContext context) async {
+    final imageUrl = passportImage.trim();
+    if (imageUrl.isEmpty) {
+      showMessage(
+        context,
+        'profile.no_image',
+        SnackBarType.failuer,
+        translate: true,
+      );
+      return;
+    }
+
+    try {
+      final downloadDirectory = await _resolveAppDownloadsDirectory();
+      await _downloadImageToDirectory(
+        imageUrl: imageUrl,
+        directory: downloadDirectory,
+      );
+
+      if (!context.mounted) return;
+      showMessage(
+        context,
+        'profile.passport_download_success',
+        SnackBarType.success,
+        translate: true,
+      );
+    } catch (_) {
+      if (!context.mounted) return;
+      showMessage(
+        context,
+        'profile.passport_download_failed',
+        SnackBarType.failuer,
+        translate: true,
+      );
+    }
+  }
+
+  Future<void> _sharePassportImage(BuildContext context) async {
+    final imageUrl = passportImage.trim();
+    if (imageUrl.isEmpty) {
+      showMessage(
+        context,
+        'profile.no_image',
+        SnackBarType.failuer,
+        translate: true,
+      );
+      return;
+    }
+
+    try {
+      final tempDirectory = await _resolveShareCacheDirectory();
+      final file = await _downloadImageToDirectory(
+        imageUrl: imageUrl,
+        directory: tempDirectory,
+      );
+
+      await Share.shareXFiles([XFile(file.path)], text: 'Passport Image');
+    } catch (_) {
+      if (!context.mounted) return;
+      showMessage(
+        context,
+        'profile.passport_share_failed',
+        SnackBarType.failuer,
+        translate: true,
+      );
+    }
+  }
+
+  Future<Directory> _resolveAppDownloadsDirectory() async {
+    if (Platform.isAndroid) {
+      final externalDir = await getExternalStorageDirectory();
+      if (externalDir != null) {
+        return Directory(
+          '${externalDir.path}${Platform.pathSeparator}Downloads${Platform.pathSeparator}Hajj App',
+        );
+      }
+    }
+
+    final docsDir = await getApplicationDocumentsDirectory();
+    return Directory(
+      '${docsDir.path}${Platform.pathSeparator}Downloads${Platform.pathSeparator}Hajj App',
+    );
+  }
+
+  Future<Directory> _resolveShareCacheDirectory() async {
+    final tempDir = await getTemporaryDirectory();
+    return Directory('${tempDir.path}${Platform.pathSeparator}passport_share');
+  }
+
+  Future<File> _downloadImageToDirectory({
+    required String imageUrl,
+    required Directory directory,
+  }) async {
+    await directory.create(recursive: true);
+
+    final fileName = _resolveFileNameFromUrl(imageUrl);
+    final file = File('${directory.path}${Platform.pathSeparator}$fileName');
+
+    await Dio().download(
+      imageUrl,
+      file.path,
+      options: Options(responseType: ResponseType.bytes),
+      deleteOnError: true,
+    );
+
+    return file;
+  }
+
+  String _resolveFileNameFromUrl(String imageUrl) {
+    try {
+      final uri = Uri.parse(imageUrl);
+      if (uri.pathSegments.isNotEmpty) {
+        final lastSegment = uri.pathSegments.last.trim();
+        if (lastSegment.isNotEmpty) {
+          return lastSegment;
+        }
+      }
+    } catch (_) {}
+
+    return 'passport_${DateTime.now().millisecondsSinceEpoch}.jpg';
   }
 }
 

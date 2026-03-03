@@ -179,10 +179,10 @@ class HomeCard extends StatelessWidget {
   }
 
   String _formatPilgrimId({int? pilgrimId, int? barcode}) {
-    final id = pilgrimId ?? 0;
-    if (id > 0) return id.toString();
     final code = barcode ?? 0;
     if (code > 0) return code.toString();
+    final id = pilgrimId ?? 0;
+    if (id > 0) return id.toString();
     return '-';
   }
 }

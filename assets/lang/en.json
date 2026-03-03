@@ -275,6 +275,9 @@
     "share_pdf": "Share PDF",
     "tap_to_preview": "Tap to preview full size",
     "no_image": "No image to display",
+    "passport_download_success": "Passport image downloaded into Downloads/Hajj App folder",
+    "passport_download_failed": "Failed to download passport image",
+    "passport_share_failed": "Failed to share passport image",
     "call_invalid_number": "Invalid phone number",
     "call_unavailable": "Could not open the dialer app"
   },

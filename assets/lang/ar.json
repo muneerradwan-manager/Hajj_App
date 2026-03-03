@@ -275,6 +275,9 @@
     "share_pdf": "مشاركة PDF",
     "tap_to_preview": "اضغط للمعاينة بالحجم الكامل",
     "no_image": "لا يوجد صورة لعرضها",
+    "passport_download_success": "تم تنزيل صورة الجواز داخل مجلد Downloads/Hajj App",
+    "passport_download_failed": "فشل تنزيل صورة الجواز",
+    "passport_share_failed": "فشلت مشاركة صورة الجواز",
     "call_invalid_number": "رقم الهاتف غير صالح",
     "call_unavailable": "تعذر فتح تطبيق الاتصال"
   },

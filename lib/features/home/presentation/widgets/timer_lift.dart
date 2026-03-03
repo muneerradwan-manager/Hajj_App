@@ -15,6 +15,7 @@ class TimerLift extends StatefulWidget {
 }
 
 class _TimerLiftState extends State<TimerLift> {
+  static const int _debugPrintHijriYear = 1447;
   _EventCountdownTarget? _activeTarget;
   late Duration _remaining;
   Timer? _timer;
@@ -23,6 +24,7 @@ class _TimerLiftState extends State<TimerLift> {
   void initState() {
     super.initState();
     _remaining = Duration.zero;
+    _printAllTargetsForYear(_debugPrintHijriYear);
     _refreshCountdown();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted) return;
@@ -33,7 +35,11 @@ class _TimerLiftState extends State<TimerLift> {
   void _refreshCountdown() {
     final now = DateTime.now();
     final nextTarget = _resolveCurrentOrNextTarget(now);
+    final targetChanged = !_isSameTarget(_activeTarget, nextTarget);
     _activeTarget = nextTarget;
+    if (targetChanged) {
+      _printTarget(nextTarget);
+    }
     if (nextTarget == null) {
       _remaining = Duration.zero;
       return;
@@ -109,6 +115,95 @@ class _TimerLiftState extends State<TimerLift> {
       return a.event.id.compareTo(b.event.id);
     });
     return upcomingTargets.first;
+  }
+
+  bool _isSameTarget(_EventCountdownTarget? a, _EventCountdownTarget? b) {
+    if (a == null && b == null) return true;
+    if (a == null || b == null) return false;
+    return a.event.id == b.event.id &&
+        a.isEnding == b.isEnding &&
+        a.targetDate.isAtSameMomentAs(b.targetDate);
+  }
+
+  void _printTarget(_EventCountdownTarget? target) {
+    if (target == null) {
+      debugPrint('[TimerLift] No upcoming Islamic events.');
+      return;
+    }
+
+    final mode = target.isEnding ? 'ends' : 'starts';
+    final targetDate = target.targetDate.toLocal();
+    final hijriDate = HijriDate.fromDate(targetDate);
+    debugPrint(
+      '[TimerLift] Event $mode: ${target.event.titleArabic} | '
+      '${target.event.titleEnglish} | '
+      'Gregorian: ${targetDate.toIso8601String()} | '
+      'Hijri: ${hijriDate.hDay}-${hijriDate.hMonth}-${hijriDate.hYear}',
+    );
+  }
+
+  void _printAllTargetsForYear(int hijriYear) {
+    final allTargets = <_EventCountdownTarget>[];
+
+    for (final event in IslamicEventsManager.allEvents) {
+      final validDays =
+          event.days
+              .where(
+                (day) =>
+                    _tryHijriToGregorian(hijriYear, event.month, day) != null,
+              )
+              .toList()
+            ..sort();
+
+      if (validDays.isEmpty) continue;
+
+      final startDate = _tryHijriToGregorian(
+        hijriYear,
+        event.month,
+        validDays.first,
+      );
+      final endDate = _tryHijriToGregorian(
+        hijriYear,
+        event.month,
+        validDays.last,
+      );
+      if (startDate == null || endDate == null) continue;
+
+      allTargets.add(
+        _EventCountdownTarget(
+          event: event,
+          targetDate: startDate,
+          isEnding: false,
+        ),
+      );
+      allTargets.add(
+        _EventCountdownTarget(
+          event: event,
+          targetDate: endDate.add(const Duration(days: 1)),
+          isEnding: true,
+        ),
+      );
+    }
+
+    allTargets.sort((a, b) {
+      final byDate = a.targetDate.compareTo(b.targetDate);
+      if (byDate != 0) return byDate;
+      if (a.isEnding != b.isEnding) return a.isEnding ? 1 : -1;
+      return a.event.id.compareTo(b.event.id);
+    });
+
+    debugPrint('[TimerLift] ===== Targets For Hijri Year $hijriYear =====');
+    for (final target in allTargets) {
+      final mode = target.isEnding ? 'end-target' : 'start-target';
+      final g = target.targetDate.toLocal();
+      final h = HijriDate.fromDate(g);
+      debugPrint(
+        '[TimerLift] $mode | ${target.event.titleArabic} | ${target.event.titleEnglish} | '
+        'Gregorian: ${g.toIso8601String()} | '
+        'Hijri: ${h.hDay}-${h.hMonth}-${h.hYear}',
+      );
+    }
+    debugPrint('[TimerLift] ===== End Of Targets =====');
   }
 
   DateTime? _tryHijriToGregorian(int year, int month, int day) {
