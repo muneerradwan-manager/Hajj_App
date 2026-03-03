@@ -928,8 +928,8 @@ class _UnavailableInfoCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: cs.primary,
                 ),
-                padding: EdgeInsets.all(10),
-                child: Icon(LucideIcons.info, color: Colors.white),
+                padding: const EdgeInsets.all(10),
+                child: const Icon(LucideIcons.info, color: Colors.white),
               ),
               Expanded(
                 child: CustomText(titleKey, color: CustomTextColor.gold),

@@ -30,7 +30,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
     _NavItemData(labelKey: 'nav.more', icon: LucideIcons.menu),
   ];
 
-  static final List<Widget> _pages = [
+  static final List<Widget> _pages = const [
     HomeView(),
     _PlaceholderPage(titleKey: 'nav.training'),
     _PlaceholderPage(titleKey: 'nav.help'),
@@ -161,7 +161,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    CustomText(
+                    const CustomText(
                       'nav.help',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -197,7 +197,7 @@ class MoreView extends StatelessWidget {
               await getIt<LoginCubit>().logout();
               if (context.mounted) context.go(AppRoutes.loginPath);
             },
-            child: CustomText('Logout', color: CustomTextColor.white),
+            child: const CustomText('Logout', color: CustomTextColor.white),
           ),
         ],
       ),

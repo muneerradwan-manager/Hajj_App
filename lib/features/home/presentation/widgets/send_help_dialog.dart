@@ -179,7 +179,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Container(
               decoration: BoxDecoration(
-                color: Color(0xffF9F8F6),
+                color: const Color(0xffF9F8F6),
                 borderRadius: BorderRadius.circular(16),
               ),
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -257,7 +257,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
         Container(
           width: double.infinity,
           padding: const EdgeInsets.only(top: 40, bottom: 30),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -338,7 +338,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [Color(0xff7A2631), Color(0xff672146)],

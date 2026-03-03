@@ -27,7 +27,7 @@ class ProfileHeroSection extends StatelessWidget {
                     context.pop();
                   },
                 ),
-                CustomText(
+                const CustomText(
                   'profile.back',
                   textAlign: TextAlign.center,
                   type: CustomTextType.bodyLarge,
@@ -44,7 +44,7 @@ class ProfileHeroSection extends StatelessWidget {
                     color: Colors.white.withValues(alpha: .5),
                   ),
                   child: IconButton(
-                    icon: Icon(LucideIcons.download, color: Colors.white),
+                    icon: const Icon(LucideIcons.download, color: Colors.white),
                     onPressed: () {},
                   ),
                 ),
@@ -54,7 +54,7 @@ class ProfileHeroSection extends StatelessWidget {
                     color: Colors.white.withValues(alpha: .5),
                   ),
                   child: IconButton(
-                    icon: Icon(LucideIcons.share2, color: Colors.white),
+                    icon: const Icon(LucideIcons.share2, color: Colors.white),
                     onPressed: () {},
                   ),
                 ),
@@ -62,14 +62,14 @@ class ProfileHeroSection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 20),
-        CustomText(
+        const SizedBox(height: 20),
+        const CustomText(
           'profile.digital_card_title',
           color: CustomTextColor.white,
           type: CustomTextType.headlineSmall,
         ),
-        SizedBox(height: 10),
-        CustomText(
+        const SizedBox(height: 10),
+        const CustomText(
           'profile.complete_info',
           type: CustomTextType.labelLarge,
           color: CustomTextColor.lightGold,

@@ -54,7 +54,7 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: cs.primary),
             ),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               spacing: 20,
               children: [

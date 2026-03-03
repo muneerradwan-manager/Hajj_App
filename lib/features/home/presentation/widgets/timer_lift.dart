@@ -15,7 +15,7 @@ class TimerLift extends StatefulWidget {
 
 class _TimerLiftState extends State<TimerLift> {
   static const _targetHijriDay = 9;
-  static const _targetHijriMonth = 12; // Dhul Hijjah
+  static const _targetHijriMonth = 12;
   static const _targetHijriYear = 1447;
 
   late final DateTime _targetDate;

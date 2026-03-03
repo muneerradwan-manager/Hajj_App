@@ -19,7 +19,7 @@ void showMessage(
         backgroundColor: type == SnackBarType.success
             ? cs.primary
             : type == SnackBarType.failuer
-            ? cs.primary
+            ? cs.brandRed
             : type == SnackBarType.info
             ? cs.brandGold
             : Colors.black,
