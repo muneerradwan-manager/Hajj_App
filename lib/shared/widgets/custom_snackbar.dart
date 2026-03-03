@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hajj_app/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
 
 import 'custom_text.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hajj_app/core/di/dependency_injection.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/me/me_cubit.dart';
+import 'package:bawabatelhajj/core/di/dependency_injection.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
 
 import '../../../../shared/widgets/card_entry_animation.dart';
 import '../../../../shared/widgets/hero_background.dart';
@@ -37,8 +37,7 @@ class ProfileView extends StatelessWidget {
             const horizontalPadding = 20.0;
 
             return SingleChildScrollView(
-              keyboardDismissBehavior:
-                  ScrollViewKeyboardDismissBehavior.onDrag,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Stack(
                 children: [
                   ...HeroBackground.layers(context, heroHeight),

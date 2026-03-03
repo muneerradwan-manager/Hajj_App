@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:hajj_app/core/errors/failures.dart';
-import 'package:hajj_app/features/auth/domain/entities/auth_session.dart';
-import 'package:hajj_app/features/auth/domain/entities/register_draft.dart';
-import 'package:hajj_app/features/auth/domain/entities/user_profile.dart';
+import 'package:bawabatelhajj/core/errors/failures.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/auth_session.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/register_draft.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/user_profile.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, AuthSession>> login({

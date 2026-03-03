@@ -1,4 +1,4 @@
-import 'package:hajj_app/features/auth/domain/entities/auth_session.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/auth_session.dart';
 
 class AuthSessionModel {
   final String token;

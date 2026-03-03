@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 /// Label row showing a translated field name followed by a red asterisk.
 class RequiredFieldLabel extends StatelessWidget {
@@ -18,7 +18,11 @@ class RequiredFieldLabel extends StatelessWidget {
           type: CustomTextType.titleSmall,
           color: CustomTextColor.green,
         ),
-        const CustomText('*', color: CustomTextColor.lightRed, translate: false),
+        const CustomText(
+          '*',
+          color: CustomTextColor.lightRed,
+          translate: false,
+        ),
       ],
     );
   }

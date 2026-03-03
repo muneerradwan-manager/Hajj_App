@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
-import 'package:hajj_app/shared/widgets/quick_action_card.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/quick_action_card.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({super.key});

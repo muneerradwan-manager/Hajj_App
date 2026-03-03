@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/core/constants/app_sizes.dart';
+import 'package:bawabatelhajj/core/constants/app_sizes.dart';
 
 DialogThemeData buildAppDialogTheme(ColorScheme cs) {
   return DialogThemeData(

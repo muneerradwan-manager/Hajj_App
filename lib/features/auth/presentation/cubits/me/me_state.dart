@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:hajj_app/features/auth/domain/entities/user_profile.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/user_profile.dart';
 
 enum MeStatus { initial, loading, loaded, error }
 

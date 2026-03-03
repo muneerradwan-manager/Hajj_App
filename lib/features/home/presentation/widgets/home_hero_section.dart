@@ -4,10 +4,10 @@ import 'package:hijri_date/hijri.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/core/functions/date_format.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/me/me_cubit.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/core/functions/date_format.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 enum CalendarType { hijri, gregorian }
 

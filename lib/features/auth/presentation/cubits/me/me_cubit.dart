@@ -1,6 +1,6 @@
-import 'package:hajj_app/core/cubits/safe_cubit.dart';
-import 'package:hajj_app/features/auth/domain/usecases/get_me_usecase.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/me/me_state.dart';
+import 'package:bawabatelhajj/core/cubits/safe_cubit.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/get_me_usecase.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_state.dart';
 
 class MeCubit extends SafeCubit<MeState> {
   final GetMeUseCase _getMeUseCase;

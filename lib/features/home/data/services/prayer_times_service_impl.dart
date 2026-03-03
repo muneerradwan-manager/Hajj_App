@@ -6,9 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:geocoding/geocoding.dart' as geocoding;
 
-import 'package:hajj_app/core/errors/failures.dart';
-import 'package:hajj_app/features/home/domain/models/prayer_times_model.dart';
-import 'package:hajj_app/features/home/domain/services/prayer_times_service.dart';
+import 'package:bawabatelhajj/core/errors/failures.dart';
+import 'package:bawabatelhajj/features/home/domain/models/prayer_times_model.dart';
+import 'package:bawabatelhajj/features/home/domain/services/prayer_times_service.dart';
 
 class PrayerTimesServiceImpl implements PrayerTimesService {
   @override
@@ -68,7 +68,7 @@ class PrayerTimesServiceImpl implements PrayerTimesService {
               'format': 'json',
               'accept-language': 'ar',
             },
-            options: Options(headers: {'User-Agent': 'hajj_app/1.0'}),
+            options: Options(headers: {'User-Agent': 'bawabatelhajj/1.0'}),
           );
           final address = response.data['address'] as Map<String, dynamic>?;
           if (address != null) {

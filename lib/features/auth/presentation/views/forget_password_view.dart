@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/core/constants/app_routes.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
-import 'package:hajj_app/core/validators/app_validators.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/forget_password/forget_password_cubit.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/forget_password/forget_password_state.dart';
-import 'package:hajj_app/shared/widgets/hero_background.dart';
-import 'package:hajj_app/shared/widgets/step_animated_switcher.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/core/constants/app_routes.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/core/validators/app_validators.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/forget_password/forget_password_cubit.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/forget_password/forget_password_state.dart';
+import 'package:bawabatelhajj/shared/widgets/hero_background.dart';
+import 'package:bawabatelhajj/shared/widgets/step_animated_switcher.dart';
 
 import '../../../../shared/widgets/custom_snackbar.dart';
 import '../widgets/forget_password/foregt_password_email_card.dart';

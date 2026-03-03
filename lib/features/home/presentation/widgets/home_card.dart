@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/me/me_cubit.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 import '../../../../core/constants/app_routes.dart';
 import '../../../../shared/widgets/custom_network_image.dart';

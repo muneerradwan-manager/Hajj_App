@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/core/constants/app_images.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/core/constants/app_images.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 import '../../../../shared/widgets/custom_snackbar.dart';
 

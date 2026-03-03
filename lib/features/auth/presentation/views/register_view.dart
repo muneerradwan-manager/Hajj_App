@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:hajj_app/core/constants/app_routes.dart';
-import 'package:hajj_app/features/auth/domain/entities/register_draft.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/register/register_cubit.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/register/register_state.dart';
-import 'package:hajj_app/shared/widgets/hero_background.dart';
-import 'package:hajj_app/shared/widgets/step_animated_switcher.dart';
+import 'package:bawabatelhajj/core/constants/app_routes.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/register_draft.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/register/register_cubit.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/register/register_state.dart';
+import 'package:bawabatelhajj/shared/widgets/hero_background.dart';
+import 'package:bawabatelhajj/shared/widgets/step_animated_switcher.dart';
 
 import '../../../../shared/widgets/custom_snackbar.dart';
 import '../widgets/register/register_hero_header.dart';
@@ -140,53 +140,53 @@ class _RegisterViewState extends State<RegisterView> {
           context.read<RegisterCubit>().clearMessages();
         }
       },
-        builder: (context, state) {
-          final viewport = MediaQuery.sizeOf(context);
-          final heroHeight = (viewport.height * 0.25).clamp(220.0, 300.0);
-          final overlap = (viewport.height * 0.03).clamp(16.0, 24.0);
-          final statusBarInset = MediaQuery.paddingOf(context).top;
-          final totalHeroHeight = heroHeight + statusBarInset;
+      builder: (context, state) {
+        final viewport = MediaQuery.sizeOf(context);
+        final heroHeight = (viewport.height * 0.25).clamp(220.0, 300.0);
+        final overlap = (viewport.height * 0.03).clamp(16.0, 24.0);
+        final statusBarInset = MediaQuery.paddingOf(context).top;
+        final totalHeroHeight = heroHeight + statusBarInset;
 
-          return Scaffold(
-            resizeToAvoidBottomInset: true,
-            body: SingleChildScrollView(
-              child: Stack(
-                children: [
-                  ...HeroBackground.layers(context, totalHeroHeight),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      RegisterHeroHeader(
-                        height: heroHeight,
-                        stepNumber: state.stepNumber,
-                        onBack: _handleBack,
-                      ),
-                      SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Transform.translate(
-                            offset: Offset(0, -overlap),
-                            child: StepAnimatedSwitcher(
-                              child: state.isHydrated
-                                  ? _buildStep(state)
-                                  : const SizedBox(
-                                      key: ValueKey('register-loading'),
-                                      height: 260,
-                                      child: Center(
-                                        child: CircularProgressIndicator(),
-                                      ),
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          body: SingleChildScrollView(
+            child: Stack(
+              children: [
+                ...HeroBackground.layers(context, totalHeroHeight),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    RegisterHeroHeader(
+                      height: heroHeight,
+                      stepNumber: state.stepNumber,
+                      onBack: _handleBack,
+                    ),
+                    SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Transform.translate(
+                          offset: Offset(0, -overlap),
+                          child: StepAnimatedSwitcher(
+                            child: state.isHydrated
+                                ? _buildStep(state)
+                                : const SizedBox(
+                                    key: ValueKey('register-loading'),
+                                    height: 260,
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
                                     ),
-                            ),
+                                  ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          );
-        },
+          ),
+        );
+      },
     );
   }
 

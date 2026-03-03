@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 
 enum CustomTextType {
   displayLarge,

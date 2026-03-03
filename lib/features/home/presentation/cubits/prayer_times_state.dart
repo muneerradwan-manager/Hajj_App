@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:hajj_app/features/home/domain/models/prayer_times_model.dart';
+import 'package:bawabatelhajj/features/home/domain/models/prayer_times_model.dart';
 
 enum PrayerTimesStatus { initial, loading, loaded, error }
 
@@ -18,10 +18,10 @@ class PrayerTimesState extends Equatable {
   });
 
   const PrayerTimesState.initial()
-      : status = PrayerTimesStatus.initial,
-        prayerTimes = null,
-        errorMessage = '',
-        isLocationError = false;
+    : status = PrayerTimesStatus.initial,
+      prayerTimes = null,
+      errorMessage = '',
+      isLocationError = false;
 
   PrayerTimesState copyWith({
     PrayerTimesStatus? status,
@@ -38,5 +38,10 @@ class PrayerTimesState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [status, prayerTimes, errorMessage, isLocationError];
+  List<Object?> get props => [
+    status,
+    prayerTimes,
+    errorMessage,
+    isLocationError,
+  ];
 }

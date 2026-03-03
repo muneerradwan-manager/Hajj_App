@@ -2,13 +2,13 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hajj_app/core/bloc/app_bloc_observer.dart';
-import 'package:hajj_app/core/bootstrap/app_bootstrap.dart';
-import 'package:hajj_app/core/di/dependency_injection.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
-import 'package:hajj_app/core/localization/localization_cubit.dart';
-import 'package:hajj_app/core/localization/localization_state.dart';
-import 'package:hajj_app/core/theme/app_theme.dart';
+import 'package:bawabatelhajj/core/bloc/app_bloc_observer.dart';
+import 'package:bawabatelhajj/core/bootstrap/app_bootstrap.dart';
+import 'package:bawabatelhajj/core/di/dependency_injection.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/core/localization/localization_cubit.dart';
+import 'package:bawabatelhajj/core/localization/localization_state.dart';
+import 'package:bawabatelhajj/core/theme/app_theme.dart';
 
 import 'core/router/app_router.dart';
 

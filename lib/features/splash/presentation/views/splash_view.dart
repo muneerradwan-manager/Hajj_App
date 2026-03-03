@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hajj_app/core/di/dependency_injection.dart';
-import 'package:hajj_app/features/splash/presentation/widgets/splash_pulse_indicator.dart';
-import 'package:hajj_app/shared/services/storage/token_storage_service.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/core/di/dependency_injection.dart';
+import 'package:bawabatelhajj/features/splash/presentation/widgets/splash_pulse_indicator.dart';
+import 'package:bawabatelhajj/shared/services/storage/token_storage_service.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_routes.dart';

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:hajj_app/core/di/dependency_injection.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/login/login_cubit.dart';
-import 'package:hajj_app/features/auth/presentation/widgets/login/login_card.dart';
-import 'package:hajj_app/features/auth/presentation/widgets/login/login_hero_section.dart';
-import 'package:hajj_app/shared/widgets/card_entry_animation.dart';
-import 'package:hajj_app/shared/widgets/hero_background.dart';
+import 'package:bawabatelhajj/core/di/dependency_injection.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/login/login_cubit.dart';
+import 'package:bawabatelhajj/features/auth/presentation/widgets/login/login_card.dart';
+import 'package:bawabatelhajj/features/auth/presentation/widgets/login/login_hero_section.dart';
+import 'package:bawabatelhajj/shared/widgets/card_entry_animation.dart';
+import 'package:bawabatelhajj/shared/widgets/hero_background.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -47,8 +47,7 @@ class LoginPage extends StatelessWidget {
             final cardMaxWidth = isDesktopLayout ? 560.0 : 720.0;
 
             return SingleChildScrollView(
-              keyboardDismissBehavior:
-                  ScrollViewKeyboardDismissBehavior.onDrag,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Stack(
                 children: [
                   ...HeroBackground.layers(context, heroHeight),

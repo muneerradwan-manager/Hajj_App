@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 /// Elevated button with a vertical primary gradient background.
 class GradientElevatedButton extends StatelessWidget {

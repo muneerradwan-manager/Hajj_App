@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/core/constants/app_images.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/core/constants/app_images.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 class LoginHeroSection extends StatelessWidget {
   const LoginHeroSection({super.key, required this.logoSize});

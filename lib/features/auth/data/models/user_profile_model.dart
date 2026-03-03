@@ -1,4 +1,4 @@
-import 'package:hajj_app/features/auth/domain/entities/user_profile.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/user_profile.dart';
 
 class UserProfileModel {
   final String userId;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 
 /// A highlighted note box with a bold label + body text.
 /// Used for warnings and important notices in auth cards.

@@ -1,8 +1,8 @@
 import 'package:geolocator/geolocator.dart';
 
-import 'package:hajj_app/core/cubits/safe_cubit.dart';
-import 'package:hajj_app/core/errors/failures.dart';
-import 'package:hajj_app/features/home/domain/services/prayer_times_service.dart';
+import 'package:bawabatelhajj/core/cubits/safe_cubit.dart';
+import 'package:bawabatelhajj/core/errors/failures.dart';
+import 'package:bawabatelhajj/features/home/domain/services/prayer_times_service.dart';
 
 import 'prayer_times_state.dart';
 

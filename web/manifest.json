@@ -1,6 +1,6 @@
 {
-    "name": "hajj_app",
-    "short_name": "hajj_app",
+    "name": "bawabatelhajj",
+    "short_name": "bawabatelhajj",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

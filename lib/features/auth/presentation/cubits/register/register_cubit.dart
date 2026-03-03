@@ -1,12 +1,12 @@
-import 'package:hajj_app/core/cubits/safe_cubit.dart';
-import 'package:hajj_app/features/auth/domain/entities/register_draft.dart';
-import 'package:hajj_app/features/auth/domain/usecases/clear_register_draft_usecase.dart';
-import 'package:hajj_app/features/auth/domain/usecases/confirm_email_usecase.dart';
-import 'package:hajj_app/features/auth/domain/usecases/load_register_draft_usecase.dart';
-import 'package:hajj_app/features/auth/domain/usecases/resend_confirm_email_usecase.dart';
-import 'package:hajj_app/features/auth/domain/usecases/save_register_draft_usecase.dart';
-import 'package:hajj_app/features/auth/domain/usecases/submit_register_usecase.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/register/register_state.dart';
+import 'package:bawabatelhajj/core/cubits/safe_cubit.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/register_draft.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/clear_register_draft_usecase.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/confirm_email_usecase.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/load_register_draft_usecase.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/resend_confirm_email_usecase.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/save_register_draft_usecase.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/submit_register_usecase.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/register/register_state.dart';
 
 class RegisterCubit extends SafeCubit<RegisterState> {
   RegisterCubit(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
-import 'package:hajj_app/core/validators/app_validators.dart';
-import 'package:hajj_app/shared/widgets/app_card_container.dart';
-import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
-import 'package:hajj_app/shared/widgets/required_field_label.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/core/validators/app_validators.dart';
+import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
+import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/required_field_label.dart';
 
 class RegisterMainInfoCard extends StatelessWidget {
   const RegisterMainInfoCard({
@@ -77,8 +77,7 @@ class RegisterMainInfoCard extends StatelessWidget {
                 hintStyle: TextStyle(color: cs.outline),
                 suffixIcon: Icon(LucideIcons.user, color: cs.primary),
               ),
-              validator: (value) =>
-                  AppValidators.nationalId(value, context),
+              validator: (value) => AppValidators.nationalId(value, context),
             ),
             const SizedBox(height: 24),
             const RequiredFieldLabel('auth.register.phone_label'),

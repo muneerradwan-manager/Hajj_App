@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/constants/app_routes.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
-import 'package:hajj_app/core/validators/app_validators.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/login/login_cubit.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/login/login_state.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/core/constants/app_routes.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/core/validators/app_validators.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/login/login_cubit.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/login/login_state.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 import '../../../../../shared/widgets/custom_snackbar.dart';
 import 'login_or_divider.dart';

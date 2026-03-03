@@ -3,12 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/core/constants/app_routes.dart';
-import 'package:hajj_app/core/di/dependency_injection.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/login/login_cubit.dart';
-import 'package:hajj_app/shared/widgets/exit_app_dialog.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/core/constants/app_routes.dart';
+import 'package:bawabatelhajj/core/di/dependency_injection.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/login/login_cubit.dart';
+import 'package:bawabatelhajj/shared/widgets/exit_app_dialog.dart';
 
 import '../../../../shared/widgets/custom_text.dart';
 import '../widgets/send_help_dialog.dart';

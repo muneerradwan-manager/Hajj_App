@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/features/home/presentation/cubits/prayer_times_cubit.dart';
-import 'package:hajj_app/features/home/presentation/cubits/prayer_times_state.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/features/home/presentation/cubits/prayer_times_cubit.dart';
+import 'package:bawabatelhajj/features/home/presentation/cubits/prayer_times_state.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 class PrayerTimesWidget extends StatefulWidget {
   const PrayerTimesWidget({super.key});

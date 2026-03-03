@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
-import 'package:hajj_app/shared/widgets/app_card_container.dart';
-import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
-import 'package:hajj_app/shared/widgets/gradient_elevated_button.dart';
-import 'package:hajj_app/shared/widgets/important_note_box.dart';
-import 'package:hajj_app/shared/widgets/numbered_steps_list.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
+import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/gradient_elevated_button.dart';
+import 'package:bawabatelhajj/shared/widgets/important_note_box.dart';
+import 'package:bawabatelhajj/shared/widgets/numbered_steps_list.dart';
 
 class RegisterSuccessCard extends StatelessWidget {
   const RegisterSuccessCard({super.key, required this.onContinueToLogin});

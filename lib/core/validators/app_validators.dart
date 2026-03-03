@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 
 class AppValidators {
   const AppValidators._();

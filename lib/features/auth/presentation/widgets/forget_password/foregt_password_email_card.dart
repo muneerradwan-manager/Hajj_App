@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/shared/widgets/app_card_container.dart';
-import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
+import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 class ForgetPasswordEmailCard extends StatelessWidget {
   const ForgetPasswordEmailCard({

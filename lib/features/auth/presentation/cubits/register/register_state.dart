@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:hajj_app/features/auth/domain/entities/register_draft.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/register_draft.dart';
 
 class RegisterState extends Equatable {
   final RegisterDraft draft;

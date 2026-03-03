@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
-import 'package:hajj_app/shared/widgets/directional_back_arrow.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/directional_back_arrow.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class RegisterHeroHeader extends StatelessWidget {

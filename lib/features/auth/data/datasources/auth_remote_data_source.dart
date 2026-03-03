@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:hajj_app/core/constants/app_urls.dart';
-import 'package:hajj_app/core/network/dio_client.dart';
-import 'package:hajj_app/features/auth/data/models/auth_session_model.dart';
-import 'package:hajj_app/features/auth/data/models/confirm_email_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/forgot_password_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/login_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/register_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/refresh_token_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/reset_password_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/resend_confirm_email_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/user_profile_model.dart';
+import 'package:bawabatelhajj/core/constants/app_urls.dart';
+import 'package:bawabatelhajj/core/network/dio_client.dart';
+import 'package:bawabatelhajj/features/auth/data/models/auth_session_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/confirm_email_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/forgot_password_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/login_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/register_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/refresh_token_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/reset_password_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/resend_confirm_email_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/user_profile_model.dart';
 
 class AuthRemoteDataSource {
   final DioClient _dioClient;

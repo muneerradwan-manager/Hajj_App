@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:hajj_app/features/auth/data/models/register_draft_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/register_draft_model.dart';
 
 class RegisterLocalDataSource {
   static const String _registerDraftKey = 'register_draft_cache';

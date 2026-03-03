@@ -1,23 +1,23 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:hajj_app/core/errors/failures.dart';
-import 'package:hajj_app/core/network/api_error_handler.dart';
-import 'package:hajj_app/features/auth/data/datasources/auth_local_data_source.dart';
-import 'package:hajj_app/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:hajj_app/features/auth/data/datasources/register_local_data_source.dart';
-import 'package:hajj_app/features/auth/data/models/auth_session_model.dart';
-import 'package:hajj_app/features/auth/data/models/confirm_email_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/forgot_password_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/login_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/register_draft_model.dart';
-import 'package:hajj_app/features/auth/data/models/register_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/refresh_token_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/reset_password_request_model.dart';
-import 'package:hajj_app/features/auth/data/models/resend_confirm_email_request_model.dart';
-import 'package:hajj_app/features/auth/domain/entities/user_profile.dart';
-import 'package:hajj_app/features/auth/domain/entities/auth_session.dart';
-import 'package:hajj_app/features/auth/domain/entities/register_draft.dart';
-import 'package:hajj_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:bawabatelhajj/core/errors/failures.dart';
+import 'package:bawabatelhajj/core/network/api_error_handler.dart';
+import 'package:bawabatelhajj/features/auth/data/datasources/auth_local_data_source.dart';
+import 'package:bawabatelhajj/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:bawabatelhajj/features/auth/data/datasources/register_local_data_source.dart';
+import 'package:bawabatelhajj/features/auth/data/models/auth_session_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/confirm_email_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/forgot_password_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/login_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/register_draft_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/register_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/refresh_token_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/reset_password_request_model.dart';
+import 'package:bawabatelhajj/features/auth/data/models/resend_confirm_email_request_model.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/user_profile.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/auth_session.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/register_draft.dart';
+import 'package:bawabatelhajj/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;

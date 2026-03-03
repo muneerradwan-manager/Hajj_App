@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 /// A soft-coloured tile that shows an icon + label row followed by a value.
 /// Used in review-data cards and similar read-only displays.
@@ -57,7 +57,10 @@ class InfoDisplayTile extends StatelessWidget {
           ? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [Expanded(child: content), trailing!],
+              children: [
+                Expanded(child: content),
+                trailing!,
+              ],
             )
           : content,
     );

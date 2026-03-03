@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:hajj_app/core/constants/app_sizes.dart';
+import 'package:bawabatelhajj/core/constants/app_sizes.dart';
 
 AppBarTheme buildAppBarTheme(
   ColorScheme cs,

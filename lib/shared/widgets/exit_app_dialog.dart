@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 
 Future<bool> showExitAppDialog(BuildContext context) async {
   final colorScheme = Theme.of(context).colorScheme;

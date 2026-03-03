@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 /// A numbered list of steps with small coloured circle indicators.
 /// Reused in register-success and forget-password-success cards.

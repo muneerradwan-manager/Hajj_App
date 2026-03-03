@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:hajj_app/core/errors/failures.dart';
-import 'package:hajj_app/features/auth/domain/entities/user_profile.dart';
-import 'package:hajj_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:bawabatelhajj/core/errors/failures.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/user_profile.dart';
+import 'package:bawabatelhajj/features/auth/domain/repositories/auth_repository.dart';
 
 class GetMeUseCase {
   final AuthRepository _repository;

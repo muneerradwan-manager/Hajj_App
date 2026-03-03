@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hajj_app/core/constants/app_sizes.dart';
+import 'package:bawabatelhajj/core/constants/app_sizes.dart';
 
 ElevatedButtonThemeData buildAppElevatedButtonTheme(ColorScheme cs) {
   return ElevatedButtonThemeData(

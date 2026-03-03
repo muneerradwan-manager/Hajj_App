@@ -1,7 +1,7 @@
-import 'package:hajj_app/core/cubits/safe_cubit.dart';
-import 'package:hajj_app/features/auth/domain/usecases/login_usecase.dart';
-import 'package:hajj_app/features/auth/domain/usecases/logout_usecase.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/login/login_state.dart';
+import 'package:bawabatelhajj/core/cubits/safe_cubit.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/login_usecase.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/login/login_state.dart';
 
 class LoginCubit extends SafeCubit<LoginState> {
   LoginCubit(this._loginUseCase, this._logoutUseCase)

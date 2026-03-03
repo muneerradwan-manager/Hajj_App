@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:pinput/pinput.dart';
 
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
-import 'package:hajj_app/core/validators/app_validators.dart';
-import 'package:hajj_app/shared/widgets/app_card_container.dart';
-import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
-import 'package:hajj_app/shared/widgets/gradient_elevated_button.dart';
-import 'package:hajj_app/shared/widgets/required_field_label.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/core/validators/app_validators.dart';
+import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
+import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/gradient_elevated_button.dart';
+import 'package:bawabatelhajj/shared/widgets/required_field_label.dart';
 
 import '../../../../../shared/widgets/important_note_box.dart';
 import '../../../../../shared/widgets/numbered_steps_list.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hajj_app/core/di/dependency_injection.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/me/me_cubit.dart';
+import 'package:bawabatelhajj/core/di/dependency_injection.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
 
-import 'package:hajj_app/shared/widgets/card_entry_animation.dart';
-import 'package:hajj_app/shared/widgets/hero_background.dart';
+import 'package:bawabatelhajj/shared/widgets/card_entry_animation.dart';
+import 'package:bawabatelhajj/shared/widgets/hero_background.dart';
 
 import '../cubits/prayer_times_cubit.dart';
 import '../widgets/send_help_button.dart';

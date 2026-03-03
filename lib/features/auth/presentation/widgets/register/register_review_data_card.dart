@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:hajj_app/core/localization/app_localizations_setup.dart';
-import 'package:hajj_app/shared/widgets/app_card_container.dart';
-import 'package:hajj_app/shared/widgets/circular_icon_badge.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
-import 'package:hajj_app/shared/widgets/important_note_box.dart';
-import 'package:hajj_app/shared/widgets/info_display_tile.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
+import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
+import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/important_note_box.dart';
+import 'package:bawabatelhajj/shared/widgets/info_display_tile.dart';
 
 class RegisterReviewDataCard extends StatefulWidget {
   const RegisterReviewDataCard({
@@ -31,8 +31,7 @@ class RegisterReviewDataCard extends StatefulWidget {
   final VoidCallback? onBack;
 
   @override
-  State<RegisterReviewDataCard> createState() =>
-      _RegisterReviewDataCardState();
+  State<RegisterReviewDataCard> createState() => _RegisterReviewDataCardState();
 }
 
 class _RegisterReviewDataCardState extends State<RegisterReviewDataCard> {
@@ -116,14 +115,11 @@ class _RegisterReviewDataCardState extends State<RegisterReviewDataCard> {
                 'auth.register.review_placeholder_password',
               ),
               trailing: IconButton(
-                onPressed: () => setState(
-                  () => _isPasswordVisible = !_isPasswordVisible,
-                ),
+                onPressed: () =>
+                    setState(() => _isPasswordVisible = !_isPasswordVisible),
                 splashRadius: 20,
                 icon: Icon(
-                  _isPasswordVisible
-                      ? LucideIcons.eyeClosed
-                      : LucideIcons.eye,
+                  _isPasswordVisible ? LucideIcons.eyeClosed : LucideIcons.eye,
                   color: cs.primary.withValues(alpha: 0.7),
                 ),
               ),

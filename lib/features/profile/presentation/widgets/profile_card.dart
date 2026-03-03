@@ -1,18 +1,18 @@
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hajj_app/core/constants/app_colors.dart';
-import 'package:hajj_app/core/constants/app_images.dart';
-import 'package:hajj_app/features/auth/domain/entities/user_profile.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/me/me_cubit.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/me/me_state.dart';
-import 'package:hajj_app/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/core/constants/app_images.dart';
+import 'package:bawabatelhajj/features/auth/domain/entities/user_profile.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_state.dart';
+import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -1151,31 +1151,35 @@ class _PassportSection extends StatelessWidget {
     }
 
     try {
-      final hasAccess = await _ensureStorageAccessForDownload();
-      if (!hasAccess) {
-        if (!context.mounted) return;
-        showMessage(
-          context,
-          'profile.storage_permission_denied',
-          SnackBarType.failuer,
-          translate: true,
-        );
-        return;
-      }
+      final response = await Dio().get<List<int>>(
+        imageUrl,
+        options: Options(responseType: ResponseType.bytes),
+      );
 
-      final downloadDirectory = await _resolveAppDownloadsDirectory();
-      await _downloadImageToDirectory(
-        imageUrl: imageUrl,
-        directory: downloadDirectory,
+      final fileName = _resolveFileNameFromUrl(imageUrl);
+      final result = await SaverGallery.saveImage(
+        Uint8List.fromList(response.data!),
+        fileName: fileName,
+        androidRelativePath: 'Pictures/Hajj App',
+        skipIfExists: false,
       );
 
       if (!context.mounted) return;
-      showMessage(
-        context,
-        'profile.passport_download_success',
-        SnackBarType.success,
-        translate: true,
-      );
+      if (result.isSuccess) {
+        showMessage(
+          context,
+          'profile.passport_download_success',
+          SnackBarType.success,
+          translate: true,
+        );
+      } else {
+        showMessage(
+          context,
+          'profile.passport_download_failed',
+          SnackBarType.failuer,
+          translate: true,
+        );
+      }
     } catch (_) {
       if (!context.mounted) return;
       showMessage(
@@ -1223,40 +1227,6 @@ class _PassportSection extends StatelessWidget {
         translate: true,
       );
     }
-  }
-
-  Future<bool> _ensureStorageAccessForDownload() async {
-    if (!Platform.isAndroid) {
-      // iOS app-documents write does not require runtime storage permission.
-      return true;
-    }
-
-    final androidInfo = await DeviceInfoPlugin().androidInfo;
-    final sdkInt = androidInfo.version.sdkInt;
-
-    // App-specific external storage on Android 10+ does not require storage permission.
-    if (sdkInt >= 29) {
-      return true;
-    }
-
-    final status = await Permission.storage.request();
-    return status.isGranted;
-  }
-
-  Future<Directory> _resolveAppDownloadsDirectory() async {
-    if (Platform.isAndroid) {
-      final externalDir = await getExternalStorageDirectory();
-      if (externalDir != null) {
-        return Directory(
-          '${externalDir.path}${Platform.pathSeparator}Downloads${Platform.pathSeparator}Hajj App',
-        );
-      }
-    }
-
-    final docsDir = await getApplicationDocumentsDirectory();
-    return Directory(
-      '${docsDir.path}${Platform.pathSeparator}Downloads${Platform.pathSeparator}Hajj App',
-    );
   }
 
   Future<Directory> _resolveShareCacheDirectory() async {

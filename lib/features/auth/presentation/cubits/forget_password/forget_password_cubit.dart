@@ -1,7 +1,7 @@
-import 'package:hajj_app/core/cubits/safe_cubit.dart';
-import 'package:hajj_app/features/auth/domain/usecases/forgot_password_usecase.dart';
-import 'package:hajj_app/features/auth/domain/usecases/reset_password_usecase.dart';
-import 'package:hajj_app/features/auth/presentation/cubits/forget_password/forget_password_state.dart';
+import 'package:bawabatelhajj/core/cubits/safe_cubit.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/forgot_password_usecase.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/reset_password_usecase.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/forget_password/forget_password_state.dart';
 
 class ForgetPasswordCubit extends SafeCubit<ForgetPasswordState> {
   ForgetPasswordCubit(this._forgotPasswordUseCase, this._resetPasswordUseCase)
