@@ -11,6 +11,7 @@ abstract class AuthRepository {
     required String password,
   });
   Future<Either<Failure, UserProfile>> getMe();
+  Future<UserProfile?> getCachedMe();
   Future<Either<Failure, String>> logout();
   Future<Either<Failure, AuthSession>> refreshSession();
 

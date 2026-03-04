@@ -18,29 +18,25 @@ class AppCardContainer extends StatelessWidget {
   final double borderRadius;
   final Color? borderColor;
   final bool showShadow;
+  
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return Container(
-      width: double.infinity,
-      padding: padding,
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(borderRadius),
-        border: Border.all(color: borderColor ?? cs.outlineVariant),
-        boxShadow: showShadow
-            ? [
-                BoxShadow(
-                  color: cs.shadow.withValues(alpha: 0.18),
-                  blurRadius: 28,
-                  offset: const Offset(0, 14),
-                ),
-              ]
-            : null,
+    return Material(
+      elevation: showShadow ? 5 : 0,
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: Container(
+        width: double.infinity,
+        padding: padding,
+        decoration: BoxDecoration(
+          color: cs.surface,
+          borderRadius: BorderRadius.circular(borderRadius),
+          border: Border.all(color: borderColor ?? cs.outlineVariant),
+        ),
+        child: child,
       ),
-      child: child,
     );
   }
 }

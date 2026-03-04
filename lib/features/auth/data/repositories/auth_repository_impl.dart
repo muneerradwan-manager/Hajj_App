@@ -52,10 +52,17 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserProfile>> getMe() async {
     try {
       final model = await _remoteDataSource.getMe();
+      await _authLocalDataSource.saveCachedProfile(model);
       return right(model.toEntity());
     } on Exception catch (error) {
       return left(ApiErrorHandler.handle(error));
     }
+  }
+
+  @override
+  Future<UserProfile?> getCachedMe() async {
+    final model = await _authLocalDataSource.getCachedProfile();
+    return model?.toEntity();
   }
 
   @override

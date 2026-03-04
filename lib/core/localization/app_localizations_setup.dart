@@ -96,7 +96,6 @@
 // ============================================================
 
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -107,10 +106,6 @@ class AppLocalizations {
   late Map<String, dynamic> _localizedStrings;
 
   AppLocalizations(this.locale);
-
-  void _log(String message) {
-    if (kDebugMode) debugPrint(message);
-  }
 
   /// Get AppLocalizations instance from context
   static AppLocalizations of(BuildContext context) {
@@ -127,12 +122,6 @@ class AppLocalizations {
     if (locale.languageCode != 'ar') {
       _localizedStrings = await _loadLanguage('ar');
     }
-
-    if (_localizedStrings.isEmpty) {
-      _log(
-        '[AppLocalizations] No localization data found for ${locale.languageCode} and fallback ar',
-      );
-    }
   }
 
   Future<Map<String, dynamic>> _loadLanguage(String languageCode) async {
@@ -142,7 +131,6 @@ class AppLocalizations {
       );
       return json.decode(jsonString) as Map<String, dynamic>;
     } catch (e) {
-      _log('[AppLocalizations] Error loading locale $languageCode: $e');
       return {};
     }
   }

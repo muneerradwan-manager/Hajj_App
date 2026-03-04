@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -8,6 +9,7 @@ import 'package:bawabatelhajj/core/constants/app_routes.dart';
 import 'package:bawabatelhajj/core/di/dependency_injection.dart';
 import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/login/login_cubit.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
 import 'package:bawabatelhajj/shared/widgets/exit_app_dialog.dart';
 
 import '../../../../shared/widgets/custom_text.dart';
@@ -45,6 +47,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
   void initState() {
     super.initState();
     _pageController = PageController();
+    context.read<MeCubit>().loadMe();
   }
 
   @override
@@ -195,6 +198,9 @@ class MoreView extends StatelessWidget {
             style: ElevatedButton.styleFrom(backgroundColor: cs.brandRed),
             onPressed: () async {
               await getIt<LoginCubit>().logout();
+              if (context.mounted) {
+                context.read<MeCubit>().clearState();
+              }
               if (context.mounted) context.go(AppRoutes.loginPath);
             },
             child: const CustomText('Logout', color: CustomTextColor.white),

@@ -79,6 +79,27 @@ class UserProfileModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'email': email,
+      'phone': phone,
+      'barcode': barcode,
+      'pilgrimId': pilgrimId,
+      'fullName': fullName,
+      'nationalityNumber': nationalityNumber,
+      'isMale': isMale,
+      'imgPath': imgPath,
+      'passPath': passPath,
+      'officeName': officeName,
+      'officePhone': officePhone,
+      'group': group.toJson(),
+      'masterGroup': masterGroup.toJson(),
+      'departureFlight': departureFlight?.toJson(),
+      'returnFlight': returnFlight?.toJson(),
+    };
+  }
+
   static UserFlightModel? _toFlight(dynamic value) {
     if (value == null) return null;
     return UserFlightModel.fromJson(_asMap(value));
@@ -194,6 +215,22 @@ class UserGroupModel {
       applicants: applicants.map((item) => item.toEntity()).toList(),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'groupName': groupName,
+      'maccaHotel': maccaHotel,
+      'maccaHotelLocation': maccaHotelLocation,
+      'madinaHotel': madinaHotel,
+      'madinaHotelLocation': madinaHotelLocation,
+      'mutawwef': mutawwef,
+      'arrafatCampNo': arrafatCampNo,
+      'arrafatCompLocation': arrafatCompLocation,
+      'minaCampNo': minaCampNo,
+      'minaCampLocation': minaCampLocation,
+      'applicants': applicants.map((item) => item.toJson()).toList(),
+    };
+  }
 }
 
 class UserMasterGroupModel {
@@ -219,6 +256,13 @@ class UserMasterGroupModel {
       masterGroupName: masterGroupName,
       applicants: applicants.map((item) => item.toEntity()).toList(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'masterGroupName': masterGroupName,
+      'applicants': applicants.map((item) => item.toJson()).toList(),
+    };
   }
 }
 
@@ -255,6 +299,16 @@ class UserApplicantModel {
       whatsapp: whatsapp,
       saudiNum: saudiNum,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'fullName': fullName,
+      'applicantType': applicantType,
+      'telNum': telNum,
+      'whatsapp': whatsapp,
+      'saudiNum': saudiNum,
+    };
   }
 }
 
@@ -305,5 +359,18 @@ class UserFlightModel {
       arrivalAirport: arrivalAirport,
       airlineCompany: airlineCompany,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'flightName': flightName,
+      'departureDate': departureDate?.toIso8601String(),
+      'departureTime': departureTime,
+      'departureAirport': departureAirport,
+      'arrivalDate': arrivalDate?.toIso8601String(),
+      'arrivalTime': arrivalTime,
+      'arrivalAirport': arrivalAirport,
+      'airlineCompany': airlineCompany,
+    };
   }
 }

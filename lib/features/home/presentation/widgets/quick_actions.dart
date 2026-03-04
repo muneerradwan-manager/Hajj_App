@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:bawabatelhajj/shared/widgets/quick_action_card.dart';
+
+import '../../../../core/constants/app_routes.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({super.key});
@@ -16,6 +19,13 @@ class QuickActions extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: cs.surface,
+        boxShadow: [
+          BoxShadow(
+            color: cs.shadow.withValues(alpha: 0.18),
+            blurRadius: 20,
+            offset: const Offset(0, 12),
+          ),
+        ],
       ),
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -61,6 +71,7 @@ class QuickActions extends StatelessWidget {
               ),
               Expanded(
                 child: QuickActionCard(
+                  onTap: () => context.push(AppRoutes.complaintsPath),
                   icon: LucideIcons.messageSquare,
                   titleKey: 'home.action_complaints_title',
                   subtitleKey: 'home.action_complaints_subtitle',

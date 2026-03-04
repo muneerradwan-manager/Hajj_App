@@ -12,6 +12,7 @@ import 'package:bawabatelhajj/features/auth/presentation/views/register_view.dar
 import 'package:bawabatelhajj/features/home/presentation/views/home_view.dart';
 import 'package:bawabatelhajj/features/splash/presentation/views/splash_view.dart';
 
+import '../../features/complaints/presentation/views/complaints_view.dart';
 import '../../features/home/presentation/views/navigation_bottom.dart';
 import '../../features/profile/presentation/views/profile_view.dart';
 
@@ -148,6 +149,16 @@ class AppRouter {
         pageBuilder: (context, state) => fadeSlidePage(
           state: state,
           child: const ProfileView(),
+          direction: PageTransitionDirection.bottomToTop,
+        ),
+      ),
+
+      GoRoute(
+        name: AppRoutes.complaintsName,
+        path: AppRoutes.complaintsPath,
+        pageBuilder: (context, state) => fadeSlidePage(
+          state: state,
+          child: const ComplaintsView(),
           direction: PageTransitionDirection.bottomToTop,
         ),
       ),

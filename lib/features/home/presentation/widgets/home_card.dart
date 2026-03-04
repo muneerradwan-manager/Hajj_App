@@ -9,6 +9,7 @@ import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 import '../../../../core/constants/app_routes.dart';
 import '../../../../shared/widgets/custom_network_image.dart';
+import '../../../auth/presentation/cubits/me/me_state.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({super.key});
@@ -25,6 +26,7 @@ class HomeCard extends StatelessWidget {
     );
     final masterGroupName = _fallback(profile?.masterGroup.masterGroupName);
     final groupName = _fallback(profile?.group.groupName);
+    final meState = context.watch<MeCubit>().state;
 
     return Container(
       width: double.infinity,
@@ -36,8 +38,8 @@ class HomeCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: cs.shadow.withValues(alpha: 0.18),
-            blurRadius: 28,
-            offset: const Offset(0, 14),
+            blurRadius: 20,
+            offset: const Offset(0, 12),
           ),
         ],
       ),
@@ -120,6 +122,12 @@ class HomeCard extends StatelessWidget {
               ],
             ),
           ),
+          if (meState.status == MeStatus.loading) ...[
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              child: LinearProgressIndicator(minHeight: 3),
+            ),
+          ],
           Padding(
             padding: const EdgeInsets.all(20),
             child: Row(

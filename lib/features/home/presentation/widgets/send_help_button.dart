@@ -35,9 +35,9 @@ class SendHelpButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: cs.brandRed.withValues(alpha: 0.5),
-              blurRadius: 1,
-              offset: const Offset(0, 0.5),
+              color: cs.shadow.withValues(alpha: 0.18),
+              blurRadius: 20,
+              offset: const Offset(0, 12),
             ),
           ],
         ),

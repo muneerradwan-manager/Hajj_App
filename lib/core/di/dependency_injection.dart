@@ -10,6 +10,7 @@ import 'package:bawabatelhajj/features/auth/data/repositories/auth_repository_im
 import 'package:bawabatelhajj/features/auth/domain/repositories/auth_repository.dart';
 import 'package:bawabatelhajj/features/auth/domain/usecases/clear_register_draft_usecase.dart';
 import 'package:bawabatelhajj/features/auth/domain/usecases/confirm_email_usecase.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/get_cached_me_usecase.dart';
 import 'package:bawabatelhajj/features/auth/domain/usecases/forgot_password_usecase.dart';
 import 'package:bawabatelhajj/features/auth/domain/usecases/get_me_usecase.dart';
 import 'package:bawabatelhajj/features/auth/domain/usecases/load_register_draft_usecase.dart';
@@ -96,6 +97,12 @@ void setupDependencies() {
     );
   }
 
+  if (!getIt.isRegistered<GetCachedMeUseCase>()) {
+    getIt.registerLazySingleton<GetCachedMeUseCase>(
+      () => GetCachedMeUseCase(getIt<AuthRepository>()),
+    );
+  }
+
   if (!getIt.isRegistered<LogoutUseCase>()) {
     getIt.registerLazySingleton<LogoutUseCase>(
       () => LogoutUseCase(getIt<AuthRepository>()),
@@ -176,7 +183,9 @@ void setupDependencies() {
   }
 
   if (!getIt.isRegistered<MeCubit>()) {
-    getIt.registerFactory<MeCubit>(() => MeCubit(getIt<GetMeUseCase>()));
+    getIt.registerFactory<MeCubit>(
+      () => MeCubit(getIt<GetMeUseCase>(), getIt<GetCachedMeUseCase>()),
+    );
   }
 
   if (!getIt.isRegistered<ForgetPasswordCubit>()) {

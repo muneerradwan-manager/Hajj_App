@@ -124,25 +124,6 @@ class _ProfileCardState extends State<ProfileCard> {
               child: LinearProgressIndicator(minHeight: 3),
             ),
           ],
-          if (meState.status == MeStatus.error &&
-              meState.errorMessage.isNotEmpty) ...[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 6, 20, 0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: cs.errorContainer.withValues(alpha: 0.2),
-                  border: Border.all(color: cs.errorContainer),
-                ),
-                padding: const EdgeInsets.all(12),
-                child: CustomText(
-                  meState.errorMessage,
-                  color: CustomTextColor.red,
-                  translate: false,
-                ),
-              ),
-            ),
-          ],
           _BasicInfoSection(
             isExpanded: _expandedSections['basic'] ?? false,
             onToggle: () => _toggleSection('basic'),

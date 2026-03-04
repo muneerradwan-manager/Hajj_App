@@ -71,6 +71,13 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: cs.primary),
               color: cs.surface,
+              boxShadow: [
+          BoxShadow(
+            color: cs.shadow.withValues(alpha: 0.18),
+            blurRadius: 20,
+            offset: const Offset(0, 12),
+          ),
+        ],
             ),
             padding: const EdgeInsets.all(20),
             child: Column(

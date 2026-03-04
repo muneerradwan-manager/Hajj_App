@@ -9,6 +9,7 @@ import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/core/localization/localization_cubit.dart';
 import 'package:bawabatelhajj/core/localization/localization_state.dart';
 import 'package:bawabatelhajj/core/theme/app_theme.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
 
 import 'core/router/app_router.dart';
 
@@ -50,6 +51,7 @@ class MainApp extends StatelessWidget {
         BlocProvider<LocalizationCubit>.value(
           value: getIt<LocalizationCubit>(),
         ),
+        BlocProvider<MeCubit>(create: (_) => getIt<MeCubit>()),
       ],
       child: BlocBuilder<LocalizationCubit, LocalizationState>(
         builder: (context, localizationState) {
