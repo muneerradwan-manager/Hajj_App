@@ -17,13 +17,18 @@ class PrayerTimesWidget extends StatefulWidget {
 }
 
 class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   bool _waitingForSettings = false;
+  late final AnimationController _refreshController;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _refreshController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
     final cubit = context.read<PrayerTimesCubit>();
     if (cubit.state.status == PrayerTimesStatus.initial) {
       cubit.loadPrayerTimes();
@@ -32,6 +37,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
 
   @override
   void dispose() {
+    _refreshController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -48,55 +54,93 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
-      builder: (context, state) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: cs.primary),
-            color: cs.surface,
-          ),
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            spacing: 20,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const CustomText(
-                    'home.prayer_times',
-                    type: CustomTextType.titleMedium,
-                    color: CustomTextColor.green,
-                  ),
-                  CustomText(
-                    state.prayerTimes?.locationName.isNotEmpty == true
-                        ? state.prayerTimes!.locationName
-                        : 'home.prayer_location',
-                    type: CustomTextType.titleSmall,
-                    color: CustomTextColor.gold,
-                    translate:
-                        state.prayerTimes?.locationName.isNotEmpty != true,
-                  ),
-                ],
-              ),
-              _buildPrayerRow(context, state),
-            ],
-          ),
-        );
+    return BlocListener<PrayerTimesCubit, PrayerTimesState>(
+      listenWhen: (prev, curr) => prev.status != curr.status,
+      listener: (context, state) {
+        if (state.status == PrayerTimesStatus.loading) {
+          _refreshController.repeat();
+        } else {
+          _refreshController.stop();
+          _refreshController.reset();
+        }
       },
+      child: BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+        builder: (context, state) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: cs.primary),
+              color: cs.surface,
+            ),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              spacing: 20,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const CustomText(
+                      'home.prayer_times',
+                      type: CustomTextType.titleMedium,
+                      color: CustomTextColor.green,
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 6,
+                      children: [
+                        CustomText(
+                          state.prayerTimes?.locationName.isNotEmpty == true
+                              ? state.prayerTimes!.locationName
+                              : 'home.prayer_location',
+                          type: CustomTextType.titleSmall,
+                          color: CustomTextColor.gold,
+                          translate:
+                              state.prayerTimes?.locationName.isNotEmpty !=
+                              true,
+                        ),
+                        _buildRefreshIcon(state, cs),
+                      ],
+                    ),
+                  ],
+                ),
+                _buildPrayerRow(context, state),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildRefreshIcon(PrayerTimesState state, ColorScheme cs) {
+    final isLoading = state.status == PrayerTimesStatus.loading;
+
+    return GestureDetector(
+      onTap: isLoading
+          ? null
+          : () => context.read<PrayerTimesCubit>().loadPrayerTimes(),
+      child: RotationTransition(
+        turns: _refreshController,
+        child: Icon(LucideIcons.refreshCw, size: 16, color: cs.brandGold),
+      ),
     );
   }
 
   Widget _buildPrayerRow(BuildContext context, PrayerTimesState state) {
-    if (state.status == PrayerTimesStatus.loading ||
-        state.status == PrayerTimesStatus.initial) {
+    // First load — no cached data yet, show spinner.
+    final isFirstLoad =
+        (state.status == PrayerTimesStatus.loading ||
+            state.status == PrayerTimesStatus.initial) &&
+        state.prayerTimes == null;
+
+    if (isFirstLoad) {
       return const SizedBox(
         height: 60,
         child: Center(child: CircularProgressIndicator()),
       );
     }
 
-    if (state.status == PrayerTimesStatus.error) {
+    if (state.status == PrayerTimesStatus.error && state.prayerTimes == null) {
       final cubit = context.read<PrayerTimesCubit>();
       final cs = Theme.of(context).colorScheme;
 
