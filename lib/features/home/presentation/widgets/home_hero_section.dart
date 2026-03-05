@@ -9,6 +9,8 @@ import 'package:bawabatelhajj/core/functions/date_format.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
+import '../../../../shared/widgets/custom_container.dart';
+
 enum CalendarType { hijri, gregorian }
 
 class HomeHeroSection extends StatelessWidget {
@@ -140,41 +142,31 @@ class _DateCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(15),
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.white.withValues(alpha: 0.2),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+    return CustomContainer(
+      hasOpacity: 0.3,
+      padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            spacing: 5,
             children: [
-              Row(
-                spacing: 5,
-                children: [
-                  Icon(icon, color: cs.surfaceDim),
-                  CustomText(
-                    labelKey,
-                    type: CustomTextType.labelSmall,
-                    color: CustomTextColor.white,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 5),
+              Icon(icon, color: cs.surfaceDim),
               CustomText(
-                value,
-                type: CustomTextType.bodyLarge,
+                labelKey,
+                type: CustomTextType.labelSmall,
                 color: CustomTextColor.white,
-                translate: false,
               ),
             ],
           ),
-        ),
+          const SizedBox(height: 5),
+          CustomText(
+            value,
+            type: CustomTextType.bodyLarge,
+            color: CustomTextColor.white,
+            translate: false,
+          ),
+        ],
       ),
     );
   }

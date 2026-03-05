@@ -173,7 +173,7 @@ class RegisterStepProgress extends StatelessWidget {
             'auth.register.step_indicator',
             args: {'current': stepNumber, 'total': totalSteps},
             type: CustomTextType.bodySmall,
-            color: CustomTextColor.hint,
+            color: CustomTextColor.white,
           ),
         ],
       ),

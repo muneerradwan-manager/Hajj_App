@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
 
+import '../../../../shared/widgets/custom_container.dart';
 import '../../../../shared/widgets/custom_text.dart';
 
 class HajjAyah extends StatefulWidget {
@@ -26,23 +27,9 @@ class _HajjAyahState extends State<HajjAyah> {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          colors: [cs.surfaceDim, cs.brandGold],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: cs.surfaceDim.withValues(alpha: 0.5),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.all(20),
+    return CustomContainer(
+      gradientColors: [cs.surfaceDim, cs.brandGold],
+      padding: const EdgeInsets.all(15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 10,

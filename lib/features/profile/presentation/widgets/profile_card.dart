@@ -16,6 +16,7 @@ import 'package:saver_gallery/saver_gallery.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../shared/widgets/custom_container.dart';
 import '../../../../shared/widgets/custom_network_image.dart';
 import '../../../../shared/widgets/custom_snackbar.dart';
 
@@ -82,7 +83,6 @@ class _ProfileCardState extends State<ProfileCard> {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     final meState = context.watch<MeCubit>().state;
     final profile = meState.profile ?? _emptyProfile;
     final resolvedSaudiNumber =
@@ -93,21 +93,9 @@ class _ProfileCardState extends State<ProfileCard> {
         profile.departureFlight != null || profile.returnFlight != null;
     final isRitualsAvailable = _hasRitualsData(profile.group);
 
-    return Container(
-      width: double.infinity,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: cs.primaryContainer),
-        boxShadow: [
-          BoxShadow(
-            color: cs.shadow.withValues(alpha: 0.18),
-            blurRadius: 28,
-            offset: const Offset(0, 14),
-          ),
-        ],
-      ),
+    return CustomContainer(
+      padding: EdgeInsets.zero,
+      borderWidth: 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -235,14 +223,14 @@ class _ProfileHeader extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: Row(
         children: [
-          Container(
+          CustomContainer(
             width: 100,
             height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: cs.primary,
-              border: Border.all(color: cs.brandGold, width: 3),
-            ),
+            containerColor: cs.primary,
+            borderSide: CustomBorderSide.allBorder,
+            borderColor: CustomBorderColor.gold,
+            borderWidth: 3,
+            padding: EdgeInsets.zero,
             child: profileImage.isNotEmpty
                 ? CustomCachedImage(
                     imageUrl: profileImage,
@@ -263,16 +251,18 @@ class _ProfileHeader extends StatelessWidget {
                   color: CustomTextColor.green,
                 ),
                 const SizedBox(height: 8),
-                Container(
-                  decoration: BoxDecoration(
-                    color: cs.primary.withValues(alpha: .1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: cs.primary.withValues(alpha: .3)),
-                  ),
+                CustomContainer(
+                  containerColor: cs.primary,
+                  hasOpacity: 0.1,
+                  borderRadius: 12,
+                  borderSide: CustomBorderSide.allBorder,
+                  borderColor: CustomBorderColor.green,
+                  borderWidth: 1,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 6,
                   ),
+                  hasShadow: false,
                   child: CustomText(
                     pilgrimId,
                     translate: false,
@@ -603,9 +593,10 @@ class _ResidenceSection extends StatelessWidget {
       children: [
         if (isAvailable) ...[
           _ColoredSection(
-            borderColor: cs.brandRed,
+            borderColor: CustomBorderColor.red,
             titleKey: 'profile.makkah',
             titleColor: CustomTextColor.red,
+            containerColor: cs.brandRed,
             children: [
               _InfoRow(
                 labelKey: 'profile.hotel_name',
@@ -624,7 +615,8 @@ class _ResidenceSection extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           _ColoredSection(
-            borderColor: cs.primary,
+            borderColor: CustomBorderColor.green,
+            containerColor: cs.primary,
             titleKey: 'profile.madinah',
             titleColor: CustomTextColor.red,
             children: [
@@ -686,7 +678,8 @@ class _FlightsSection extends StatelessWidget {
         if (isAvailable) ...[
           if (profile.departureFlight != null)
             _ColoredSection(
-              borderColor: cs.primary,
+              borderColor: CustomBorderColor.green,
+              containerColor: cs.primary,
               titleKey: 'profile.departure_flight',
               titleColor: CustomTextColor.green,
               children: [
@@ -736,7 +729,8 @@ class _FlightsSection extends StatelessWidget {
             const SizedBox(height: 20),
           if (profile.returnFlight != null)
             _ColoredSection(
-              borderColor: cs.primary,
+              borderColor: CustomBorderColor.green,
+              containerColor: cs.primary,
               titleKey: 'profile.return_flight',
               titleColor: CustomTextColor.gold,
               children: [
@@ -839,7 +833,8 @@ class _RitualsSection extends StatelessWidget {
       children: [
         if (isAvailable) ...[
           _ColoredSection(
-            borderColor: cs.primary,
+            borderColor: CustomBorderColor.green,
+            containerColor: cs.primary,
             titleKey: 'profile.arafat',
             titleColor: CustomTextColor.green,
             children: [
@@ -860,7 +855,8 @@ class _RitualsSection extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           _ColoredSection(
-            borderColor: cs.brandGold,
+            borderColor: CustomBorderColor.gold,
+            containerColor: cs.brandGold,
             titleKey: 'profile.mina',
             titleColor: CustomTextColor.gold,
             children: [
@@ -920,7 +916,8 @@ class _LeadershipSection extends StatelessWidget {
       iconColor: cs.brandRed,
       children: [
         _ColoredSection(
-          borderColor: cs.primary,
+          borderColor: CustomBorderColor.green,
+          containerColor: cs.primary,
           titleKey: 'profile.cluster_leader',
           titleColor: CustomTextColor.green,
           children: [
@@ -941,7 +938,8 @@ class _LeadershipSection extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         _ColoredSection(
-          borderColor: cs.brandRed,
+          borderColor: CustomBorderColor.red,
+          containerColor: cs.brandRed,
           titleKey: 'profile.group_leader',
           titleColor: CustomTextColor.red,
           children: [
@@ -962,7 +960,8 @@ class _LeadershipSection extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         _ColoredSection(
-          borderColor: cs.brandGold,
+          borderColor: CustomBorderColor.gold,
+          containerColor: cs.brandGold,
           titleKey: null,
           titleColor: CustomTextColor.gold,
           children: [
@@ -984,7 +983,8 @@ class _LeadershipSection extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         _ColoredSection(
-          borderColor: cs.brandRed,
+          borderColor: CustomBorderColor.red,
+          containerColor: cs.brandRed,
           titleKey: 'profile.emergency_numbers',
           titleColor: CustomTextColor.red,
           children: [
@@ -1060,7 +1060,8 @@ class _PassportSection extends StatelessWidget {
       iconColor: cs.brandGold,
       children: [
         _ColoredSection(
-          borderColor: cs.brandGold,
+          borderColor: CustomBorderColor.gold,
+          containerColor: cs.brandGold,
           titleKey: 'profile.passport_image',
           titleColor: CustomTextColor.gold,
           children: [
@@ -1272,16 +1273,11 @@ class _UnavailableInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: cs.brandGold),
-        borderRadius: BorderRadius.circular(20),
-        gradient: const LinearGradient(
-          colors: [Color(0xffF9F8F6), Color(0xffE3DDD2)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
+    return CustomContainer(
+      borderSide: CustomBorderSide.allBorder,
+      borderColor: CustomBorderColor.gold,
+      gradientColors: const [Color(0xffF9F8F6), Color(0xffE3DDD2)],
+      borderWidth: 1,
       padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1319,25 +1315,27 @@ class _UnavailableInfoCard extends StatelessWidget {
 class _ColoredSection extends StatelessWidget {
   const _ColoredSection({
     required this.borderColor,
+    required this.containerColor,
     this.titleKey,
     required this.titleColor,
     required this.children,
   });
 
-  final Color borderColor;
+  final CustomBorderColor borderColor;
+  final Color containerColor;
   final String? titleKey;
   final CustomTextColor titleColor;
   final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: borderColor),
-        color: borderColor.withValues(alpha: .1),
-      ),
-      padding: const EdgeInsets.all(20),
+    return CustomContainer(
+      containerColor: containerColor,
+      hasOpacity: .1,
+      borderSide: CustomBorderSide.allBorder,
+      borderWidth: 1,
+      borderColor: borderColor,
+      hasShadow: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 10,
@@ -1433,17 +1431,14 @@ class _InfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: borderColor ?? cs.brandGold.withValues(alpha: 0.5),
-        ),
-        color: containerColor,
-      ),
+    return CustomContainer(
+      borderRadius: 16,
+      borderSide: CustomBorderSide.allBorder,
+      borderColor: CustomBorderColor.lightGold,
+      borderWidth: 1,
+      containerColor: containerColor,
       padding: const EdgeInsets.all(14),
+      hasShadow: false,
       child: Row(
         spacing: 10,
         children: [
@@ -1580,13 +1575,12 @@ class _ProfileInfoSection extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
-                  Container(
+                  CustomContainer(
                     width: 40,
                     height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: iconColor,
-                    ),
+                    borderRadius: 12,
+                    containerColor: iconColor,
+                    padding: EdgeInsets.zero,
                     child: Icon(icon, color: Colors.white, size: 20),
                   ),
                   const SizedBox(width: 12),

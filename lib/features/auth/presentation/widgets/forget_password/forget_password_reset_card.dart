@@ -209,6 +209,7 @@ class _ForgetPasswordResetCardState extends State<ForgetPasswordResetCard> {
               textKey: 'auth.forget.reset_button',
               onPressed: widget.onSubmit,
               isLoading: widget.isSubmitting,
+              gradientColor: GradientColors.green,
             ),
             const SizedBox(height: 10),
             OutlinedButton(

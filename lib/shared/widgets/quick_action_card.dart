@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
+import 'custom_container.dart';
+
 /// A single quick-action card with top accent border, icon, title, and subtitle.
 class QuickActionCard extends StatelessWidget {
   const QuickActionCard({
@@ -9,42 +11,35 @@ class QuickActionCard extends StatelessWidget {
     required this.icon,
     required this.titleKey,
     required this.subtitleKey,
-    required this.accentColor,
+    required this.borderColor,
     this.onTap,
+    required this.containerColor,
   });
 
   final IconData icon;
   final String titleKey;
   final String subtitleKey;
-  final Color accentColor;
+  final CustomBorderColor borderColor;
+  final Color containerColor;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border(
-            top: BorderSide(color: accentColor, width: 8),
-            bottom: BorderSide(color: accentColor),
-            left: BorderSide(color: accentColor),
-            right: BorderSide(color: accentColor),
-          ),
-        ),
+      child: CustomContainer(
+        borderRadius: 10,
         padding: const EdgeInsets.all(15),
+        borderSide: CustomBorderSide.borderTop,
+        borderColor: borderColor,
         child: Column(
           spacing: 10,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: accentColor,
-                borderRadius: BorderRadius.circular(10),
-              ),
+            CustomContainer(
+              borderRadius: 10,
+              containerColor: containerColor,
               padding: const EdgeInsets.all(10),
+              borderWidth: 1,
               child: Icon(icon, size: 30, color: Colors.white),
             ),
             CustomText(

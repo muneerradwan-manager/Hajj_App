@@ -5,6 +5,7 @@ import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/features/home/presentation/widgets/send_help_dialog.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
+import '../../../../shared/widgets/custom_container.dart';
 import '../../../../shared/widgets/custom_snackbar.dart';
 
 class SendHelpButton extends StatelessWidget {
@@ -25,23 +26,9 @@ class SendHelpButton extends StatelessWidget {
           );
         }
       },
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [cs.brandRed, cs.brandRedAlt],
-          ),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: cs.shadow.withValues(alpha: 0.18),
-              blurRadius: 20,
-              offset: const Offset(0, 12),
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.all(20),
+      child: CustomContainer(
+        gradientColors: [cs.brandRed, cs.brandRedAlt],
+        padding: const EdgeInsets.all(15),
         child: Row(
           spacing: 10,
           children: [

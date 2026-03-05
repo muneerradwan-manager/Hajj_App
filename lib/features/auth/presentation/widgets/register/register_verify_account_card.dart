@@ -214,6 +214,7 @@ class _RegisterVerifyAccountCardState extends State<RegisterVerifyAccountCard> {
             textKey: 'auth.register.verify_button',
             onPressed: _handleSubmit,
             isLoading: widget.isSubmitting,
+            gradientColor: GradientColors.green,
           ),
         ],
       ),

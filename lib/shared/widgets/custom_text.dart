@@ -154,7 +154,7 @@ extension CustomTextColorX on CustomTextColor {
       case CustomTextColor.lightGold:
         return cs.surfaceDim;
       case CustomTextColor.hint:
-        return cs.outline;
+        return const Color(0xff62748E);
       case CustomTextColor.white:
         return AppColors.white;
       case CustomTextColor.black:

@@ -38,7 +38,8 @@ class ComplaintsHeroSection extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: .5),
+                color: Colors.white.withValues(alpha: .3),
+                border: Border.all(color: Colors.white.withValues(alpha: .5)),
               ),
               child: IconButton(
                 icon: const Icon(

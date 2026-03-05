@@ -9,6 +9,8 @@ import 'package:bawabatelhajj/features/home/presentation/cubits/prayer_times_cub
 import 'package:bawabatelhajj/features/home/presentation/cubits/prayer_times_state.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
+import '../../../../shared/widgets/custom_container.dart';
+
 class PrayerTimesWidget extends StatefulWidget {
   const PrayerTimesWidget({super.key});
 
@@ -66,20 +68,10 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
       },
       child: BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
         builder: (context, state) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: cs.primary),
-              color: cs.surface,
-              boxShadow: [
-          BoxShadow(
-            color: cs.shadow.withValues(alpha: 0.18),
-            blurRadius: 20,
-            offset: const Offset(0, 12),
-          ),
-        ],
-            ),
-            padding: const EdgeInsets.all(20),
+          return CustomContainer(
+            borderColor: CustomBorderColor.green,
+            borderSide: CustomBorderSide.allBorder,
+            borderWidth: 1,
             child: Column(
               spacing: 20,
               children: [

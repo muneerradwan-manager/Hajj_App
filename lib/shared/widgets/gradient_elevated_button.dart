@@ -1,23 +1,34 @@
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
-
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
-/// Elevated button with a vertical primary gradient background.
+enum GradientColors { red, green, gold }
+
 class GradientElevatedButton extends StatelessWidget {
   const GradientElevatedButton({
     super.key,
-    required this.textKey,
+    this.textKey,
+    this.child,
     required this.onPressed,
     this.isLoading = false,
-  });
+    required this.gradientColor,
+  }) : assert(
+         textKey != null || child != null,
+         'Either textKey or child must be provided',
+       );
 
-  final String textKey;
+  final String? textKey;
+  final Widget? child;
   final VoidCallback? onPressed;
   final bool isLoading;
+  final GradientColors gradientColor;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+
+    // تحويل enum إلى قائمة ألوان فعلية
+    final List<Color> colors = gradientColor.resolve(cs);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -25,10 +36,14 @@ class GradientElevatedButton extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [cs.primaryContainer, cs.primary],
+          colors: colors,
         ),
       ),
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+        ),
         onPressed: isLoading ? null : onPressed,
         child: isLoading
             ? const SizedBox(
@@ -39,12 +54,27 @@ class GradientElevatedButton extends StatelessWidget {
                   color: Colors.white,
                 ),
               )
-            : CustomText(
-                textKey,
-                type: CustomTextType.titleMedium,
-                color: CustomTextColor.white,
-              ),
+            : child ??
+                  CustomText(
+                    textKey!,
+                    type: CustomTextType.titleMedium,
+                    color: CustomTextColor.white,
+                  ),
       ),
     );
+  }
+}
+
+// Extension لتحويل enum إلى List<Color>
+extension GradientColorsX on GradientColors {
+  List<Color> resolve(ColorScheme cs) {
+    switch (this) {
+      case GradientColors.red:
+        return [cs.brandRedAlt, cs.brandRed];
+      case GradientColors.green:
+        return [cs.primaryContainer, cs.primary];
+      case GradientColors.gold:
+        return [cs.surfaceDim, cs.brandGold];
+    }
   }
 }

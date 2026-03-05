@@ -82,6 +82,7 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
           GradientElevatedButton(
             textKey: 'auth.forget.back_to_login',
             onPressed: onBackToLogin,
+            gradientColor: GradientColors.green,
           ),
         ],
       ),

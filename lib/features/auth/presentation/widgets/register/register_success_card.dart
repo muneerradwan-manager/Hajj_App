@@ -75,6 +75,7 @@ class RegisterSuccessCard extends StatelessWidget {
           GradientElevatedButton(
             textKey: 'auth.register.go_to_login_button',
             onPressed: onContinueToLogin,
+            gradientColor: GradientColors.green,
           ),
         ],
       ),

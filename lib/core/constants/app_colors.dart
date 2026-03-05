@@ -20,11 +20,7 @@ class AppColors {
   // Supporting tones for accessible light/dark ColorScheme mapping.
   static const Color _greenLight = Color(0xFF006e5c);
   static const Color _greenDark = Color(0xFF279e91);
-  static const Color _goldDark = Color(0xFFd9c89e);
   static const Color _lightSurfaceAlt = Color(0xFFe3ddd2);
-  static const Color _darkSurfaceAlt = Color(0xFF021526);
-  static const Color _darkSurfaceHigh = Color(0xFF021526);
-  static const Color _darkOutline = Color(0xFF9AA0A6);
 
   static const ColorScheme lightColorScheme = ColorScheme(
     brightness: Brightness.light,
@@ -62,44 +58,6 @@ class AppColors {
     onInverseSurface: white,
     inversePrimary: _greenDark,
     surfaceTint: green,
-  );
-
-  static const ColorScheme darkColorScheme = ColorScheme(
-    brightness: Brightness.dark,
-    primary: _greenDark,
-    onPrimary: black,
-    primaryContainer: green,
-    onPrimaryContainer: white,
-    secondary: _goldDark,
-    onSecondary: black,
-    secondaryContainer: Color(0xFF6F643F),
-    onSecondaryContainer: white,
-    tertiary: Color(0xFFCB8CA3),
-    onTertiary: black,
-    tertiaryContainer: redPrimary,
-    onTertiaryContainer: white,
-    error: Color(0xFFCB8CA3),
-    onError: black,
-    errorContainer: redPrimary,
-    onErrorContainer: white,
-    surface: black,
-    onSurface: white,
-    surfaceDim: black,
-    surfaceBright: _darkSurfaceAlt,
-    surfaceContainerLowest: black,
-    surfaceContainerLow: Color(0xFF0E0E0E),
-    surfaceContainer: _darkSurfaceAlt,
-    surfaceContainerHigh: _darkSurfaceHigh,
-    surfaceContainerHighest: Color(0xFF2A2A2A),
-    onSurfaceVariant: white,
-    outline: _darkOutline,
-    outlineVariant: Color(0xFF3A3F44),
-    shadow: black,
-    scrim: black,
-    inverseSurface: white,
-    onInverseSurface: black,
-    inversePrimary: green,
-    surfaceTint: _greenDark,
   );
 }
 

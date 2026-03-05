@@ -1,3 +1,4 @@
+import 'package:bawabatelhajj/features/complaints/presentation/views/create_complaint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -159,6 +160,16 @@ class AppRouter {
         pageBuilder: (context, state) => fadeSlidePage(
           state: state,
           child: const ComplaintsView(),
+          direction: PageTransitionDirection.bottomToTop,
+        ),
+      ),
+
+      GoRoute(
+        name: AppRoutes.createComplaintName,
+        path: AppRoutes.createComplaintPath,
+        pageBuilder: (context, state) => fadeSlidePage(
+          state: state,
+          child: const CreateComplaint(),
           direction: PageTransitionDirection.bottomToTop,
         ),
       ),

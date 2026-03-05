@@ -8,7 +8,9 @@ import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 import '../../../../core/constants/app_routes.dart';
+import '../../../../shared/widgets/custom_container.dart';
 import '../../../../shared/widgets/custom_network_image.dart';
+import '../../../../shared/widgets/gradient_elevated_button.dart';
 import '../../../auth/presentation/cubits/me/me_state.dart';
 
 class HomeCard extends StatelessWidget {
@@ -28,21 +30,9 @@ class HomeCard extends StatelessWidget {
     final groupName = _fallback(profile?.group.groupName);
     final meState = context.watch<MeCubit>().state;
 
-    return Container(
-      width: double.infinity,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: cs.primaryContainer),
-        boxShadow: [
-          BoxShadow(
-            color: cs.shadow.withValues(alpha: 0.18),
-            blurRadius: 20,
-            offset: const Offset(0, 12),
-          ),
-        ],
-      ),
+    return CustomContainer(
+      padding: EdgeInsets.zero,
+      borderWidth: 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -52,14 +42,13 @@ class HomeCard extends StatelessWidget {
             child: Row(
               spacing: 10,
               children: [
-                Container(
+                CustomContainer(
                   width: 100,
                   height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: cs.primary,
-                    border: Border.all(color: cs.brandGold, width: 3),
-                  ),
+                  borderWidth: 3.0,
+                  borderSide: CustomBorderSide.allBorder,
+                  borderColor: CustomBorderColor.gold,
+                  padding: EdgeInsets.zero,
                   child: profileImage.isNotEmpty
                       ? CustomCachedImage(
                           imageUrl: profileImage,
@@ -80,14 +69,12 @@ class HomeCard extends StatelessWidget {
                         type: CustomTextType.bodyLarge,
                         color: CustomTextColor.green,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: cs.primary.withValues(alpha: .1),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: cs.primary.withValues(alpha: .3),
-                          ),
-                        ),
+                      CustomContainer(
+                        containerColor: cs.primary,
+                        hasOpacity: .1,
+                        borderRadius: 12,
+                        borderColor: CustomBorderColor.lightGreen,
+                        borderWidth: 1,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 6,
@@ -139,7 +126,6 @@ class HomeCard extends StatelessWidget {
                     iconBgColor: cs.brandRed,
                     labelKey: 'home.cluster_label',
                     value: masterGroupName,
-                    bgColor: cs.brandGold.withValues(alpha: .1),
                   ),
                 ),
                 Expanded(
@@ -148,7 +134,6 @@ class HomeCard extends StatelessWidget {
                     iconBgColor: cs.primary,
                     labelKey: 'home.group_label',
                     value: groupName,
-                    bgColor: cs.brandGold.withValues(alpha: .1),
                   ),
                 ),
               ],
@@ -156,11 +141,9 @@ class HomeCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
-            child: ElevatedButton(
-              onPressed: () {
-                context.push(AppRoutes.profilePath);
-              },
-
+            child: GradientElevatedButton(
+              onPressed: () => context.push(AppRoutes.profilePath),
+              gradientColor: GradientColors.green,
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 spacing: 10,
@@ -220,23 +203,25 @@ class _InfoChip extends StatelessWidget {
     required this.iconBgColor,
     required this.labelKey,
     required this.value,
-    required this.bgColor,
   });
 
   final IconData icon;
   final Color iconBgColor;
   final String labelKey;
   final String value;
-  final Color bgColor;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: bgColor,
-      ),
+    final cs = Theme.of(context).colorScheme;
+    return CustomContainer(
+      borderRadius: 12,
+      hasOpacity: 0.1,
+      hasShadow: false,
+      containerColor: cs.brandGold,
       padding: const EdgeInsets.all(10),
+      borderSide: CustomBorderSide.allBorder,
+      borderWidth: 1,
+      borderColor: CustomBorderColor.lightGold,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 10,

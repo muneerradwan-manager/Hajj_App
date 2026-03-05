@@ -40,7 +40,8 @@ abstract final class HeroBackground {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(AppImages.background),
-                fit: BoxFit.cover,
+                fit: BoxFit.fitWidth, // Changed from cover
+                alignment: Alignment.topCenter, // Keeps it pinned to top
               ),
             ),
           ),
@@ -62,7 +63,11 @@ abstract final class HeroBackground {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(AppImages.background),
-              fit: BoxFit.cover,
+              fit: BoxFit.fitWidth, // Changed from cover
+              alignment:
+                  Alignment.topCenter, // Keeps pattern from stretching down
+              repeat: ImageRepeat
+                  .repeatY, // Optional: repeat the pattern if screen is long
             ),
           ),
         ),

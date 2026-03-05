@@ -20,13 +20,6 @@ class AppTheme {
     );
   }
 
-  static ThemeData get darkTheme {
-    return _buildTheme(
-      colorScheme: AppColors.darkColorScheme,
-      overlayStyle: SystemUiOverlayStyle.light,
-    );
-  }
-
   static ThemeData _buildTheme({
     required ColorScheme colorScheme,
     required SystemUiOverlayStyle overlayStyle,

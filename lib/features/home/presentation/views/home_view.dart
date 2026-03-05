@@ -53,10 +53,12 @@ class HomeView extends StatelessWidget {
             final viewportHeight = constraints.maxHeight;
             final viewportWidth = constraints.maxWidth;
             final topPadding = MediaQuery.of(context).padding.top;
+
             final isDesktopLayout = viewportWidth >= 1040;
             final heroHeight = isDesktopLayout
                 ? (viewportHeight * 0.20).clamp(300.0, 420.0)
                 : (viewportHeight * 0.30).clamp(260.0, 380.0) + topPadding;
+
             final overlap = (viewportHeight * 0.08).clamp(50.0, 80.0);
             const horizontalPadding = 20.0;
 
@@ -65,42 +67,51 @@ class HomeView extends StatelessWidget {
                 await context.read<MeCubit>().loadMe(forceRefresh: true);
               },
               child: SingleChildScrollView(
+                // Ensure physics are always scrollable for the RefreshIndicator to trigger
                 physics: const AlwaysScrollableScrollPhysics(),
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
-                child: Stack(
-                  children: [
-                    ...HeroBackground.layers(context, heroHeight),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Container(
-                          height: heroHeight,
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                          child: const HomeHeroSection(),
-                        ),
-                        CardEntryAnimation(
-                          overlap: overlap,
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: horizontalPadding,
-                            ),
-                            child: Column(
-                              spacing: 30,
-                              children: [
-                                HomeCard(),
-                                SendHelpButton(),
-                                TimerLift(),
-                                PrayerTimesWidget(),
-                                QuickActions(),
-                                HajjAyah(),
-                              ],
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    // Forces the Stack to be at least as tall as the screen height
+                    minHeight: viewportHeight,
+                  ),
+                  child: Stack(
+                    children: [
+                      // Background layers now stretch to fill the viewport
+                      ...HeroBackground.layers(context, heroHeight),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Container(
+                            height: heroHeight,
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: const HomeHeroSection(),
+                          ),
+                          CardEntryAnimation(
+                            overlap: overlap,
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: horizontalPadding,
+                              ),
+                              child: Column(
+                                spacing: 30,
+                                children: [
+                                  HomeCard(),
+                                  SendHelpButton(),
+                                  TimerLift(),
+                                  PrayerTimesWidget(),
+                                  QuickActions(),
+                                  HajjAyah(),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

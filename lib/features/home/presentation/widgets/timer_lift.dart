@@ -7,6 +7,8 @@ import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:hijri_date/hijri.dart';
 
+import '../../../../shared/widgets/custom_container.dart';
+
 class TimerLift extends StatefulWidget {
   const TimerLift({super.key});
 
@@ -159,20 +161,10 @@ class _TimerLiftState extends State<TimerLift> {
       ),
     ];
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: AppColors.white,
-        border: Border.all(color: cs.brandRed),
-        boxShadow: [
-          BoxShadow(
-            color: cs.shadow.withValues(alpha: 0.18),
-            blurRadius: 20,
-            offset: const Offset(0, 12),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.all(20.0),
+    return CustomContainer(
+      borderColor: CustomBorderColor.red,
+      borderSide: CustomBorderSide.allBorder,
+      borderWidth: 1,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: 20,

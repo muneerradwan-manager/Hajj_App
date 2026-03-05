@@ -1,12 +1,13 @@
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:bawabatelhajj/shared/widgets/quick_action_card.dart';
 
 import '../../../../core/constants/app_routes.dart';
+import '../../../../shared/widgets/custom_container.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({super.key});
@@ -14,20 +15,8 @@ class QuickActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: cs.surface,
-        boxShadow: [
-          BoxShadow(
-            color: cs.shadow.withValues(alpha: 0.18),
-            blurRadius: 20,
-            offset: const Offset(0, 12),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.all(20),
+    return CustomContainer(
+      padding: const EdgeInsets.all(15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 20,
@@ -45,7 +34,8 @@ class QuickActions extends StatelessWidget {
                   icon: LucideIcons.bookOpen,
                   titleKey: 'home.action_rituals_title',
                   subtitleKey: 'home.action_rituals_subtitle',
-                  accentColor: cs.brandRed,
+                  borderColor: CustomBorderColor.red,
+                  containerColor: cs.brandRed,
                 ),
               ),
               Expanded(
@@ -53,7 +43,8 @@ class QuickActions extends StatelessWidget {
                   icon: LucideIcons.messageSquare,
                   titleKey: 'home.action_survey_title',
                   subtitleKey: 'home.action_survey_subtitle',
-                  accentColor: cs.primary,
+                  borderColor: CustomBorderColor.green,
+                  containerColor: cs.primary,
                 ),
               ),
             ],
@@ -66,7 +57,8 @@ class QuickActions extends StatelessWidget {
                   icon: LucideIcons.award,
                   titleKey: 'home.action_certificate_title',
                   subtitleKey: 'home.action_certificate_subtitle',
-                  accentColor: cs.primary,
+                  borderColor: CustomBorderColor.green,
+                  containerColor: cs.primary,
                 ),
               ),
               Expanded(
@@ -75,7 +67,8 @@ class QuickActions extends StatelessWidget {
                   icon: LucideIcons.messageSquare,
                   titleKey: 'home.action_complaints_title',
                   subtitleKey: 'home.action_complaints_subtitle',
-                  accentColor: cs.brandGold,
+                  borderColor: CustomBorderColor.gold,
+                  containerColor: cs.brandGold,
                 ),
               ),
             ],
