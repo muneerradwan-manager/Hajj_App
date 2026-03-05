@@ -30,13 +30,20 @@ class GradientElevatedButton extends StatelessWidget {
     // تحويل enum إلى قائمة ألوان فعلية
     final List<Color> colors = gradientColor.resolve(cs);
 
+    // إذا كان الزر معطل، نطبق شفافية
+    final bool isDisabled = onPressed == null || isLoading;
+
+    final List<Color> gradientColors = colors
+        .map((c) => isDisabled ? c.withValues(alpha: 0.5) : c)
+        .toList();
+
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: colors,
+          colors: gradientColors,
         ),
       ),
       child: ElevatedButton(

@@ -1,6 +1,7 @@
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
+import 'package:bawabatelhajj/shared/widgets/gradient_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -16,8 +17,18 @@ class CreateComplaint extends StatefulWidget {
 }
 
 class _CreateComplaintState extends State<CreateComplaint> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _subtitleController = TextEditingController();
   String? errorKey;
+  String? selectedDepartment;
+  bool get isFormValid {
+    return selectedDepartment != null &&
+        _titleController.text.isNotEmpty &&
+        _titleController.text.length <= 150 &&
+        _subtitleController.text.isNotEmpty &&
+        _subtitleController.text.length <= 1000;
+  }
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -100,6 +111,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                     const SizedBox(height: 15),
 
                                     DropdownButtonFormField<String>(
+                                      initialValue: selectedDepartment,
                                       decoration: InputDecoration(
                                         hintText:
                                             'complaints.create.select_department'
@@ -138,7 +150,11 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                           ),
                                         ),
                                       ],
-                                      onChanged: (value) {},
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedDepartment = value;
+                                        });
+                                      },
                                     ),
                                   ],
                                 ),
@@ -164,7 +180,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                               ),
                                               padding: const EdgeInsets.all(10),
                                               child: const Icon(
-                                                LucideIcons.messageSquare,
+                                                LucideIcons.fileText,
                                                 color: Colors.white,
                                               ),
                                             ),
@@ -187,10 +203,11 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                             ),
                                             padding: const EdgeInsets.all(10),
                                             child: CustomText(
-                                              '${_controller.text.length}/150',
+                                              '${_titleController.text.length}/150',
                                               translate: false,
                                               color:
-                                                  _controller.text.length > 150
+                                                  _titleController.text.length >
+                                                      150
                                                   ? CustomTextColor.lightRed
                                                   : CustomTextColor.hint,
                                             ),
@@ -200,7 +217,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                     ),
                                     const SizedBox(height: 20),
                                     TextFormField(
-                                      controller: _controller,
+                                      controller: _titleController,
                                       maxLength: 150,
                                       maxLines: null,
                                       keyboardType: TextInputType.multiline,
@@ -234,6 +251,204 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                     ),
                                   ],
                                 ),
+                              ),
+                              const SizedBox(height: 20),
+                              CustomContainer(
+                                borderSide: CustomBorderSide.borderTop,
+                                borderColor: CustomBorderColor.red,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                color: cs.brandRed,
+                                              ),
+                                              padding: const EdgeInsets.all(10),
+                                              child: const Icon(
+                                                LucideIcons.messageSquare,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            const CustomText(
+                                              'تفاصيل الشكوى',
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ],
+                                        ),
+                                        Material(
+                                          elevation: 5,
+                                          borderRadius: BorderRadius.circular(
+                                            50,
+                                          ),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                            ),
+                                            padding: const EdgeInsets.all(10),
+                                            child: CustomText(
+                                              '${_subtitleController.text.length}/1000',
+                                              translate: false,
+                                              color:
+                                                  _subtitleController
+                                                          .text
+                                                          .length >
+                                                      1000
+                                                  ? CustomTextColor.lightRed
+                                                  : CustomTextColor.hint,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20),
+                                    TextFormField(
+                                      controller: _subtitleController,
+                                      maxLength: 1000,
+                                      maxLines: null,
+                                      minLines: 5,
+                                      keyboardType: TextInputType.multiline,
+                                      decoration: InputDecoration(
+                                        counterText:
+                                            '', // hides default counter
+                                        hint: const CustomText(
+                                          'اشرح الشكوى بالتفصيل...',
+                                          color: CustomTextColor.hint,
+                                        ),
+                                        errorText: errorKey?.tr(context),
+                                      ),
+                                      validator: (value) {
+                                        if (value != null &&
+                                            value.length > 1000) {
+                                          return 'complaints.create.subject_max_length_error'
+                                              .tr(context);
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        setState(() {
+                                          if (value.length > 1000) {
+                                            errorKey =
+                                                'complaints.create.subject_max_length_error';
+                                          } else {
+                                            errorKey = null;
+                                          }
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              CustomContainer(
+                                borderSide: CustomBorderSide.borderTop,
+                                borderColor: CustomBorderColor.lightGreen,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              15,
+                                            ),
+                                            color: cs.primaryContainer,
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          child: const Icon(
+                                            LucideIcons.camera,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        const CustomText(
+                                          'إرفاق صورة او اكثر',
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ],
+                                    ),
+
+                                    const SizedBox(height: 15),
+                                    CustomContainer(
+                                      borderSide: CustomBorderSide.allBorder,
+                                      borderWidth: 1.15,
+                                      borderColor: CustomBorderColor.gold,
+                                      gradientColors: const [
+                                        Color(0xffF9F8F6),
+                                        Colors.white,
+                                      ],
+                                      hasOpacity: .3,
+                                      hasShadow: true,
+                                      borderRadius: 14,
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 30,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          CustomContainer(
+                                            width: 100,
+                                            height: 100,
+                                            hasShadow: false,
+                                            containerColor: const Color(
+                                              0xffD9C89E,
+                                            ),
+                                            hasOpacity: 0.2,
+                                            child: Icon(
+                                              LucideIcons.upload,
+                                              color: cs.brandGold,
+                                              size: 40,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          const CustomText(
+                                            'اضغط لاختيار الصور',
+                                            type: CustomTextType.bodyLarge,
+                                          ),
+                                          const SizedBox(height: 5),
+                                          const CustomText(
+                                            'PNG, JPG - حتى 5 صور',
+                                            color: CustomTextColor.hint,
+                                            type: CustomTextType.labelLarge,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              GradientElevatedButton(
+                                textKey: 'إرسال الشكوى',
+                                gradientColor: GradientColors.green,
+                                onPressed: isFormValid
+                                    ? () {
+                                        // Handle submission here
+                                        print(
+                                          'Department: $selectedDepartment',
+                                        );
+                                        print(
+                                          'Title: ${_titleController.text}',
+                                        );
+                                        print(
+                                          'Subtitle: ${_subtitleController.text}',
+                                        );
+                                      }
+                                    : null,
                               ),
                             ],
                           ),
