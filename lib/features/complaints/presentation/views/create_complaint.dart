@@ -1,4 +1,5 @@
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -16,7 +17,7 @@ class CreateComplaint extends StatefulWidget {
 
 class _CreateComplaintState extends State<CreateComplaint> {
   final TextEditingController _controller = TextEditingController();
-  String? errorText;
+  String? errorKey;
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -90,7 +91,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                         ),
                                         const SizedBox(width: 10),
                                         const CustomText(
-                                          'القسم المعني بالشكوى',
+                                          'complaints.create.department_label',
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ],
@@ -100,7 +101,9 @@ class _CreateComplaintState extends State<CreateComplaint> {
 
                                     DropdownButtonFormField<String>(
                                       decoration: InputDecoration(
-                                        hintText: 'اختر القسم',
+                                        hintText:
+                                            'complaints.create.select_department'
+                                                .tr(context),
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
                                             12,
@@ -112,23 +115,30 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                               vertical: 10,
                                             ),
                                       ),
-                                      items: const [
+                                      items: [
                                         DropdownMenuItem(
                                           value: 'finance',
-                                          child: Text('القسم المالي'),
+                                          child: Text(
+                                            'complaints.create.department_finance'
+                                                .tr(context),
+                                          ),
                                         ),
                                         DropdownMenuItem(
                                           value: 'hr',
-                                          child: Text('الموارد البشرية'),
+                                          child: Text(
+                                            'complaints.create.department_hr'
+                                                .tr(context),
+                                          ),
                                         ),
                                         DropdownMenuItem(
                                           value: 'technical',
-                                          child: Text('القسم التقني'),
+                                          child: Text(
+                                            'complaints.create.department_technical'
+                                                .tr(context),
+                                          ),
                                         ),
                                       ],
-                                      onChanged: (value) {
-                                        print(value);
-                                      },
+                                      onChanged: (value) {},
                                     ),
                                   ],
                                 ),
@@ -160,7 +170,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                             ),
                                             const SizedBox(width: 10),
                                             const CustomText(
-                                              'موضوع الشكوى',
+                                              'complaints.create.subject_label',
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ],
@@ -178,6 +188,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                             padding: const EdgeInsets.all(10),
                                             child: CustomText(
                                               '${_controller.text.length}/150',
+                                              translate: false,
                                               color:
                                                   _controller.text.length > 150
                                                   ? CustomTextColor.lightRed
@@ -197,25 +208,26 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                         counterText:
                                             '', // hides default counter
                                         hint: const CustomText(
-                                          'اكتب موضوع الشكوى',
+                                          'complaints.create.subject_hint',
                                           color: CustomTextColor.hint,
                                         ),
-                                        errorText: errorText,
+                                        errorText: errorKey?.tr(context),
                                       ),
                                       validator: (value) {
                                         if (value != null &&
                                             value.length > 150) {
-                                          return 'لا يجب أن يتجاوز النص 150 حرف';
+                                          return 'complaints.create.subject_max_length_error'
+                                              .tr(context);
                                         }
                                         return null;
                                       },
                                       onChanged: (value) {
                                         setState(() {
                                           if (value.length > 150) {
-                                            errorText =
-                                                'لا يجب أن يتجاوز النص 150 حرف';
+                                            errorKey =
+                                                'complaints.create.subject_max_length_error';
                                           } else {
-                                            errorText = null;
+                                            errorKey = null;
                                           }
                                         });
                                       },

@@ -53,13 +53,13 @@ class ComplaintsHeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         const CustomText(
-          'الشكاوي والمقترحات',
+          'complaints.hero_title',
           color: CustomTextColor.white,
           type: CustomTextType.headlineSmall,
         ),
         const SizedBox(height: 10),
         const CustomText(
-          'شكاويك مهمة لتحسين الخدمة',
+          'complaints.hero_subtitle',
           type: CustomTextType.labelLarge,
           color: CustomTextColor.lightGold,
         ),

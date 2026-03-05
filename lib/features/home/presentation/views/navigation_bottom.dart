@@ -26,7 +26,7 @@ class NavigationBottom extends StatefulWidget {
 class _NavigationBottomState extends State<NavigationBottom> {
   static const List<_NavItemData> _navItems = [
     _NavItemData(labelKey: 'nav.home', icon: LucideIcons.house),
-    _NavItemData(labelKey: 'nav.training', icon: LucideIcons.bookOpen),
+    _NavItemData(labelKey: 'nav.training', icon: LucideIcons.graduationCap),
     _NavItemData(labelKey: 'nav.help', icon: LucideIcons.info),
     _NavItemData(labelKey: 'nav.support', icon: LucideIcons.phone),
     _NavItemData(labelKey: 'nav.more', icon: LucideIcons.menu),
@@ -58,12 +58,20 @@ class _NavigationBottomState extends State<NavigationBottom> {
 
   void _onTabSelected(int index) {
     if (_selectedIndex == index) return;
+    final previousIndex = _selectedIndex;
     setState(() => _selectedIndex = index);
-    _pageController.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 280),
-      curve: Curves.easeOutCubic,
-    );
+
+    final isAdjacent = (previousIndex - index).abs() == 1;
+    if (isAdjacent) {
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 280),
+        curve: Curves.easeOutCubic,
+      );
+      return;
+    }
+
+    _pageController.jumpToPage(index);
   }
 
   Future<void> _handleExitRequest() async {
@@ -203,7 +211,7 @@ class MoreView extends StatelessWidget {
               }
               if (context.mounted) context.go(AppRoutes.loginPath);
             },
-            child: const CustomText('Logout', color: CustomTextColor.white),
+            child: const CustomText('nav.logout', color: CustomTextColor.white),
           ),
         ],
       ),
@@ -231,52 +239,43 @@ class _BottomNavItem extends StatelessWidget {
     final activeColor = cs.primary;
     final inactiveColor = cs.brandGold;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(14),
-          onTap: onTap,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 220),
-                curve: Curves.easeOutCubic,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? activeColor
-                      : cs.outline.withValues(alpha: .3),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Icon(
-                  icon,
-                  size: 22,
-                  color: isSelected ? Colors.white : inactiveColor,
-                ),
-              ),
-              const SizedBox(height: 4),
-              AnimatedDefaultTextStyle(
-                duration: const Duration(milliseconds: 220),
-                curve: Curves.easeOutCubic,
-                style: (theme.textTheme.labelSmall ?? const TextStyle())
-                    .copyWith(
-                      color: isSelected ? activeColor : inactiveColor,
-                      fontWeight: isSelected
-                          ? FontWeight.w600
-                          : FontWeight.w500,
-                    ),
-                child: Text(
-                  labelKey.tr(context),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
+    return InkWell(
+      borderRadius: BorderRadius.circular(14),
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? activeColor
+                  : cs.outline.withValues(alpha: .2),
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: Icon(
+              icon,
+              size: 22,
+              color: isSelected ? Colors.white : inactiveColor,
+            ),
           ),
-        ),
+          const SizedBox(height: 4),
+          AnimatedDefaultTextStyle(
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOutCubic,
+            style: (theme.textTheme.labelSmall ?? const TextStyle()).copyWith(
+              color: isSelected ? activeColor : inactiveColor,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+            ),
+            child: Text(
+              labelKey.tr(context),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }

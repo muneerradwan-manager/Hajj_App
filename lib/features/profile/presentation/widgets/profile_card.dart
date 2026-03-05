@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/core/constants/app_images.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/features/auth/domain/entities/user_profile.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_state.dart';
@@ -1193,8 +1194,7 @@ class _PassportSection extends StatelessWidget {
       );
 
       if (!context.mounted) return;
-      final lang = Localizations.localeOf(context).languageCode;
-      final title = (lang == 'ar') ? 'صورة جواز السفر' : 'Passport Image';
+      final title = 'profile.passport_image'.tr(context);
       final resolvedName = _resolveShareNameFromFile(file.path);
 
       await Share.shareXFiles([

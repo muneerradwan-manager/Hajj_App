@@ -13,6 +13,7 @@ import 'package:bawabatelhajj/features/auth/data/models/user_profile_model.dart'
 
 class AuthRemoteDataSource {
   final DioClient _dioClient;
+  static const Duration _loginRetryReceiveTimeout = Duration(seconds: 75);
 
   AuthRemoteDataSource(this._dioClient);
 
@@ -26,13 +27,28 @@ class AuthRemoteDataSource {
   }
 
   Future<AuthSessionModel> login(LoginRequestModel request) async {
-    final response = await _dioClient.post<dynamic>(
-      AppUrls.login,
-      data: request.toJson(),
-    );
+    try {
+      final response = await _dioClient.post<dynamic>(
+        AppUrls.login,
+        data: request.toJson(),
+      );
 
-    final map = _extractMap(response.data);
-    return AuthSessionModel.fromJson(map);
+      final map = _extractMap(response.data);
+      return AuthSessionModel.fromJson(map);
+    } on DioException catch (error) {
+      if (!_isRetryableLoginTimeout(error)) rethrow;
+
+      // App Service can be cold on the first request; retry once with a larger
+      // receive timeout so users don't need to manually press login again.
+      final retryResponse = await _dioClient.post<dynamic>(
+        AppUrls.login,
+        data: request.toJson(),
+        options: Options(receiveTimeout: _loginRetryReceiveTimeout),
+      );
+
+      final retryMap = _extractMap(retryResponse.data);
+      return AuthSessionModel.fromJson(retryMap);
+    }
   }
 
   Future<UserProfileModel> getMe() async {
@@ -161,5 +177,10 @@ class AuthRemoteDataSource {
       return data.map((key, value) => MapEntry(key.toString(), value));
     }
     return <String, dynamic>{};
+  }
+
+  bool _isRetryableLoginTimeout(DioException error) {
+    return error.type == DioExceptionType.receiveTimeout ||
+        error.type == DioExceptionType.connectionTimeout;
   }
 }

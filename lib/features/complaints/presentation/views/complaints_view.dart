@@ -85,7 +85,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                     children: [
                                       Icon(LucideIcons.plus),
                                       CustomText(
-                                        'تقديم شكوى جديدة',
+                                        'complaints.new_complaint',
                                         color: CustomTextColor.white,
                                       ),
                                     ],
@@ -128,10 +128,10 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                                 spacing: 5,
                                                 children: [
                                                   CustomText(
-                                                    'مشكلة في التكييف',
+                                                    'complaints.sample.ac_issue',
                                                   ),
                                                   CustomText(
-                                                    'الفندق',
+                                                    'complaints.category.hotel',
                                                     type: CustomTextType
                                                         .labelMedium,
                                                     color: CustomTextColor.gold,
@@ -153,7 +153,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                             ),
                                             padding: const EdgeInsets.all(10),
                                             child: const CustomText(
-                                              'قيد المراجعة',
+                                              'complaints.status.in_review',
                                               color: CustomTextColor.lightRed,
                                             ),
                                           ),
@@ -175,7 +175,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   CustomText(
-                                                    'عرض التفاصيل',
+                                                    'complaints.action.view_details',
                                                     color:
                                                         CustomTextColor.white,
                                                   ),
@@ -192,6 +192,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                               Icon(LucideIcons.calendar),
                                               CustomText(
                                                 '2026-03-01',
+                                                translate: false,
                                                 color: CustomTextColor.hint,
                                               ),
                                             ],
@@ -237,10 +238,10 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                                 spacing: 5,
                                                 children: [
                                                   CustomText(
-                                                    'ازدحام شديد في الجمرات',
+                                                    'complaints.sample.jamarat_crowd',
                                                   ),
                                                   CustomText(
-                                                    'المشاعر والمناسك',
+                                                    'complaints.category.rituals',
                                                     type: CustomTextType
                                                         .labelMedium,
                                                     color: CustomTextColor.gold,
@@ -262,7 +263,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                             ),
                                             padding: const EdgeInsets.all(10),
                                             child: const CustomText(
-                                              'تم الحل',
+                                              'complaints.status.resolved',
                                               color: CustomTextColor.lightGreen,
                                             ),
                                           ),
@@ -284,7 +285,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   CustomText(
-                                                    'عرض التفاصيل',
+                                                    'complaints.action.view_details',
                                                     color:
                                                         CustomTextColor.white,
                                                   ),
@@ -301,6 +302,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                               Icon(LucideIcons.calendar),
                                               CustomText(
                                                 '2026-03-01',
+                                                translate: false,
                                                 color: CustomTextColor.hint,
                                               ),
                                             ],
@@ -346,10 +348,10 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                                 spacing: 5,
                                                 children: [
                                                   CustomText(
-                                                    'تحسين جودة الوجبات',
+                                                    'complaints.sample.meal_quality',
                                                   ),
                                                   CustomText(
-                                                    'المشاعر والمناسك',
+                                                    'complaints.category.rituals',
                                                     type: CustomTextType
                                                         .labelMedium,
                                                     color: CustomTextColor.gold,
@@ -371,7 +373,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                             ),
                                             padding: const EdgeInsets.all(10),
                                             child: const CustomText(
-                                              'قيد الانتظار',
+                                              'complaints.status.pending',
                                               color: CustomTextColor.gold,
                                             ),
                                           ),
@@ -393,7 +395,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   CustomText(
-                                                    'عرض التفاصيل',
+                                                    'complaints.action.view_details',
                                                     color:
                                                         CustomTextColor.white,
                                                   ),
@@ -410,6 +412,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                               Icon(LucideIcons.calendar),
                                               CustomText(
                                                 '2026-03-01',
+                                                translate: false,
                                                 color: CustomTextColor.hint,
                                               ),
                                             ],

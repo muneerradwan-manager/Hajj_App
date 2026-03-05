@@ -33,14 +33,14 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           const CustomText(
-            'تم بنجاح! ',
+            'auth.forget.reset_success_title',
             textAlign: TextAlign.center,
             type: CustomTextType.headlineSmall,
             color: CustomTextColor.red,
           ),
           const SizedBox(height: 10),
           const CustomText(
-            'تم تغيير كلمة المرور بنجاح',
+            'auth.forget.reset_success_subtitle',
             textAlign: TextAlign.center,
             type: CustomTextType.titleSmall,
             color: CustomTextColor.lightRed,
@@ -64,14 +64,14 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
                   children: [
                     Icon(LucideIcons.lock),
                     CustomText(
-                      'يمكنك الآن تسجيل الدخول',
+                      'auth.forget.reset_success_login_ready',
                       color: CustomTextColor.red,
                       type: CustomTextType.titleLarge,
                     ),
                   ],
                 ),
                 CustomText(
-                  'استخدم كلمة المرور الجديدة لتسجيل الدخول إلى حسابك',
+                  'auth.forget.reset_success_login_hint',
                   color: CustomTextColor.red,
                   type: CustomTextType.labelMedium,
                 ),

@@ -65,14 +65,14 @@ class _ForgetPasswordResetCardState extends State<ForgetPasswordResetCard> {
             const CircularIconBadge(icon: LucideIcons.keyRound, iconSize: 30),
             const SizedBox(height: 12),
             const CustomText(
-              'أدخل رمز التحقق',
+              'auth.forget.reset_card_title',
               textAlign: TextAlign.center,
               type: CustomTextType.titleLarge,
               color: CustomTextColor.red,
             ),
             const SizedBox(height: 6),
             const CustomText(
-              'تم إرسال رمز مكون من 4 أرقام إلى',
+              'auth.forget.reset_card_subtitle',
               textAlign: TextAlign.center,
               type: CustomTextType.bodyMedium,
               color: CustomTextColor.lightRed,
@@ -105,17 +105,16 @@ class _ForgetPasswordResetCardState extends State<ForgetPasswordResetCard> {
                   NumberedStepsList(
                     textColor: CustomTextColor.lightRed,
                     steps: [
-                      'افتح بريدك الإلكتروني'.tr(context),
-                      'ابحث عن رسالة من "تطبيق  بوابة الحاج"'.tr(context),
-                      'انسخ رمز التحقق المكون من 4 أرقام'.tr(context),
-                      'أدخل الرمز في الحقول أدناه'.tr(context),
+                      'auth.forget.reset_step_1'.tr(context),
+                      'auth.forget.reset_step_2'.tr(context),
+                      'auth.forget.reset_step_3'.tr(context),
+                      'auth.forget.reset_step_4'.tr(context),
                     ],
                   ),
                   const SizedBox(height: 10),
                   const ImportantNoteBox(
-                    labelKey: 'مهم',
-                    bodyKey:
-                        ' الرمز صالح لمدة 10 دقائق فقط. إذا لم تستلم الرسالة، تحقق من مجلد البريد المزعج.',
+                    labelKey: 'auth.forget.reset_note_label',
+                    bodyKey: 'auth.forget.reset_note_body',
                   ),
                 ],
               ),

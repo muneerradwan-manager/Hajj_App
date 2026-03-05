@@ -48,6 +48,8 @@
       "send_helper": "A secure OTP code will be sent to your email",
       "reset_title": "Set New Password",
       "reset_subtitle": "Use the OTP code sent to your email",
+      "reset_card_title": "Enter verification code",
+      "reset_card_subtitle": "A 4-digit code has been sent to",
       "otp_label": "OTP Code",
       "new_password_label": "New Password",
       "new_password_hint": "Enter new password",
@@ -69,7 +71,15 @@
       "important_body": "The link is valid for 24 hours only. If you don't see it, check your spam folder.",
       "reset_success_title": "Password Reset Successful",
       "reset_success_subtitle": "Your password was changed successfully",
+      "reset_success_login_ready": "You can now sign in",
+      "reset_success_login_hint": "Use your new password to sign in to your account",
       "reset_next_steps": "Next steps:",
+      "reset_step_1": "Open your email inbox",
+      "reset_step_2": "Look for a message from \"Pilgrim Portal App\"",
+      "reset_step_3": "Copy the 4-digit verification code",
+      "reset_step_4": "Enter the code in the fields below",
+      "reset_note_label": "Important: ",
+      "reset_note_body": "The code is valid for 10 minutes only. If you did not receive it, check your spam folder.",
       "reset_next_step_1": "Go back to login",
       "reset_next_step_2": "Sign in using your new password",
       "reset_next_step_3": "Keep your credentials secure",
@@ -287,7 +297,47 @@
     "training": "Training",
     "support": "Support",
     "more": "More",
-    "help": "I am Lost"
+    "help": "I am Lost",
+    "logout": "Logout"
+  },
+  "complaints": {
+    "hero_title": "Complaints and Suggestions",
+    "hero_subtitle": "Your feedback helps us improve",
+    "new_complaint": "Submit New Complaint",
+    "summary": {
+      "total": "Total",
+      "in_review": "Under Review",
+      "resolved": "Resolved",
+      "pending": "Pending"
+    },
+    "category": {
+      "hotel": "Hotel",
+      "rituals": "Rituals and Sacred Sites"
+    },
+    "sample": {
+      "ac_issue": "Air conditioning issue",
+      "jamarat_crowd": "Heavy crowding at Jamarat",
+      "meal_quality": "Improve meal quality"
+    },
+    "status": {
+      "in_review": "Under Review",
+      "resolved": "Resolved",
+      "pending": "Pending"
+    },
+    "action": {
+      "view_details": "View Details"
+    },
+    "create": {
+      "hero_subtitle": "Fill in the details below carefully",
+      "department_label": "Department concerned with the complaint",
+      "select_department": "Select department",
+      "department_finance": "Finance Department",
+      "department_hr": "Human Resources",
+      "department_technical": "Technical Department",
+      "subject_label": "Complaint subject",
+      "subject_hint": "Write complaint subject",
+      "subject_max_length_error": "Text must not exceed 150 characters"
+    }
   },
   "validation": {
     "required": "This field is required",

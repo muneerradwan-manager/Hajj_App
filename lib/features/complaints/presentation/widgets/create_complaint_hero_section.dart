@@ -45,13 +45,13 @@ class CreateComplaintHeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         const CustomText(
-          'تقديم شكوى جديدة',
+          'complaints.new_complaint',
           color: CustomTextColor.white,
           type: CustomTextType.headlineSmall,
         ),
         const SizedBox(height: 10),
         const CustomText(
-          'املأ البيانات أدناه بعناية',
+          'complaints.create.hero_subtitle',
           type: CustomTextType.labelLarge,
           color: CustomTextColor.lightGold,
         ),

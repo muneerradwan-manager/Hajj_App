@@ -36,11 +36,12 @@ class ComplaintsCard extends StatelessWidget {
                   children: [
                     CustomText(
                       '3',
+                      translate: false,
                       color: CustomTextColor.green,
                       type: CustomTextType.titleLarge,
                     ),
                     CustomText(
-                      'إجمالي',
+                      'complaints.summary.total',
                       color: CustomTextColor.hint,
                       type: CustomTextType.labelMedium,
                     ),
@@ -57,11 +58,12 @@ class ComplaintsCard extends StatelessWidget {
                   children: [
                     CustomText(
                       '1',
+                      translate: false,
                       color: CustomTextColor.gold,
                       type: CustomTextType.titleLarge,
                     ),
                     CustomText(
-                      'قيد المراجعة',
+                      'complaints.summary.in_review',
                       color: CustomTextColor.hint,
                       type: CustomTextType.labelMedium,
                     ),
@@ -78,11 +80,12 @@ class ComplaintsCard extends StatelessWidget {
                   children: [
                     CustomText(
                       '1',
+                      translate: false,
                       color: CustomTextColor.red,
                       type: CustomTextType.titleLarge,
                     ),
                     CustomText(
-                      'تم الحل',
+                      'complaints.summary.resolved',
                       color: CustomTextColor.hint,
                       type: CustomTextType.labelMedium,
                     ),
@@ -99,11 +102,12 @@ class ComplaintsCard extends StatelessWidget {
                   children: [
                     CustomText(
                       '1',
+                      translate: false,
                       color: CustomTextColor.lightGreen,
                       type: CustomTextType.titleLarge,
                     ),
                     CustomText(
-                      'تم الحل',
+                      'complaints.summary.pending',
                       color: CustomTextColor.hint,
                       type: CustomTextType.labelMedium,
                     ),
