@@ -36,6 +36,7 @@ class CustomContainer extends StatelessWidget {
   final double? hasOpacity;
   final double? width;
   final double? height;
+  final double? borderHasOpacity;
 
   /// **NEW**: optional gradient
   final List<Color>? gradientColors;
@@ -58,6 +59,7 @@ class CustomContainer extends StatelessWidget {
     this.gradientColors,
     this.gradientBegin = Alignment.topCenter,
     this.gradientEnd = Alignment.bottomCenter,
+    this.borderHasOpacity,
   });
 
   @override
@@ -71,9 +73,12 @@ class CustomContainer extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
-        border: borderSide.resolve(borderColor.resolve(cs), borderWidth),
+        border: borderSide.resolve(
+          borderColor.resolve(cs).withValues(alpha: borderHasOpacity),
+          borderWidth,
+        ),
         color: gradientColors == null
-            ? containerColor?.withValues(alpha: hasOpacity ?? 1)
+            ? containerColor?.withValues(alpha: hasOpacity)
             : null,
         gradient: gradientColors != null
             ? LinearGradient(

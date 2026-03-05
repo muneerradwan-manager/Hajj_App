@@ -1,3 +1,4 @@
+import 'package:bawabatelhajj/features/complaints/presentation/views/complaint_details.dart';
 import 'package:bawabatelhajj/features/complaints/presentation/views/create_complaint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -172,6 +173,19 @@ class AppRouter {
           child: const CreateComplaint(),
           direction: PageTransitionDirection.bottomToTop,
         ),
+      ),
+
+      GoRoute(
+        name: AppRoutes.complaintDetailsName,
+        path: AppRoutes.complaintDetailsPath,
+        pageBuilder: (context, state) {
+          final id = int.tryParse(state.uri.queryParameters['id'] ?? '');
+          return fadeSlidePage(
+            state: state,
+            child: ComplaintDetails(id: id ?? 0),
+            direction: PageTransitionDirection.bottomToTop,
+          );
+        },
       ),
     ],
   );

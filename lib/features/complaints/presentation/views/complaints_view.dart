@@ -20,6 +20,7 @@ class ComplaintsView extends StatefulWidget {
 }
 
 class _ComplaintsViewState extends State<ComplaintsView> {
+  int complaintId = 1;
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -166,7 +167,9 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                         children: [
                                           Expanded(
                                             child: GradientElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () => context.push(
+                                                '${AppRoutes.complaintDetailsPath}?id=$complaintId',
+                                              ),
                                               gradientColor:
                                                   GradientColors.green,
                                               child: const Row(
@@ -276,7 +279,9 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                         children: [
                                           Expanded(
                                             child: GradientElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () => context.push(
+                                                '${AppRoutes.complaintDetailsPath}?id=$complaintId',
+                                              ),
                                               gradientColor:
                                                   GradientColors.green,
                                               child: const Row(
@@ -386,7 +391,9 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                         children: [
                                           Expanded(
                                             child: GradientElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () => context.push(
+                                                '${AppRoutes.complaintDetailsPath}?id=$complaintId',
+                                              ),
                                               gradientColor:
                                                   GradientColors.green,
                                               child: const Row(

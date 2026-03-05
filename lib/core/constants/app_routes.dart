@@ -10,6 +10,7 @@ class AppRoutes {
   static const String profileName = 'profile';
   static const String complaintsName = 'complaints';
   static const String createComplaintName = 'create-complaint';
+  static const String complaintDetailsName = 'complaint-details';
 
   static const String splashPath = '/';
   static const String loginPath = '/login';
@@ -20,4 +21,5 @@ class AppRoutes {
   static const String profilePath = '/profile';
   static const String complaintsPath = '/complaints';
   static const String createComplaintPath = '/create-complaint';
+  static const String complaintDetailsPath = '/complaint-details';
 }

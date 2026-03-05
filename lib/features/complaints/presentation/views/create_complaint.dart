@@ -8,6 +8,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../shared/widgets/custom_container.dart';
 import '../../../../shared/widgets/hero_background.dart';
 import '../widgets/create_complaint_hero_section.dart';
+import '../widgets/create_complaint_dialog.dart';
 
 class CreateComplaint extends StatefulWidget {
   const CreateComplaint({super.key});
@@ -51,6 +52,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
           final overlap = (heroHeight * 0.22).clamp(40.0, 70.0);
 
           return SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: viewportHeight),
               child: Stack(
@@ -436,18 +438,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                 textKey: 'إرسال الشكوى',
                                 gradientColor: GradientColors.green,
                                 onPressed: isFormValid
-                                    ? () {
-                                        // Handle submission here
-                                        print(
-                                          'Department: $selectedDepartment',
-                                        );
-                                        print(
-                                          'Title: ${_titleController.text}',
-                                        );
-                                        print(
-                                          'Subtitle: ${_subtitleController.text}',
-                                        );
-                                      }
+                                    ? () => showCreateComplaintDialog(context)
                                     : null,
                               ),
                             ],
