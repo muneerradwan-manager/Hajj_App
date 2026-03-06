@@ -4,7 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
-import '../../../../shared/widgets/directional_back_arrow.dart';
+import '../../../../../shared/widgets/directional_back_arrow.dart';
 
 class ComplaintsHeroSection extends StatelessWidget {
   const ComplaintsHeroSection({super.key});
