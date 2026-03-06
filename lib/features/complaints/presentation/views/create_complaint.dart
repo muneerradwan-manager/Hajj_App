@@ -20,7 +20,8 @@ class CreateComplaint extends StatefulWidget {
 class _CreateComplaintState extends State<CreateComplaint> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _subtitleController = TextEditingController();
-  String? errorKey;
+  String? subjectErrorKey;
+  String? detailsErrorKey;
   String? selectedDepartment;
   bool get isFormValid {
     return selectedDepartment != null &&
@@ -230,7 +231,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                           'complaints.create.subject_hint',
                                           color: CustomTextColor.hint,
                                         ),
-                                        errorText: errorKey?.tr(context),
+                                        errorText: subjectErrorKey?.tr(context),
                                       ),
                                       validator: (value) {
                                         if (value != null &&
@@ -243,10 +244,10 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                       onChanged: (value) {
                                         setState(() {
                                           if (value.length > 150) {
-                                            errorKey =
+                                            subjectErrorKey =
                                                 'complaints.create.subject_max_length_error';
                                           } else {
-                                            errorKey = null;
+                                            subjectErrorKey = null;
                                           }
                                         });
                                       },
@@ -281,7 +282,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                             ),
                                             const SizedBox(width: 10),
                                             const CustomText(
-                                              'تفاصيل الشكوى',
+                                              'complaints.create.details_label',
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ],
@@ -323,15 +324,15 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                         counterText:
                                             '', // hides default counter
                                         hint: const CustomText(
-                                          'اشرح الشكوى بالتفصيل...',
+                                          'complaints.create.details_hint',
                                           color: CustomTextColor.hint,
                                         ),
-                                        errorText: errorKey?.tr(context),
+                                        errorText: detailsErrorKey?.tr(context),
                                       ),
                                       validator: (value) {
                                         if (value != null &&
                                             value.length > 1000) {
-                                          return 'complaints.create.subject_max_length_error'
+                                          return 'complaints.create.details_max_length_error'
                                               .tr(context);
                                         }
                                         return null;
@@ -339,10 +340,10 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                       onChanged: (value) {
                                         setState(() {
                                           if (value.length > 1000) {
-                                            errorKey =
-                                                'complaints.create.subject_max_length_error';
+                                            detailsErrorKey =
+                                                'complaints.create.details_max_length_error';
                                           } else {
-                                            errorKey = null;
+                                            detailsErrorKey = null;
                                           }
                                         });
                                       },
@@ -374,7 +375,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                         ),
                                         const SizedBox(width: 10),
                                         const CustomText(
-                                          'إرفاق صورة او اكثر',
+                                          'complaints.create.attachments_label',
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ],
@@ -418,12 +419,12 @@ class _CreateComplaintState extends State<CreateComplaint> {
                                           ),
                                           const SizedBox(height: 20),
                                           const CustomText(
-                                            'اضغط لاختيار الصور',
+                                            'complaints.create.attachments_select_images',
                                             type: CustomTextType.bodyLarge,
                                           ),
                                           const SizedBox(height: 5),
                                           const CustomText(
-                                            'PNG, JPG - حتى 5 صور',
+                                            'complaints.create.attachments_formats_hint',
                                             color: CustomTextColor.hint,
                                             type: CustomTextType.labelLarge,
                                           ),
@@ -435,7 +436,7 @@ class _CreateComplaintState extends State<CreateComplaint> {
                               ),
                               const SizedBox(height: 20),
                               GradientElevatedButton(
-                                textKey: 'إرسال الشكوى',
+                                textKey: 'complaints.create.submit_button',
                                 gradientColor: GradientColors.green,
                                 onPressed: isFormValid
                                     ? () => showCreateComplaintDialog(context)

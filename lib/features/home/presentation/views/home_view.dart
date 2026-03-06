@@ -34,8 +34,9 @@ class HomeView extends StatelessWidget {
           if (!isCurrentRoute) return;
           showMessage(
             context,
-            'There is no internet connection',
+            'app.no_internet_connection',
             SnackBarType.failuer,
+            translate: true,
           );
         },
         child: _homeContent(),

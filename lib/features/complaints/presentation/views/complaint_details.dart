@@ -92,12 +92,12 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             CustomText(
-                                              'موضوع الشكوى',
+                                              'complaints.details.subject_label',
                                               type: CustomTextType.labelLarge,
                                               color: CustomTextColor.hint,
                                             ),
                                             CustomText(
-                                              'ازدحام شديد في الجمرات',
+                                              'complaints.details.subject_value_jamarat_crowd',
                                               type: CustomTextType.bodyLarge,
                                             ),
                                           ],
@@ -132,7 +132,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                         ),
                                         const SizedBox(width: 10),
                                         const CustomText(
-                                          'التفاصيل الكاملة',
+                                          'complaints.details.full_details_title',
                                           type: CustomTextType.labelLarge,
                                           color: CustomTextColor.hint,
                                         ),
@@ -149,7 +149,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                         Colors.white,
                                       ],
                                       child: CustomText(
-                                        'وجدنا ازدحام كبير جداً في منطقة الجمرات مما سبب صعوبة في الحركة',
+                                        'complaints.details.full_details_body',
                                       ),
                                     ),
                                   ],
@@ -185,12 +185,12 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             CustomText(
-                                              'رد الإدارة',
+                                              'complaints.details.management_reply_title',
                                               type: CustomTextType.labelLarge,
                                               color: CustomTextColor.green,
                                             ),
                                             CustomText(
-                                              'الرد الرسمي على شكواك',
+                                              'complaints.details.management_reply_subtitle',
                                               type: CustomTextType.labelSmall,
                                               color: CustomTextColor.green,
                                             ),
@@ -209,7 +209,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                         Colors.white,
                                       ],
                                       child: CustomText(
-                                        'تم تنظيم حركة الحجاج وتوفير ممرات إضافية',
+                                        'complaints.details.management_reply_body',
                                       ),
                                     ),
                                   ],

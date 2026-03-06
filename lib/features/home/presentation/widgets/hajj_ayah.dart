@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
+import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 
 import '../../../../shared/widgets/custom_container.dart';
 import '../../../../shared/widgets/custom_text.dart';
@@ -15,7 +16,7 @@ class HajjAyah extends StatefulWidget {
 }
 
 class _HajjAyahState extends State<HajjAyah> {
-  late final _HajjAyah _ayah;
+  late final _HajjAyahKeys _ayah;
 
   @override
   void initState() {
@@ -35,14 +36,14 @@ class _HajjAyahState extends State<HajjAyah> {
         spacing: 10,
         children: [
           CustomText(
-            '﴿ ${_ayah.text} ﴾',
+            '﴿ ${_ayah.textKey.tr(context)} ﴾',
             type: CustomTextType.bodyLarge,
             color: CustomTextColor.red,
             textAlign: TextAlign.center,
             translate: false,
           ),
           CustomText(
-            _ayah.source,
+            _ayah.sourceKey.tr(context),
             type: CustomTextType.labelLarge,
             color: CustomTextColor.lightRed,
             textAlign: TextAlign.center,
@@ -54,122 +55,36 @@ class _HajjAyahState extends State<HajjAyah> {
   }
 }
 
-class _HajjAyah {
-  const _HajjAyah(this.text, this.source);
-  final String text;
-  final String source;
+class _HajjAyahKeys {
+  const _HajjAyahKeys(this.textKey, this.sourceKey);
+  final String textKey;
+  final String sourceKey;
 }
 
-const _hajjAyahs = <_HajjAyah>[
-  // ── سورة البقرة ──
-  _HajjAyah(
-    'وَإِذْ جَعَلْنَا الْبَيْتَ مَثَابَةً لِّلنَّاسِ وَأَمْنًا وَاتَّخِذُوا مِن مَّقَامِ إِبْرَاهِيمَ مُصَلًّى ۖ وَعَهِدْنَا إِلَىٰ إِبْرَاهِيمَ وَإِسْمَاعِيلَ أَن طَهِّرَا بَيْتِيَ لِلطَّائِفِينَ وَالْعَاكِفِينَ وَالرُّكَّعِ السُّجُودِ',
-    'سورة البقرة - الآية ١٢٥',
-  ),
-  _HajjAyah(
-    'وَإِذْ يَرْفَعُ إِبْرَاهِيمُ الْقَوَاعِدَ مِنَ الْبَيْتِ وَإِسْمَاعِيلُ رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ',
-    'سورة البقرة - الآية ١٢٧',
-  ),
-  _HajjAyah(
-    'رَبَّنَا وَاجْعَلْنَا مُسْلِمَيْنِ لَكَ وَمِن ذُرِّيَّتِنَا أُمَّةً مُّسْلِمَةً لَّكَ وَأَرِنَا مَنَاسِكَنَا وَتُبْ عَلَيْنَا ۖ إِنَّكَ أَنتَ التَّوَّابُ الرَّحِيمُ',
-    'سورة البقرة - الآية ١٢٨',
-  ),
-  _HajjAyah(
-    'إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ ۖ فَمَنْ حَجَّ الْبَيْتَ أَوِ اعْتَمَرَ فَلَا جُنَاحَ عَلَيْهِ أَن يَطَّوَّفَ بِهِمَا ۚ وَمَن تَطَوَّعَ خَيْرًا فَإِنَّ اللَّهَ شَاكِرٌ عَلِيمٌ',
-    'سورة البقرة - الآية ١٥٨',
-  ),
-  _HajjAyah(
-    'يَسْأَلُونَكَ عَنِ الْأَهِلَّةِ ۖ قُلْ هِيَ مَوَاقِيتُ لِلنَّاسِ وَالْحَجِّ',
-    'سورة البقرة - الآية ١٨٩',
-  ),
-  _HajjAyah(
-    'وَأَتِمُّوا الْحَجَّ وَالْعُمْرَةَ لِلَّهِ',
-    'سورة البقرة - الآية ١٩٦',
-  ),
-  _HajjAyah(
-    'الْحَجُّ أَشْهُرٌ مَّعْلُومَاتٌ ۚ فَمَن فَرَضَ فِيهِنَّ الْحَجَّ فَلَا رَفَثَ وَلَا فُسُوقَ وَلَا جِدَالَ فِي الْحَجِّ ۗ وَمَا تَفْعَلُوا مِنْ خَيْرٍ يَعْلَمْهُ اللَّهُ ۗ وَتَزَوَّدُوا فَإِنَّ خَيْرَ الزَّادِ التَّقْوَىٰ ۚ وَاتَّقُونِ يَا أُولِي الْأَلْبَابِ',
-    'سورة البقرة - الآية ١٩٧',
-  ),
-  _HajjAyah(
-    'لَيْسَ عَلَيْكُمْ جُنَاحٌ أَن تَبْتَغُوا فَضْلًا مِّن رَّبِّكُمْ ۚ فَإِذَا أَفَضْتُم مِّنْ عَرَفَاتٍ فَاذْكُرُوا اللَّهَ عِندَ الْمَشْعَرِ الْحَرَامِ ۖ وَاذْكُرُوهُ كَمَا هَدَاكُمْ وَإِن كُنتُم مِّن قَبْلِهِ لَمِنَ الضَّالِّينَ',
-    'سورة البقرة - الآية ١٩٨',
-  ),
-  _HajjAyah(
-    'ثُمَّ أَفِيضُوا مِنْ حَيْثُ أَفَاضَ النَّاسُ وَاسْتَغْفِرُوا اللَّهَ ۚ إِنَّ اللَّهَ غَفُورٌ رَّحِيمٌ',
-    'سورة البقرة - الآية ١٩٩',
-  ),
-  _HajjAyah(
-    'فَإِذَا قَضَيْتُم مَّنَاسِكَكُمْ فَاذْكُرُوا اللَّهَ كَذِكْرِكُمْ آبَاءَكُمْ أَوْ أَشَدَّ ذِكْرًا',
-    'سورة البقرة - الآية ٢٠٠',
-  ),
-  _HajjAyah(
-    'وَاذْكُرُوا اللَّهَ فِي أَيَّامٍ مَّعْدُودَاتٍ ۚ فَمَن تَعَجَّلَ فِي يَوْمَيْنِ فَلَا إِثْمَ عَلَيْهِ وَمَن تَأَخَّرَ فَلَا إِثْمَ عَلَيْهِ ۚ لِمَنِ اتَّقَىٰ',
-    'سورة البقرة - الآية ٢٠٣',
-  ),
-
-  // ── سورة آل عمران ──
-  _HajjAyah(
-    'إِنَّ أَوَّلَ بَيْتٍ وُضِعَ لِلنَّاسِ لَلَّذِي بِبَكَّةَ مُبَارَكًا وَهُدًى لِّلْعَالَمِينَ',
-    'سورة آل عمران - الآية ٩٦',
-  ),
-  _HajjAyah(
-    'فِيهِ آيَاتٌ بَيِّنَاتٌ مَّقَامُ إِبْرَاهِيمَ ۖ وَمَن دَخَلَهُ كَانَ آمِنًا ۗ وَلِلَّهِ عَلَى النَّاسِ حِجُّ الْبَيْتِ مَنِ اسْتَطَاعَ إِلَيْهِ سَبِيلًا ۚ وَمَن كَفَرَ فَإِنَّ اللَّهَ غَنِيٌّ عَنِ الْعَالَمِينَ',
-    'سورة آل عمران - الآية ٩٧',
-  ),
-
-  // ── سورة المائدة ──
-  _HajjAyah(
-    'جَعَلَ اللَّهُ الْكَعْبَةَ الْبَيْتَ الْحَرَامَ قِيَامًا لِّلنَّاسِ وَالشَّهْرَ الْحَرَامَ وَالْهَدْيَ وَالْقَلَائِدَ ۚ ذَٰلِكَ لِتَعْلَمُوا أَنَّ اللَّهَ يَعْلَمُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ وَأَنَّ اللَّهَ بِكُلِّ شَيْءٍ عَلِيمٌ',
-    'سورة المائدة - الآية ٩٧',
-  ),
-
-  // ── سورة إبراهيم ──
-  _HajjAyah(
-    'رَّبَّنَا إِنِّي أَسْكَنتُ مِن ذُرِّيَّتِي بِوَادٍ غَيْرِ ذِي زَرْعٍ عِندَ بَيْتِكَ الْمُحَرَّمِ رَبَّنَا لِيُقِيمُوا الصَّلَاةَ فَاجْعَلْ أَفْئِدَةً مِّنَ النَّاسِ تَهْوِي إِلَيْهِمْ وَارْزُقْهُم مِّنَ الثَّمَرَاتِ لَعَلَّهُمْ يَشْكُرُونَ',
-    'سورة إبراهيم - الآية ٣٧',
-  ),
-
-  // ── سورة الحج ──
-  _HajjAyah(
-    'وَإِذْ بَوَّأْنَا لِإِبْرَاهِيمَ مَكَانَ الْبَيْتِ أَن لَّا تُشْرِكْ بِي شَيْئًا وَطَهِّرْ بَيْتِيَ لِلطَّائِفِينَ وَالْقَائِمِينَ وَالرُّكَّعِ السُّجُودِ',
-    'سورة الحج - الآية ٢٦',
-  ),
-  _HajjAyah(
-    'وَأَذِّن فِي النَّاسِ بِالْحَجِّ يَأْتُوكَ رِجَالًا وَعَلَىٰ كُلِّ ضَامِرٍ يَأْتِينَ مِن كُلِّ فَجٍّ عَمِيقٍ',
-    'سورة الحج - الآية ٢٧',
-  ),
-  _HajjAyah(
-    'لِّيَشْهَدُوا مَنَافِعَ لَهُمْ وَيَذْكُرُوا اسْمَ اللَّهِ فِي أَيَّامٍ مَّعْلُومَاتٍ عَلَىٰ مَا رَزَقَهُم مِّن بَهِيمَةِ الْأَنْعَامِ ۖ فَكُلُوا مِنْهَا وَأَطْعِمُوا الْبَائِسَ الْفَقِيرَ',
-    'سورة الحج - الآية ٢٨',
-  ),
-  _HajjAyah(
-    'ثُمَّ لْيَقْضُوا تَفَثَهُمْ وَلْيُوفُوا نُذُورَهُمْ وَلْيَطَّوَّفُوا بِالْبَيْتِ الْعَتِيقِ',
-    'سورة الحج - الآية ٢٩',
-  ),
-  _HajjAyah(
-    'ذَٰلِكَ وَمَن يُعَظِّمْ شَعَائِرَ اللَّهِ فَإِنَّهَا مِن تَقْوَى الْقُلُوبِ',
-    'سورة الحج - الآية ٣٢',
-  ),
-  _HajjAyah(
-    'لَكُمْ فِيهَا مَنَافِعُ إِلَىٰ أَجَلٍ مُّسَمًّى ثُمَّ مَحِلُّهَا إِلَى الْبَيْتِ الْعَتِيقِ',
-    'سورة الحج - الآية ٣٣',
-  ),
-  _HajjAyah(
-    'وَلِكُلِّ أُمَّةٍ جَعَلْنَا مَنسَكًا لِّيَذْكُرُوا اسْمَ اللَّهِ عَلَىٰ مَا رَزَقَهُم مِّن بَهِيمَةِ الْأَنْعَامِ ۗ فَإِلَٰهُكُمْ إِلَٰهٌ وَاحِدٌ فَلَهُ أَسْلِمُوا ۗ وَبَشِّرِ الْمُخْبِتِينَ',
-    'سورة الحج - الآية ٣٤',
-  ),
-  _HajjAyah(
-    'وَالْبُدْنَ جَعَلْنَاهَا لَكُم مِّن شَعَائِرِ اللَّهِ لَكُمْ فِيهَا خَيْرٌ ۖ فَاذْكُرُوا اسْمَ اللَّهِ عَلَيْهَا صَوَافَّ ۖ فَإِذَا وَجَبَتْ جُنُوبُهَا فَكُلُوا مِنْهَا وَأَطْعِمُوا الْقَانِعَ وَالْمُعْتَرَّ ۚ كَذَٰلِكَ سَخَّرْنَاهَا لَكُمْ لَعَلَّكُمْ تَشْكُرُونَ',
-    'سورة الحج - الآية ٣٦',
-  ),
-  _HajjAyah(
-    'لَن يَنَالَ اللَّهَ لُحُومُهَا وَلَا دِمَاؤُهَا وَلَٰكِن يَنَالُهُ التَّقْوَىٰ مِنكُمْ ۚ كَذَٰلِكَ سَخَّرَهَا لَكُمْ لِتُكَبِّرُوا اللَّهَ عَلَىٰ مَا هَدَاكُمْ ۗ وَبَشِّرِ الْمُحْسِنِينَ',
-    'سورة الحج - الآية ٣٧',
-  ),
-
-  // ── سورة الفتح ──
-  _HajjAyah(
-    'لَّقَدْ صَدَقَ اللَّهُ رَسُولَهُ الرُّؤْيَا بِالْحَقِّ ۖ لَتَدْخُلُنَّ الْمَسْجِدَ الْحَرَامَ إِن شَاءَ اللَّهُ آمِنِينَ مُحَلِّقِينَ رُءُوسَكُمْ وَمُقَصِّرِينَ لَا تَخَافُونَ',
-    'سورة الفتح - الآية ٢٧',
-  ),
+const _hajjAyahs = <_HajjAyahKeys>[
+  _HajjAyahKeys('home.ayahs.ayah_01.text', 'home.ayahs.ayah_01.source'),
+  _HajjAyahKeys('home.ayahs.ayah_02.text', 'home.ayahs.ayah_02.source'),
+  _HajjAyahKeys('home.ayahs.ayah_03.text', 'home.ayahs.ayah_03.source'),
+  _HajjAyahKeys('home.ayahs.ayah_04.text', 'home.ayahs.ayah_04.source'),
+  _HajjAyahKeys('home.ayahs.ayah_05.text', 'home.ayahs.ayah_05.source'),
+  _HajjAyahKeys('home.ayahs.ayah_06.text', 'home.ayahs.ayah_06.source'),
+  _HajjAyahKeys('home.ayahs.ayah_07.text', 'home.ayahs.ayah_07.source'),
+  _HajjAyahKeys('home.ayahs.ayah_08.text', 'home.ayahs.ayah_08.source'),
+  _HajjAyahKeys('home.ayahs.ayah_09.text', 'home.ayahs.ayah_09.source'),
+  _HajjAyahKeys('home.ayahs.ayah_10.text', 'home.ayahs.ayah_10.source'),
+  _HajjAyahKeys('home.ayahs.ayah_11.text', 'home.ayahs.ayah_11.source'),
+  _HajjAyahKeys('home.ayahs.ayah_12.text', 'home.ayahs.ayah_12.source'),
+  _HajjAyahKeys('home.ayahs.ayah_13.text', 'home.ayahs.ayah_13.source'),
+  _HajjAyahKeys('home.ayahs.ayah_14.text', 'home.ayahs.ayah_14.source'),
+  _HajjAyahKeys('home.ayahs.ayah_15.text', 'home.ayahs.ayah_15.source'),
+  _HajjAyahKeys('home.ayahs.ayah_16.text', 'home.ayahs.ayah_16.source'),
+  _HajjAyahKeys('home.ayahs.ayah_17.text', 'home.ayahs.ayah_17.source'),
+  _HajjAyahKeys('home.ayahs.ayah_18.text', 'home.ayahs.ayah_18.source'),
+  _HajjAyahKeys('home.ayahs.ayah_19.text', 'home.ayahs.ayah_19.source'),
+  _HajjAyahKeys('home.ayahs.ayah_20.text', 'home.ayahs.ayah_20.source'),
+  _HajjAyahKeys('home.ayahs.ayah_21.text', 'home.ayahs.ayah_21.source'),
+  _HajjAyahKeys('home.ayahs.ayah_22.text', 'home.ayahs.ayah_22.source'),
+  _HajjAyahKeys('home.ayahs.ayah_23.text', 'home.ayahs.ayah_23.source'),
+  _HajjAyahKeys('home.ayahs.ayah_24.text', 'home.ayahs.ayah_24.source'),
+  _HajjAyahKeys('home.ayahs.ayah_25.text', 'home.ayahs.ayah_25.source'),
 ];

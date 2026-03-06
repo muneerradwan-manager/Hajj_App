@@ -55,7 +55,7 @@ class _CreateComplaintDialogState extends State<_CreateComplaintDialog> {
                       context.pop();
                     },
                     child: const CustomText(
-                      'إلغاء',
+                      'app.cancel',
                       color: CustomTextColor.green,
                     ),
                   ),
@@ -117,7 +117,7 @@ class _CreateComplaintDialogState extends State<_CreateComplaintDialog> {
                     ),
                     const SizedBox(height: 16),
                     const CustomText(
-                      'تأكيد الإرسال',
+                      'complaints.create.confirm_dialog_title',
                       type: CustomTextType.titleLarge,
                       color: CustomTextColor.white,
                     ),
@@ -125,7 +125,7 @@ class _CreateComplaintDialogState extends State<_CreateComplaintDialog> {
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: CustomText(
-                        'هل أنت متأكد من إرسال الشكوى؟',
+                        'complaints.create.confirm_dialog_message',
                         type: CustomTextType.bodyMedium,
                         color: CustomTextColor.lightGold,
                         textAlign: TextAlign.center,
@@ -171,7 +171,7 @@ class _CreateComplaintDialogState extends State<_CreateComplaintDialog> {
               ),
             )
           : const CustomText(
-              'تأكيد',
+              'complaints.create.confirm_dialog_confirm',
               type: CustomTextType.titleSmall,
               color: CustomTextColor.white,
             ),

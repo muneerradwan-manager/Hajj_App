@@ -47,7 +47,7 @@ class ComplaintDetailsHeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         const CustomText(
-          'الوجبات',
+          'complaints.details.category_meals',
           color: CustomTextColor.white,
           type: CustomTextType.headlineSmall,
         ),
@@ -83,7 +83,7 @@ class ComplaintDetailsHeroSection extends StatelessWidget {
                           ),
                         ),
                         const CustomText(
-                          'تاريخ الإنشاء',
+                          'complaints.details.created_at',
                           color: CustomTextColor.white,
                           type: CustomTextType.labelMedium,
                         ),
@@ -125,7 +125,7 @@ class ComplaintDetailsHeroSection extends StatelessWidget {
                           ),
                         ),
                         const CustomText(
-                          'آخر تحديث',
+                          'complaints.details.updated_at',
                           color: CustomTextColor.white,
                           type: CustomTextType.labelMedium,
                         ),
