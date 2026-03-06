@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bawabatelhajj/shared/services/storage/token_storage_service.dart';
+import 'package:bawabatelhajj/core/services/token_storage_service.dart';
 import 'package:bawabatelhajj/features/auth/data/models/user_profile_model.dart';
 
 class AuthLocalDataSource {

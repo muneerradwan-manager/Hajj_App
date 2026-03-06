@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../core/network/interceptors/auth_interceptor.dart';
-import '../../shared/services/storage/token_storage_service.dart';
+import '../services/token_storage_service.dart';
 import '../constants/app_urls.dart';
 
 class DioClient {

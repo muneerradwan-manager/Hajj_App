@@ -23,7 +23,7 @@ class _CreateComplaintDialog extends StatefulWidget {
 }
 
 class _CreateComplaintDialogState extends State<_CreateComplaintDialog> {
-  bool _isSending = false;
+  final bool _isSending = false;
 
   @override
   Widget build(BuildContext context) {

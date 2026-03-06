@@ -1,74 +1,9 @@
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bawabatelhajj/core/bloc/app_bloc_observer.dart';
-import 'package:bawabatelhajj/core/bootstrap/app_bootstrap.dart';
-import 'package:bawabatelhajj/core/di/dependency_injection.dart';
-import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
-import 'package:bawabatelhajj/core/localization/localization_cubit.dart';
-import 'package:bawabatelhajj/core/localization/localization_state.dart';
-import 'package:bawabatelhajj/core/theme/app_theme.dart';
-import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
-
-import 'core/router/app_router.dart';
-
-bool get _enableDevicePreview {
-  if (!kDebugMode) return false;
-  if (kIsWeb) return true;
-
-  switch (defaultTargetPlatform) {
-    case TargetPlatform.android:
-    case TargetPlatform.iOS:
-      return false;
-    case TargetPlatform.fuchsia:
-    case TargetPlatform.linux:
-    case TargetPlatform.macOS:
-    case TargetPlatform.windows:
-      return true;
-  }
-}
+import 'core/bootstrap/app_bootstrap.dart';
+import 'core/app/app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = AppBlocObserver();
   await bootstrapApp();
-
-  final app = _enableDevicePreview
-      ? DevicePreview(enabled: true, builder: (_) => const MainApp())
-      : const MainApp();
-
-  runApp(app);
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<LocalizationCubit>.value(
-          value: getIt<LocalizationCubit>(),
-        ),
-        BlocProvider<MeCubit>(create: (_) => getIt<MeCubit>()),
-      ],
-      child: BlocBuilder<LocalizationCubit, LocalizationState>(
-        builder: (context, localizationState) {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            debugShowMaterialGrid: false,
-            builder: _enableDevicePreview ? DevicePreview.appBuilder : null,
-            theme: AppTheme.lightTheme,
-            themeMode: ThemeMode.light,
-            locale: localizationState.locale,
-            supportedLocales: AppLocalizationsSetup.supportedLocales,
-            localizationsDelegates:
-                AppLocalizationsSetup.localizationsDelegates,
-            routerConfig: AppRouter.router,
-          );
-        },
-      ),
-    );
-  }
+  runApp(const App());
 }

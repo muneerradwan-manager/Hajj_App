@@ -49,14 +49,10 @@ class LoginPage extends StatelessWidget {
             final cardMaxWidth = isDesktopLayout ? 560.0 : 720.0;
 
             return SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: ConstrainedBox(
-                // Forces the Stack to be at least as tall as the screen
                 constraints: BoxConstraints(minHeight: viewportHeight),
                 child: Stack(
                   children: [
-                    // Background layers now stretch to fill the ConstrainedBox
                     ...HeroBackground.layers(context, heroHeight),
 
                     Column(
