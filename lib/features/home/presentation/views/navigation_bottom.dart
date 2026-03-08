@@ -144,8 +144,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
 
             // 2. The Overlapping Button (30% above the top)
             Positioned(
-              top:
-                  -15, // Adjust this value to get exactly 30% of the button height
+              top: -15,
               child: GestureDetector(
                 onTap: () => showSendHelpDialog(context),
                 child: Column(
@@ -174,10 +173,10 @@ class _NavigationBottomState extends State<NavigationBottom> {
                     const SizedBox(height: 4),
                     const CustomText(
                       'nav.help',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                       type: CustomTextType.labelSmall,
                       color: CustomTextColor.red,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -234,8 +233,7 @@ class _BottomNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final cs = theme.colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final activeColor = cs.primary;
     final inactiveColor = cs.brandGold;
 
@@ -262,18 +260,12 @@ class _BottomNavItem extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          AnimatedDefaultTextStyle(
-            duration: const Duration(milliseconds: 220),
-            curve: Curves.easeOutCubic,
-            style: (theme.textTheme.labelSmall ?? const TextStyle()).copyWith(
-              color: isSelected ? activeColor : inactiveColor,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-            ),
-            child: Text(
-              labelKey.tr(context),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+          CustomText(
+            labelKey.tr(context),
+            type: CustomTextType.labelSmall,
+            color: isSelected ? CustomTextColor.green : CustomTextColor.gold,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -299,7 +291,7 @@ class _PlaceholderPage extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Center(
-      child: Text(
+      child: CustomText(
         titleKey.tr(context),
         style: theme.textTheme.headlineSmall?.copyWith(
           color: colorScheme.onSurfaceVariant,

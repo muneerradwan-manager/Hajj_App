@@ -142,31 +142,34 @@ class _DateCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return CustomContainer(
-      hasOpacity: 0.3,
-      padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            spacing: 5,
-            children: [
-              Icon(icon, color: cs.surfaceDim),
-              CustomText(
-                labelKey,
-                type: CustomTextType.labelSmall,
-                color: CustomTextColor.white,
-              ),
-            ],
-          ),
-          const SizedBox(height: 5),
-          CustomText(
-            value,
-            type: CustomTextType.bodyLarge,
-            color: CustomTextColor.white,
-            translate: false,
-          ),
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      child: CustomContainer(
+        hasOpacity: 0.3,
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              spacing: 5,
+              children: [
+                Icon(icon, color: cs.surfaceDim),
+                CustomText(
+                  labelKey,
+                  type: CustomTextType.labelSmall,
+                  color: CustomTextColor.white,
+                ),
+              ],
+            ),
+            const SizedBox(height: 5),
+            CustomText(
+              value,
+              type: CustomTextType.bodyLarge,
+              color: CustomTextColor.white,
+              translate: false,
+            ),
+          ],
+        ),
       ),
     );
   }

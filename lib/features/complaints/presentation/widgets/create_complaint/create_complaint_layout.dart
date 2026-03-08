@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../shared/widgets/hero_background.dart';
+import 'create_complaint_dialog.dart';
 import 'create_complaint_hero_section.dart';
 import 'attachments_section.dart';
 import 'department_section.dart';
@@ -107,7 +108,8 @@ class CreateComplaintLayout extends StatelessWidget {
                             const SizedBox(height: 20),
 
                             SubmitComplaintButton(
-                              onPressed: (){},
+                              onPressed: () =>
+                                  showCreateComplaintDialog(context),
                               isEnabled: isFormValid,
                             ),
                           ],

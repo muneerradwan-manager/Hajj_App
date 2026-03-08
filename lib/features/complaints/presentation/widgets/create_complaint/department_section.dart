@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/localization/app_localizations_setup.dart';
 import '../../../../../shared/widgets/custom_container.dart';
+import '../../../../../shared/widgets/custom_text.dart';
 
 class DepartmentSection extends StatelessWidget {
   final String? selectedDepartment;
@@ -20,24 +20,22 @@ class DepartmentSection extends StatelessWidget {
       borderColor: CustomBorderColor.lightGreen,
       child: DropdownButtonFormField<String>(
         initialValue: selectedDepartment,
-        items: [
+        hint: const CustomText(
+          'complaints.create.select_department',
+          color: CustomTextColor.hint,
+        ),
+        items: const [
           DropdownMenuItem(
             value: 'finance',
-            child: Text(
-              'complaints.create.department_finance'.tr(context),
-            ),
+            child: CustomText('complaints.create.department_finance'),
           ),
           DropdownMenuItem(
             value: 'hr',
-            child: Text(
-              'complaints.create.department_hr'.tr(context),
-            ),
+            child: CustomText('complaints.create.department_hr'),
           ),
           DropdownMenuItem(
             value: 'technical',
-            child: Text(
-              'complaints.create.department_technical'.tr(context),
-            ),
+            child: CustomText('complaints.create.department_technical'),
           ),
         ],
         onChanged: onChanged,

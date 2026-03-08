@@ -12,6 +12,7 @@ class GradientElevatedButton extends StatelessWidget {
     required this.onPressed,
     this.isLoading = false,
     required this.gradientColor,
+    this.padding,
   }) : assert(
          textKey != null || child != null,
          'Either textKey or child must be provided',
@@ -22,6 +23,7 @@ class GradientElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
   final GradientColors gradientColor;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class GradientElevatedButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
+          padding: padding,
         ),
         onPressed: isLoading ? null : onPressed,
         child: isLoading

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
+import 'custom_text.dart';
 
 Future<bool> showExitAppDialog(BuildContext context) async {
   final colorScheme = Theme.of(context).colorScheme;
@@ -10,8 +10,8 @@ Future<bool> showExitAppDialog(BuildContext context) async {
     context: context,
     builder: (dialogContext) {
       return AlertDialog(
-        title: Text('app.exit_title'.tr(context)),
-        content: Text('app.exit_message'.tr(context)),
+        title: const CustomText('app.exit_title'),
+        content: const CustomText('app.exit_message'),
         titleTextStyle: textTheme.titleLarge?.copyWith(
           color: colorScheme.onSurface,
           fontWeight: FontWeight.w700,
@@ -22,11 +22,11 @@ Future<bool> showExitAppDialog(BuildContext context) async {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text('app.cancel'.tr(context)),
+            child: const CustomText('app.cancel'),
           ),
           FilledButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: Text('app.exit'.tr(context)),
+            child: const CustomText('app.exit'),
           ),
         ],
       );

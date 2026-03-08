@@ -10,10 +10,7 @@ import 'new_complaint_button.dart';
 class ComplaintsListSection extends StatelessWidget {
   final int complaintId;
 
-  const ComplaintsListSection({
-    super.key,
-    required this.complaintId,
-  });
+  const ComplaintsListSection({super.key, required this.complaintId});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +19,12 @@ class ComplaintsListSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
-        spacing: 30,
         children: [
           const ComplaintsCard(),
+          const SizedBox(height: 30),
 
           const NewComplaintButton(),
+          const SizedBox(height: 30),
 
           ComplaintStatusCard(
             title: 'complaints.sample.ac_issue',
@@ -37,6 +35,7 @@ class ComplaintsListSection extends StatelessWidget {
             icon: LucideIcons.hotel,
             complaintId: complaintId,
           ),
+          const SizedBox(height: 10),
 
           ComplaintStatusCard(
             title: 'complaints.sample.jamarat_crowd',
@@ -47,6 +46,7 @@ class ComplaintsListSection extends StatelessWidget {
             icon: LucideIcons.hotel,
             complaintId: complaintId,
           ),
+          const SizedBox(height: 10),
 
           ComplaintStatusCard(
             title: 'complaints.sample.meal_quality',

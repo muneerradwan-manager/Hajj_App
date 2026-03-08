@@ -1,3 +1,4 @@
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -43,12 +44,11 @@ class ComplaintStatusCard extends StatelessWidget {
               Row(
                 spacing: 10,
                 children: [
-                  Container(
+                  CustomContainer(
                     padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: cs.primary,
-                    ),
+                    borderRadius: 15,
+                    containerColor: cs.primary,
+                    borderWidth: 1,
                     child: Icon(icon, color: Colors.white),
                   ),
                   Column(
@@ -64,38 +64,52 @@ class ComplaintStatusCard extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
+              CustomContainer(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: cs.primary),
-                ),
-                child: CustomText(
-                  status,
-                  color: statusColor,
-                ),
+                borderRadius: 15,
+                containerColor: borderColor == CustomBorderColor.lightRed
+                    ? cs.brandRed
+                    : borderColor == CustomBorderColor.green
+                    ? cs.primary
+                    : cs.brandGold,
+                hasOpacity: .1,
+                borderColor: borderColor,
+                borderWidth: 1,
+                child: CustomText(status, color: statusColor),
               ),
             ],
           ),
           Row(
+            spacing: 20,
             children: [
-              Expanded(
+              Flexible(
                 child: GradientElevatedButton(
                   onPressed: () => context.push(
                     '${AppRoutes.complaintDetailsPath}?id=$complaintId',
                   ),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   gradientColor: GradientColors.green,
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 10,
                     children: [
-                      CustomText(
-                        'complaints.action.view_details',
-                        color: CustomTextColor.white,
+                      Expanded(
+                        child: CustomText(
+                          'complaints.action.view_details',
+                          color: CustomTextColor.white,
+                        ),
                       ),
                       Icon(LucideIcons.eye),
                     ],
                   ),
+                ),
+              ),
+              Flexible(
+                child: Row(
+                  spacing: 5,
+                  children: [
+                    Icon(LucideIcons.calendar, color: cs.outline),
+                    const CustomText('2026-03-01', color: CustomTextColor.hint),
+                  ],
                 ),
               ),
             ],
