@@ -7,6 +7,7 @@ import '../../../../../core/constants/app_routes.dart';
 import '../../../../../shared/widgets/custom_container.dart';
 import '../../../../../shared/widgets/custom_text.dart';
 import '../../../../../shared/widgets/gradient_elevated_button.dart';
+import '../../../domain/entities/complaint.dart';
 
 class ComplaintStatusCard extends StatelessWidget {
   final String title;
@@ -15,7 +16,10 @@ class ComplaintStatusCard extends StatelessWidget {
   final CustomTextColor statusColor;
   final CustomBorderColor borderColor;
   final IconData icon;
-  final int complaintId;
+  final Complaint complaint;
+  final bool translateTitle;
+  final bool translateCategory;
+  final String? date;
 
   const ComplaintStatusCard({
     super.key,
@@ -25,7 +29,10 @@ class ComplaintStatusCard extends StatelessWidget {
     required this.statusColor,
     required this.borderColor,
     required this.icon,
-    required this.complaintId,
+    required this.complaint,
+    this.translateTitle = true,
+    this.translateCategory = true,
+    this.date,
   });
 
   @override
@@ -54,9 +61,10 @@ class ComplaintStatusCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(title),
+                      CustomText(title, translate: translateTitle),
                       CustomText(
                         category,
+                        translate: translateCategory,
                         type: CustomTextType.labelMedium,
                         color: CustomTextColor.gold,
                       ),
@@ -84,10 +92,12 @@ class ComplaintStatusCard extends StatelessWidget {
             children: [
               Flexible(
                 child: GradientElevatedButton(
-                  onPressed: () => context.push(
-                    '${AppRoutes.complaintDetailsPath}?id=$complaintId',
+                  onPressed: () => context.pushNamed(
+                    AppRoutes.complaintDetailsName,
+                    extra: complaint,
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   gradientColor: GradientColors.green,
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -103,15 +113,20 @@ class ComplaintStatusCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Flexible(
-                child: Row(
-                  spacing: 5,
-                  children: [
-                    Icon(LucideIcons.calendar, color: cs.outline),
-                    const CustomText('2026-03-01', color: CustomTextColor.hint),
-                  ],
+              if (date != null)
+                Flexible(
+                  child: Row(
+                    spacing: 5,
+                    children: [
+                      Icon(LucideIcons.calendar, color: cs.outline),
+                      CustomText(
+                        date!,
+                        translate: false,
+                        color: CustomTextColor.hint,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
             ],
           ),
         ],

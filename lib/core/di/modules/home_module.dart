@@ -7,5 +7,5 @@ import '../dependency_injection.dart';
 void registerHomeModule() {
   getIt.registerLazySingleton<PrayerTimesService>(PrayerTimesServiceImpl.new);
 
-  getIt.registerLazySingleton(() => PrayerTimesCubit(getIt()));
+  getIt.registerFactory(() => PrayerTimesCubit(getIt()));
 }

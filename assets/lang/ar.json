@@ -363,7 +363,8 @@
       
       "hero_subtitle": "املأ البيانات أدناه بعناية",
       "department_label": "القسم المعني بالشكوى",
-      "select_department": "اختر القسم",
+      "select_category": "اختر القسم",
+      "select_kind": "اختر النوع",
       "department_finance": "القسم المالي",
       "department_hr": "الموارد البشرية",
       "department_technical": "القسم التقني",

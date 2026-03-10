@@ -10,7 +10,12 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AttachmentsSection extends StatefulWidget {
-  const AttachmentsSection({super.key});
+  const AttachmentsSection({
+    super.key,
+    required this.onAttachmentsChanged,
+  });
+
+  final ValueChanged<List<File>> onAttachmentsChanged;
 
   @override
   State<AttachmentsSection> createState() => _AttachmentsSectionState();
@@ -18,11 +23,23 @@ class AttachmentsSection extends StatefulWidget {
 
 class _AttachmentsSectionState extends State<AttachmentsSection> {
   final ImagePicker _picker = ImagePicker();
-  XFile? _selectedImage;
+
+  final List<XFile> _selectedImages = [];
+
   bool _isPicking = false;
 
   Future<void> _onAttachmentTap() async {
     if (_isPicking) return;
+
+    if (_selectedImages.length >= 2) {
+      showMessage(
+        context,
+        'complaints.create.attachments_max_two',
+        SnackBarType.failuer,
+        translate: true,
+      );
+      return;
+    }
 
     final source = await _showPickSourceSheet();
     if (!mounted || source == null) return;
@@ -109,9 +126,10 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
       if (!mounted || image == null) return;
 
       setState(() {
-        // Single-image mode: a new pick always replaces the old one.
-        _selectedImage = image;
+        _selectedImages.add(image);
       });
+
+      _notifyCubit();
     } catch (_) {
       if (!mounted) return;
       showMessage(
@@ -125,6 +143,19 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
         setState(() => _isPicking = false);
       }
     }
+  }
+
+  void _removeImage(int index) {
+    setState(() {
+      _selectedImages.removeAt(index);
+    });
+
+    _notifyCubit();
+  }
+
+  void _notifyCubit() {
+    final files = _selectedImages.map((e) => File(e.path)).toList();
+    widget.onAttachmentsChanged(files);
   }
 
   Future<bool> _ensurePermission(ImageSource source) async {
@@ -214,10 +245,6 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
     }
   }
 
-  void _removeImage() {
-    setState(() => _selectedImage = null);
-  }
-
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -244,6 +271,7 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
             ],
           ),
           const SizedBox(height: 15),
+
           GestureDetector(
             onTap: _onAttachmentTap,
             child: CustomContainer(
@@ -253,7 +281,7 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
               borderRadius: 14,
               width: double.infinity,
               padding: const EdgeInsets.all(16),
-              child: _selectedImage == null
+              child: _selectedImages.isEmpty
                   ? Column(
                       children: [
                         CustomContainer(
@@ -288,60 +316,52 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
                     )
                   : Column(
                       spacing: 12,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.file(
-                            File(_selectedImage!.path),
-                            height: 180,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Row(
-                          spacing: 10,
+                      children: List.generate(_selectedImages.length, (index) {
+                        final image = _selectedImages[index];
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Expanded(
-                              child: CustomText(
-                                _selectedImage!.name,
-                                translate: false,
-                                color: CustomTextColor.green,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.file(
+                                File(image.path),
+                                height: 180,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            IconButton(
-                              style: IconButton.styleFrom(
-                                backgroundColor: cs.error.withValues(
-                                  alpha: 0.12,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomText(
+                                    image.name,
+                                    translate: false,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                              ),
-                              onPressed: _removeImage,
-                              icon: Icon(LucideIcons.trash2, color: cs.error),
+                                IconButton(
+                                  style: IconButton.styleFrom(
+                                    backgroundColor: cs.error.withValues(
+                                      alpha: 0.12,
+                                    ),
+                                  ),
+                                  onPressed: () => _removeImage(index),
+                                  icon: Icon(LucideIcons.trash2,
+                                      color: cs.error),
+                                ),
+                              ],
                             ),
                           ],
-                        ),
-                        OutlinedButton.icon(
-                          onPressed: _onAttachmentTap,
-                          icon: const Icon(LucideIcons.refreshCw, size: 18),
-                          label: const CustomText(
-                            'complaints.create.attachments_change_image',
-                            type: CustomTextType.labelLarge,
-                            color: CustomTextColor.green,
-                          ),
-                        ),
-                        const CustomText(
-                          'complaints.create.attachments_single_image_notice',
-                          color: CustomTextColor.hint,
-                          textAlign: TextAlign.center,
-                          type: CustomTextType.bodySmall,
-                        ),
-                      ],
+                        );
+                      }),
                     ),
             ),
           ),
+
           const SizedBox(height: 10),
+
           Row(
             spacing: 8,
             children: [

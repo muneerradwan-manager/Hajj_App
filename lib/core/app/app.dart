@@ -9,10 +9,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (_enableDevicePreview) {
-      return DevicePreview(
-        enabled: true,
-        builder: (_) => const AppView(),
-      );
+      return DevicePreview(enabled: true, builder: (_) => const AppView());
     }
 
     return const AppView();
@@ -20,7 +17,7 @@ class App extends StatelessWidget {
 }
 
 bool get _enableDevicePreview {
-  if (!kDebugMode) return false;
+  if (kDebugMode) return true;
   if (kIsWeb) return true;
   return false;
 }

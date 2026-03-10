@@ -14,6 +14,7 @@ import 'package:bawabatelhajj/features/auth/presentation/views/register_view.dar
 import 'package:bawabatelhajj/features/home/presentation/views/home_view.dart';
 import 'package:bawabatelhajj/features/splash/presentation/views/splash_view.dart';
 
+import '../../features/complaints/domain/entities/complaint.dart';
 import '../../features/complaints/presentation/views/complaints_view.dart';
 import '../../features/home/presentation/views/navigation_bottom.dart';
 import '../../features/profile/presentation/views/profile_view.dart';
@@ -179,10 +180,11 @@ class AppRouter {
         name: AppRoutes.complaintDetailsName,
         path: AppRoutes.complaintDetailsPath,
         pageBuilder: (context, state) {
-          final id = int.tryParse(state.uri.queryParameters['id'] ?? '');
+          final complaint = state.extra as Complaint;
+
           return fadeSlidePage(
             state: state,
-            child: ComplaintDetails(id: id ?? 0),
+            child: ComplaintDetails(complaint: complaint),
             direction: PageTransitionDirection.bottomToTop,
           );
         },

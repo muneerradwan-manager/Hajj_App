@@ -1,36 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../shared/widgets/hero_background.dart';
+import '../../cubits/create_complaint/create_complaint_cubit.dart';
 import 'create_complaint_dialog.dart';
 import 'create_complaint_hero_section.dart';
 import 'attachments_section.dart';
-import 'department_section.dart';
+import 'categories_section.dart';
 import 'details_section.dart';
+import 'kinds_section.dart';
 import 'subject_section.dart';
 import 'submit_button.dart';
 
 class CreateComplaintLayout extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController detailsController;
-  final String? selectedDepartment;
+  final int? selectedCategory;
+  final int? selectedKind;
   final String? subjectErrorKey;
   final String? detailsErrorKey;
   final bool isFormValid;
 
-  final ValueChanged<String?> onDepartmentChanged;
-  final ValueChanged<String> onTitleChanged;
+  final ValueChanged<int?> onCategoryChanged;
+  final ValueChanged<int?> onKindChanged;
+  final ValueChanged<String> onSubjectChanged;
   final ValueChanged<String> onDetailsChanged;
 
   const CreateComplaintLayout({
     super.key,
     required this.titleController,
     required this.detailsController,
-    required this.selectedDepartment,
+    required this.selectedCategory,
+    required this.selectedKind,
     required this.subjectErrorKey,
     required this.detailsErrorKey,
     required this.isFormValid,
-    required this.onDepartmentChanged,
-    required this.onTitleChanged,
+    required this.onCategoryChanged,
+    required this.onKindChanged,
+    required this.onSubjectChanged,
     required this.onDetailsChanged,
   });
 
@@ -80,17 +88,37 @@ class CreateComplaintLayout extends StatelessWidget {
                         offset: Offset(0, -overlap),
                         child: Column(
                           children: [
-                            DepartmentSection(
-                              selectedDepartment: selectedDepartment,
-                              onChanged: onDepartmentChanged,
+                            CategoriesSection(
+                              selectedCategory: selectedCategory,
+                              onChanged: (value) {
+                                context
+                                    .read<CreateComplaintCubit>()
+                                    .updateCategory(value);
+                                onCategoryChanged(value);
+                              },
                             ),
 
+                            const SizedBox(height: 20),
+                            KindsSection(
+                              selectedKind: selectedKind,
+                              onChanged: (value) {
+                                context
+                                    .read<CreateComplaintCubit>()
+                                    .updateKind(value);
+                                onKindChanged(value);
+                              },
+                            ),
                             const SizedBox(height: 20),
 
                             SubjectSection(
                               controller: titleController,
                               errorKey: subjectErrorKey,
-                              onChanged: onTitleChanged,
+                              onChanged: (value) {
+                                context
+                                    .read<CreateComplaintCubit>()
+                                    .updateTitle(value);
+                                onSubjectChanged(value);
+                              },
                             ),
 
                             const SizedBox(height: 20),
@@ -98,18 +126,34 @@ class CreateComplaintLayout extends StatelessWidget {
                             DetailsSection(
                               controller: detailsController,
                               errorKey: detailsErrorKey,
-                              onChanged: onDetailsChanged,
+                              onChanged: (value) {
+                                context
+                                    .read<CreateComplaintCubit>()
+                                    .updateDetails(value);
+                                onDetailsChanged(value);
+                              },
                             ),
 
                             const SizedBox(height: 20),
 
-                            const AttachmentsSection(),
+                            AttachmentsSection(
+                              onAttachmentsChanged: (files) {
+                                context
+                                    .read<CreateComplaintCubit>()
+                                    .updateAttachments(files);
+                              },
+                            ),
 
                             const SizedBox(height: 20),
 
                             SubmitComplaintButton(
-                              onPressed: () =>
-                                  showCreateComplaintDialog(context),
+                              onPressed: () async {
+                                final success =
+                                    await showCreateComplaintDialog(context);
+                                if (success == true) {
+                                  context.pop(true);
+                                }
+                              },
                               isEnabled: isFormValid,
                             ),
                           ],

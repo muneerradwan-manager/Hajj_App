@@ -18,12 +18,12 @@ class ComplaintDetailsContentSection extends StatelessWidget {
     required this.overlap,
   });
 
-  final ComplaintStatus status;
+  final String status;
   final String sendDate;
   final String receiveDate;
   final String subjectValueKey;
   final String fullDetailsBodyKey;
-  final String managementReplyBodyKey;
+  final bool managementReplyBodyKey;
   final double overlap;
 
   @override
@@ -47,7 +47,9 @@ class ComplaintDetailsContentSection extends StatelessWidget {
               sendDate: sendDate,
               receiveDate: receiveDate,
             ),
+
             _ComplaintSubjectCard(subjectValueKey: subjectValueKey),
+
             _ComplaintMessageCard(
               borderColor: CustomBorderColor.red,
               iconBackgroundColor: cs.brandRed,
@@ -57,16 +59,18 @@ class ComplaintDetailsContentSection extends StatelessWidget {
               bodyBorderColor: CustomBorderColor.hint,
               bodyBorderOpacity: .2,
             ),
-            _ComplaintMessageCard(
-              borderColor: CustomBorderColor.green,
-              iconBackgroundColor: cs.primary,
-              titleKey: 'complaints.details.management_reply_title',
-              titleColor: CustomTextColor.green,
-              subtitleKey: 'complaints.details.management_reply_subtitle',
-              bodyKey: managementReplyBodyKey,
-              bodyBorderColor: CustomBorderColor.green,
-              bodyBorderOpacity: .2,
-            ),
+
+            if (managementReplyBodyKey)
+              _ComplaintMessageCard(
+                borderColor: CustomBorderColor.green,
+                iconBackgroundColor: cs.primary,
+                titleKey: 'complaints.details.management_reply_title',
+                titleColor: CustomTextColor.green,
+                subtitleKey: 'complaints.details.management_reply_subtitle',
+                bodyKey: '',
+                bodyBorderColor: CustomBorderColor.green,
+                bodyBorderOpacity: .2,
+              ),
           ],
         ),
       ),
@@ -106,7 +110,11 @@ class _ComplaintSubjectCard extends StatelessWidget {
                   type: CustomTextType.labelLarge,
                   color: CustomTextColor.hint,
                 ),
-                CustomText(subjectValueKey, type: CustomTextType.bodyLarge),
+                CustomText(
+                  subjectValueKey,
+                  type: CustomTextType.bodyLarge,
+                  translate: false,
+                ),
               ],
             ),
           ),

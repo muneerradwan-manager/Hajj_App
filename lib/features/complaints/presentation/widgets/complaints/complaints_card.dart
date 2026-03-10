@@ -4,7 +4,18 @@ import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 class ComplaintsCard extends StatelessWidget {
-  const ComplaintsCard({super.key});
+  final int total;
+  final int inReview;
+  final int resolved;
+  final int pending;
+
+  const ComplaintsCard({
+    super.key,
+    required this.total,
+    required this.inReview,
+    required this.resolved,
+    required this.pending,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,97 +34,69 @@ class ComplaintsCard extends StatelessWidget {
           ),
         ],
       ),
-
       child: IntrinsicHeight(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0),
-                child: Column(
-                  spacing: 5,
-                  children: [
-                    CustomText(
-                      '3',
-                      translate: false,
-                      color: CustomTextColor.green,
-                      type: CustomTextType.titleLarge,
-                    ),
-                    CustomText(
-                      'complaints.summary.total',
-                      color: CustomTextColor.hint,
-                      type: CustomTextType.labelMedium,
-                    ),
-                  ],
-                ),
-              ),
+            _StatColumn(
+              value: total.toString(),
+              labelKey: 'complaints.summary.total',
+              color: CustomTextColor.green,
             ),
             VerticalDivider(color: cs.outline.withValues(alpha: .5)),
-            const Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0),
-                child: Column(
-                  spacing: 5,
-                  children: [
-                    CustomText(
-                      '1',
-                      translate: false,
-                      color: CustomTextColor.gold,
-                      type: CustomTextType.titleLarge,
-                    ),
-                    CustomText(
-                      'complaints.summary.in_review',
-                      color: CustomTextColor.hint,
-                      type: CustomTextType.labelMedium,
-                    ),
-                  ],
-                ),
-              ),
+            _StatColumn(
+              value: inReview.toString(),
+              labelKey: 'complaints.summary.in_review',
+              color: CustomTextColor.gold,
             ),
             VerticalDivider(color: cs.outline.withValues(alpha: .5)),
-            const Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0),
-                child: Column(
-                  spacing: 5,
-                  children: [
-                    CustomText(
-                      '1',
-                      translate: false,
-                      color: CustomTextColor.red,
-                      type: CustomTextType.titleLarge,
-                    ),
-                    CustomText(
-                      'complaints.summary.resolved',
-                      color: CustomTextColor.hint,
-                      type: CustomTextType.labelMedium,
-                    ),
-                  ],
-                ),
-              ),
+            _StatColumn(
+              value: resolved.toString(),
+              labelKey: 'complaints.summary.resolved',
+              color: CustomTextColor.red,
             ),
             VerticalDivider(color: cs.outline.withValues(alpha: .5)),
-            const Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0),
-                child: Column(
-                  spacing: 5,
-                  children: [
-                    CustomText(
-                      '1',
-                      translate: false,
-                      color: CustomTextColor.lightGreen,
-                      type: CustomTextType.titleLarge,
-                    ),
-                    CustomText(
-                      'complaints.summary.pending',
-                      color: CustomTextColor.hint,
-                      type: CustomTextType.labelMedium,
-                    ),
-                  ],
-                ),
-              ),
+            _StatColumn(
+              value: pending.toString(),
+              labelKey: 'complaints.summary.pending',
+              color: CustomTextColor.lightGreen,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StatColumn extends StatelessWidget {
+  const _StatColumn({
+    required this.value,
+    required this.labelKey,
+    required this.color,
+  });
+
+  final String value;
+  final String labelKey;
+  final CustomTextColor color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Column(
+          spacing: 5,
+          children: [
+            CustomText(
+              value,
+              translate: false,
+              color: color,
+              type: CustomTextType.titleLarge,
+            ),
+            CustomText(
+              labelKey,
+              color: CustomTextColor.hint,
+              type: CustomTextType.labelMedium,
             ),
           ],
         ),

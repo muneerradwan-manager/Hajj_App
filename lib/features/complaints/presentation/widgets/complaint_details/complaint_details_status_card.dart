@@ -5,12 +5,11 @@ import '../../../../../core/constants/app_colors.dart';
 import '../../../../../shared/widgets/custom_container.dart';
 import '../../../../../shared/widgets/custom_text.dart';
 
-enum ComplaintStatus { pending, inReview, resolved }
-
 class ComplaintDetailsStatusCard extends StatelessWidget {
-  final ComplaintStatus status;
+  final String status;
   final String sendDate;
   final String receiveDate;
+
   const ComplaintDetailsStatusCard({
     super.key,
     required this.status,
@@ -18,9 +17,12 @@ class ComplaintDetailsStatusCard extends StatelessWidget {
     required this.receiveDate,
   });
 
+  String get _statusName => status;
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+
     final reviewStep = _reviewStepVisual(cs);
     final resultStep = _resultStepVisual(cs);
     final reviewValue = _reviewStageValue;
@@ -93,9 +95,7 @@ class ComplaintDetailsStatusCard extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 6),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -127,77 +127,106 @@ class ComplaintDetailsStatusCard extends StatelessWidget {
   }
 
   CustomBorderColor get _borderColor {
-    switch (status) {
-      case ComplaintStatus.pending:
+    switch (_statusName) {
+      case 'pending':
         return CustomBorderColor.gold;
-      case ComplaintStatus.inReview:
+
+      case 'in_review':
         return CustomBorderColor.red;
-      case ComplaintStatus.resolved:
+
+      case 'resolved':
         return CustomBorderColor.green;
+
+      default:
+        return CustomBorderColor.gold;
     }
   }
 
   String get _statusKey {
-    switch (status) {
-      case ComplaintStatus.pending:
+    switch (_statusName) {
+      case 'pending':
         return 'complaints.status.pending';
-      case ComplaintStatus.inReview:
+
+      case 'in_review':
         return 'complaints.status.in_review';
-      case ComplaintStatus.resolved:
+
+      case 'resolved':
         return 'complaints.status.resolved';
+
+      default:
+        return 'complaints.status.pending';
     }
   }
 
   _TimelineValue get _reviewStageValue {
-    switch (status) {
-      case ComplaintStatus.pending:
+    switch (_statusName) {
+      case 'pending':
         return const _TimelineValue('complaints.details.review_value_pending');
-      case ComplaintStatus.inReview:
-        return const _TimelineValue('complaints.details.review_value_in_review');
-      case ComplaintStatus.resolved:
-        return const _TimelineValue('complaints.details.review_value_completed');
+
+      case 'in_review':
+        return const _TimelineValue(
+          'complaints.details.review_value_in_review',
+        );
+
+      case 'resolved':
+        return const _TimelineValue(
+          'complaints.details.review_value_completed',
+        );
+
+      default:
+        return const _TimelineValue('complaints.details.review_value_pending');
     }
   }
 
   _TimelineValue get _resultStageValue {
-    if (status == ComplaintStatus.resolved) {
+    
       return _TimelineValue(receiveDate, translate: false);
-    }
-    return const _TimelineValue('complaints.details.result_pending');
+    
+
   }
 
   _StatusStepVisual _reviewStepVisual(ColorScheme cs) {
-    switch (status) {
-      case ComplaintStatus.pending:
+    switch (_statusName) {
+      case 'pending':
         return _StatusStepVisual(
           backgroundColor: cs.outlineVariant,
           icon: LucideIcons.clock,
           iconColor: cs.outline,
         );
-      case ComplaintStatus.inReview:
-      case ComplaintStatus.resolved:
+
+      case 'in_review':
+      case 'resolved':
         return _StatusStepVisual(
           backgroundColor: cs.brandRed,
           icon: LucideIcons.info,
           iconColor: Colors.white,
         );
+
+      default:
+        return _StatusStepVisual(
+          backgroundColor: cs.outlineVariant,
+          icon: LucideIcons.clock,
+          iconColor: cs.outline,
+        );
     }
   }
 
   _StatusStepVisual _resultStepVisual(ColorScheme cs) {
-    switch (status) {
-      case ComplaintStatus.pending:
-      case ComplaintStatus.inReview:
-        return _StatusStepVisual(
-          backgroundColor: cs.outlineVariant,
-          icon: LucideIcons.circleSmall,
-          iconColor: cs.outline,
-        );
-      case ComplaintStatus.resolved:
+    switch (_statusName) {
+      case 'resolved':
         return _StatusStepVisual(
           backgroundColor: cs.primary,
           icon: LucideIcons.circleCheck,
           iconColor: Colors.white,
+        );
+
+      case 'pending':
+      case 'in_review':
+      default:
+        return _StatusStepVisual(
+          backgroundColor: cs.outlineVariant,
+          icon: LucideIcons.circleSmall,
+          iconColor: cs.outline,
         );
     }
   }

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:bawabatelhajj/core/di/dependency_injection.dart';
+
+import '../cubits/complaints/complaints_cubit.dart';
 import '../widgets/complaints/complaints_layout.dart';
 
-class ComplaintsView extends StatefulWidget {
+class ComplaintsView extends StatelessWidget {
   const ComplaintsView({super.key});
 
   @override
-  State<ComplaintsView> createState() => _ComplaintsViewState();
-}
-
-class _ComplaintsViewState extends State<ComplaintsView> {
-  int complaintId = 1;
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: ComplaintsLayout(complaintId: complaintId),
+    return BlocProvider(
+      create: (_) => getIt<ComplaintsCubit>()..loadComplaints(),
+      child: const Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: ComplaintsLayout(),
+      ),
     );
   }
 }

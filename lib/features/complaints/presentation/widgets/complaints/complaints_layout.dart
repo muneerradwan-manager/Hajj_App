@@ -6,9 +6,7 @@ import 'complaints_hero_section.dart';
 import 'complaints_list_section.dart';
 
 class ComplaintsLayout extends StatelessWidget {
-  final int complaintId;
-
-  const ComplaintsLayout({super.key, required this.complaintId});
+  const ComplaintsLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +46,7 @@ class ComplaintsLayout extends StatelessWidget {
 
                       CardEntryAnimation(
                         overlap: overlap,
-                        child: ComplaintsListSection(complaintId: complaintId),
+                        child: const ComplaintsListSection(),
                       ),
                     ],
                   ),

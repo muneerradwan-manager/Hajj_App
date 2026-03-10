@@ -362,7 +362,8 @@
     "create": {
       "hero_subtitle": "Fill in the details below carefully",
       "department_label": "Department concerned with the complaint",
-      "select_department": "Select department",
+      "select_category": "Select department",
+      "select_kind":"Select Kind",
       "department_finance": "Finance Department",
       "department_hr": "Human Resources",
       "department_technical": "Technical Department",

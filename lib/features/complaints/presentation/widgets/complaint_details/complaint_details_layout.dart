@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../shared/widgets/hero_background.dart';
+import '../../../domain/entities/complaint.dart';
 import 'complaint_details_content_section.dart';
 import 'complaint_details_hero_section.dart';
-import 'complaint_details_status_card.dart';
 
 class ComplaintDetailsLayout extends StatelessWidget {
-  const ComplaintDetailsLayout({super.key, required this.complaintId});
+  const ComplaintDetailsLayout({super.key, required this.complaint});
 
-  final int complaintId;
-
-  static const _status = ComplaintStatus.pending;
-  static const _categoryKey = 'complaints.details.category_meals';
-  static const _subjectValueKey =
-      'complaints.details.subject_value_jamarat_crowd';
-  static const _fullDetailsBodyKey = 'complaints.details.full_details_body';
-  static const _replyBodyKey = 'complaints.details.management_reply_body';
-  static const _createdAt = '2026-02-28';
-  static const _updatedAt = '2026-03-01';
-  static const _receiveDate = '2026-03-08';
+  final Complaint complaint;
 
   @override
   Widget build(BuildContext context) {
@@ -52,21 +42,20 @@ class ComplaintDetailsLayout extends StatelessWidget {
                       Container(
                         height: heroHeight,
                         padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: const ComplaintDetailsHeroSection(
-                          categoryKey: _categoryKey,
-                          createdAt: _createdAt,
-                          updatedAt: _updatedAt,
+                        child: ComplaintDetailsHeroSection(
+                          categoryKey: complaint.categoryName,
+                          createdAt: complaint.createdAt,
+                          updatedAt: '',
                         ),
                       ),
                       ComplaintDetailsContentSection(
                         overlap: overlap,
-                        key: ValueKey('complaint-details-$complaintId'),
-                        status: _status,
-                        sendDate: _createdAt,
-                        receiveDate: _receiveDate,
-                        subjectValueKey: _subjectValueKey,
-                        fullDetailsBodyKey: _fullDetailsBodyKey,
-                        managementReplyBodyKey: _replyBodyKey,
+                        status: complaint.status,
+                        sendDate: complaint.createdAt,
+                        receiveDate: '',
+                        subjectValueKey: complaint.subject,
+                        fullDetailsBodyKey: '',
+                        managementReplyBodyKey: complaint.hasAnswer,
                       ),
                     ],
                   ),

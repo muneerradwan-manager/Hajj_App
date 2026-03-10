@@ -1,12 +1,16 @@
 import 'package:bawabatelhajj/shared/widgets/custom_container.dart';
 import 'package:bawabatelhajj/shared/widgets/gradient_elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/core/constants/app_images.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
+
+import '../../cubits/create_complaint/create_complaint_cubit.dart';
+import '../../cubits/create_complaint/create_complaint_state.dart';
 
 Future<bool?> showCreateComplaintDialog(BuildContext context) {
   return showDialog<bool>(
@@ -23,50 +27,66 @@ class _CreateComplaintDialog extends StatefulWidget {
 }
 
 class _CreateComplaintDialogState extends State<_CreateComplaintDialog> {
-  final bool _isSending = false;
-
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
-    return Dialog(
-      backgroundColor: AppColors.white,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // ── Hero header ──
-          _buildHeader(cs),
-          // ── Buttons ──
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              spacing: 12,
-              children: [
-                // Cancel button
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: cs.outline,
-                    ),
-                    onPressed: () {
-                      context.pop();
-                    },
-                    child: const CustomText(
-                      'app.cancel',
-                      color: CustomTextColor.green,
-                    ),
+    return BlocConsumer<CreateComplaintCubit, CreateComplaintState>(
+      listener: (context, state) {
+        if (state.isSuccess) {
+          context.pop(true);
+        }
+      },
+      builder: (context, state) {
+        final cs = Theme.of(context).colorScheme;
+        return Dialog(
+          backgroundColor: AppColors.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildHeader(cs),
+              if (state.status == CreateComplaintStatus.error &&
+                  state.errorMessage.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                  child: CustomText(
+                    state.errorMessage,
+                    color: CustomTextColor.red,
                   ),
                 ),
-                // Send location button
-                Expanded(child: _buildSendButton(cs)),
-              ],
-            ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  spacing: 12,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: cs.outline,
+                        ),
+                        onPressed: () {
+                          context.pop();
+                        },
+                        child: const CustomText(
+                          'app.cancel',
+                          color: CustomTextColor.green,
+                        ),
+                      ),
+                    ),
+                    Expanded(child: _buildSendButton(context, state, cs)),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -153,15 +173,22 @@ class _CreateComplaintDialogState extends State<_CreateComplaintDialog> {
     );
   }
 
-  Widget _buildSendButton(ColorScheme cs) {
+  Widget _buildSendButton(
+    BuildContext context,
+    CreateComplaintState state,
+    ColorScheme cs,
+  ) {
+    final isSubmitting = state.isSubmitting;
+    final isEnabled = state.isFormValid && !isSubmitting;
+
     return GradientElevatedButton(
       gradientColor: GradientColors.green,
-      onPressed: _isSending
-          ? null
-          : () {
-              context.pop();
-            },
-      child: _isSending
+      onPressed: isEnabled
+          ? () {
+              context.read<CreateComplaintCubit>().submit();
+            }
+          : null,
+      child: isSubmitting
           ? const SizedBox(
               width: 20,
               height: 20,
