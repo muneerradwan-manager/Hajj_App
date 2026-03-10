@@ -4,10 +4,11 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../../shared/widgets/custom_container.dart';
 import '../../../../../shared/widgets/custom_text.dart';
+import '../../../domain/entities/complaint.dart';
 import '../../cubits/complaints/complaints_cubit.dart';
 import '../../cubits/complaints/complaints_state.dart';
-import 'complaints_card.dart';
 import 'complaint_status_card.dart';
+import 'complaints_card.dart';
 import 'new_complaint_button.dart';
 
 class ComplaintsListSection extends StatelessWidget {
@@ -19,6 +20,10 @@ class ComplaintsListSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BlocBuilder<ComplaintsCubit, ComplaintsState>(
         builder: (context, state) {
+          final isFirstLoad = state.complaints.isEmpty &&
+              (state.status == ComplaintsStatus.loading ||
+                  state.status == ComplaintsStatus.initial);
+
           return Column(
             children: [
               ComplaintsCard(
@@ -30,9 +35,10 @@ class ComplaintsListSection extends StatelessWidget {
               const SizedBox(height: 30),
               const NewComplaintButton(),
               const SizedBox(height: 30),
-              if (state.status == ComplaintsStatus.loading)
+              if (isFirstLoad)
                 const Center(child: CircularProgressIndicator())
-              else if (state.status == ComplaintsStatus.error)
+              else if (state.status == ComplaintsStatus.error &&
+                  state.complaints.isEmpty)
                 Center(
                   child: CustomText(
                     state.errorMessage,
@@ -40,23 +46,30 @@ class ComplaintsListSection extends StatelessWidget {
                     color: CustomTextColor.red,
                   ),
                 )
-              else
+              else ...[
+                if (state.isRefreshing)
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: LinearProgressIndicator(minHeight: 2),
+                  ),
                 ...state.complaints.map(
                   (complaint) => Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: ComplaintStatusCard(
                       title: complaint.subject,
                       category: complaint.categoryName,
-                      status: _statusKey(complaint.status),
-                      statusColor: _statusTextColor(complaint.status),
-                      borderColor: _borderColor(complaint.status),
+                      status: _statusKey(complaint.statusType),
+                      statusColor: _statusTextColor(complaint.statusType),
+                      borderColor: _borderColor(complaint.statusType),
                       icon: LucideIcons.fileText,
                       complaint: complaint,
                       translateTitle: false,
                       translateCategory: false,
+                      date: complaint.createdDate,
                     ),
                   ),
                 ),
+              ],
             ],
           );
         },
@@ -64,51 +77,36 @@ class ComplaintsListSection extends StatelessWidget {
     );
   }
 
-  String _statusKey(String status) {
-    switch (status) {
-      case 'تم الإرسال':
+  String _statusKey(ComplaintStatusType statusType) {
+    switch (statusType) {
+      case ComplaintStatusType.pending:
         return 'complaints.status.pending';
-
-      case 'قيد المراجعة':
+      case ComplaintStatusType.inReview:
         return 'complaints.status.in_review';
-
-      case 'تم الرد':
+      case ComplaintStatusType.resolved:
         return 'complaints.status.resolved';
-
-      default:
-        return 'complaints.status.pending';
     }
   }
 
-  CustomTextColor _statusTextColor(String status) {
-    switch (status) {
-      case 'تم الإرسال':
+  CustomTextColor _statusTextColor(ComplaintStatusType statusType) {
+    switch (statusType) {
+      case ComplaintStatusType.pending:
         return CustomTextColor.gold;
-
-      case 'قيد المراجعة':
+      case ComplaintStatusType.inReview:
         return CustomTextColor.lightRed;
-
-      case 'تم الرد':
+      case ComplaintStatusType.resolved:
         return CustomTextColor.lightGreen;
-
-      default:
-        return CustomTextColor.gold;
     }
   }
 
-  CustomBorderColor _borderColor(String status) {
-    switch (status) {
-      case 'تم الإرسال':
+  CustomBorderColor _borderColor(ComplaintStatusType statusType) {
+    switch (statusType) {
+      case ComplaintStatusType.pending:
         return CustomBorderColor.gold;
-
-      case 'قيد المراجعة':
+      case ComplaintStatusType.inReview:
         return CustomBorderColor.lightRed;
-
-      case 'تم الرد':
+      case ComplaintStatusType.resolved:
         return CustomBorderColor.green;
-
-      default:
-        return CustomBorderColor.gold;
     }
   }
 }

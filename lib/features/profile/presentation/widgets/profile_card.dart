@@ -66,6 +66,14 @@ class ProfileCard extends StatefulWidget {
 class _ProfileCardState extends State<ProfileCard> {
   String? _saudiNumber;
   bool _isSaudiNumberEditing = false;
+  bool _isSaudiNumberSaving = false;
+  final _saudiNumberController = TextEditingController();
+
+  @override
+  void dispose() {
+    _saudiNumberController.dispose();
+    super.dispose();
+  }
 
   final Map<String, bool> _expandedSections = {
     'basic': true,
@@ -86,6 +94,25 @@ class _ProfileCardState extends State<ProfileCard> {
 
   void _toggleSaudiNumberEditing() =>
       setState(() => _isSaudiNumberEditing = !_isSaudiNumberEditing);
+
+  Future<void> _saveSaudiNumber() async {
+    final num = _saudiNumberController.text.trim();
+    if (num.isEmpty) return;
+    setState(() => _isSaudiNumberSaving = true);
+    final result = await context.read<MeCubit>().updateSaudiNumber(num);
+    if (!mounted) return;
+    result.fold(
+      (f) => showMessage(context, f.userMessage, SnackBarType.failuer, translate: false),
+      (_) {
+        setState(() {
+          _saudiNumber = num;
+          _isSaudiNumberEditing = false;
+        });
+        showMessage(context, 'profile.saudi_number_saved', SnackBarType.success, translate: true);
+      },
+    );
+    if (mounted) setState(() => _isSaudiNumberSaving = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,10 +150,11 @@ class _ProfileCardState extends State<ProfileCard> {
             onToggle: () => _toggleSection('basic'),
             profile: profile,
             isSaudiNumberEditing: _isSaudiNumberEditing,
-            saudiNumber: resolvedSaudiNumber.isEmpty
-                ? null
-                : resolvedSaudiNumber,
+            saudiNumber: resolvedSaudiNumber.isEmpty ? null : resolvedSaudiNumber,
             onToggleSaudiNumberEditing: _toggleSaudiNumberEditing,
+            saudiNumberController: _saudiNumberController,
+            onSaveSaudiNumber: _saveSaudiNumber,
+            isSaudiNumberSaving: _isSaudiNumberSaving,
           ),
           _CampaignGroupSection(
             isExpanded: _expandedSections['group'] ?? false,

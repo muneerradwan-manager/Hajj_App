@@ -13,8 +13,8 @@ import 'package:bawabatelhajj/features/auth/presentation/views/login_view.dart';
 import 'package:bawabatelhajj/features/auth/presentation/views/register_view.dart';
 import 'package:bawabatelhajj/features/home/presentation/views/home_view.dart';
 import 'package:bawabatelhajj/features/splash/presentation/views/splash_view.dart';
+import 'package:bawabatelhajj/features/complaints/presentation/cubits/complaint_details/complaint_details_cubit.dart';
 
-import '../../features/complaints/domain/entities/complaint.dart';
 import '../../features/complaints/presentation/views/complaints_view.dart';
 import '../../features/home/presentation/views/navigation_bottom.dart';
 import '../../features/profile/presentation/views/profile_view.dart';
@@ -180,11 +180,16 @@ class AppRouter {
         name: AppRoutes.complaintDetailsName,
         path: AppRoutes.complaintDetailsPath,
         pageBuilder: (context, state) {
-          final complaint = state.extra as Complaint;
+          final idParam = state.pathParameters['id'];
+          final complaintId = int.tryParse(idParam ?? '') ?? 0;
 
           return fadeSlidePage(
             state: state,
-            child: ComplaintDetails(complaint: complaint),
+            child: BlocProvider(
+              create: (_) => getIt<ComplaintDetailsCubit>()
+                ..loadComplaint(complaintId),
+              child: const ComplaintDetails(),
+            ),
             direction: PageTransitionDirection.bottomToTop,
           );
         },

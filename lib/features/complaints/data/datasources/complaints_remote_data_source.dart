@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:bawabatelhajj/core/constants/app_urls.dart';
 import 'package:bawabatelhajj/core/network/dio_client.dart';
-import 'package:bawabatelhajj/core/network/safe_api_call.dart';
 import 'package:bawabatelhajj/features/complaints/data/models/complaint_model.dart';
 import 'package:dio/dio.dart';
 
@@ -21,16 +20,12 @@ class ComplaintsRemoteDataSource {
   }
 
   Future<ComplaintModel> getComplaintDetails(int id) async {
-    final result = await safeApiCall(
-      apiCall: () => _client.get('${AppUrls.complaints}/$id'),
-      mapper: (json) =>
-          ComplaintModel.fromJson(json['data'] as Map<String, dynamic>),
-    );
+    final response = await _client.get('${AppUrls.complaints}/my/$id');
+    return ComplaintModel.fromJson(response.data as Map<String, dynamic>);
+  }
 
-    return result.fold(
-      (failure) => throw Exception(failure.userMessage),
-      (data) => data,
-    );
+  Future<void> deleteComplaint(int id) async {
+    await _client.delete('${AppUrls.complaints}/my/$id');
   }
 
   Future<String> createComplaint({
@@ -52,7 +47,7 @@ class ComplaintsRemoteDataSource {
     for (final file in attachments) {
       formData.files.add(
         MapEntry(
-          'Attachments[]',
+          'Attachments',
           await MultipartFile.fromFile(
             file.path,
             filename: file.path.split('/').last,
@@ -61,18 +56,12 @@ class ComplaintsRemoteDataSource {
       );
     }
 
-    final result = await safeApiCall(
-      apiCall: () => _client.post(
-        AppUrls.complaints,
-        data: formData,
-        options: Options(contentType: 'multipart/form-data'),
-      ),
-      mapper: (json) => json['message'] as String? ?? '',
+    await _client.post(
+      AppUrls.complaints,
+      data: formData,
+      options: Options(contentType: 'multipart/form-data'),
     );
 
-    return result.fold(
-      (failure) => throw Exception(failure.userMessage),
-      (data) => data,
-    );
+    return '';
   }
 }

@@ -210,6 +210,16 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, void>> updateSaudiNumber(String saudiNum) async {
+    try {
+      await _remoteDataSource.updateSaudiNumber(saudiNum);
+      return right(null);
+    } on Exception catch (error) {
+      return left(ApiErrorHandler.handle(error));
+    }
+  }
+
   Future<void> _saveSessionTokens(AuthSessionModel model) async {
     if (model.token.isEmpty || model.refreshToken.isEmpty) {
       throw Exception('Invalid login response.');

@@ -23,7 +23,7 @@ class ComplaintsRepositoryImpl implements ComplaintsRepository {
     } on Exception catch (error) {
       final failure = ApiErrorHandler.handle(error);
       if (failure is NetworkFailure) {
-        final cached = await _loadCachedComplaints();
+        final cached = await getCachedComplaints();
         if (cached != null) {
           return right(cached);
         }
@@ -33,12 +33,33 @@ class ComplaintsRepositoryImpl implements ComplaintsRepository {
   }
 
   @override
+  Future<List<Complaint>?> getCachedComplaints() async {
+    try {
+      final cached = await _local.getCachedComplaints();
+      return cached?.map((m) => m.toEntity()).toList();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
   Future<Either<Failure, Complaint>> getComplaintDetails(int id) async {
     try {
       final model = await _remote.getComplaintDetails(id);
+      await _local.cacheComplaintDetails(model);
       return right(model.toEntity());
     } on Exception catch (error) {
       return left(ApiErrorHandler.handle(error));
+    }
+  }
+
+  @override
+  Future<Complaint?> getCachedComplaintDetails(int id) async {
+    try {
+      final model = await _local.getCachedComplaintDetails(id);
+      return model?.toEntity();
+    } catch (_) {
+      return null;
     }
   }
 
@@ -67,12 +88,15 @@ class ComplaintsRepositoryImpl implements ComplaintsRepository {
     }
   }
 
-  Future<List<Complaint>?> _loadCachedComplaints() async {
+  @override
+  Future<Either<Failure, void>> deleteComplaint(int id) async {
     try {
-      final cached = await _local.getCachedComplaints();
-      return cached?.map((model) => model.toEntity()).toList();
-    } catch (_) {
-      return null;
+      await _remote.deleteComplaint(id);
+      await _local.clearCache();
+      return right(null);
+    } on Exception catch (error) {
+      return left(ApiErrorHandler.handle(error));
     }
   }
+
 }

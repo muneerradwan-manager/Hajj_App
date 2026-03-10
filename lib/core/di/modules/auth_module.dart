@@ -16,6 +16,7 @@ import 'package:bawabatelhajj/features/auth/domain/usecases/reset_password_useca
 import 'package:bawabatelhajj/features/auth/domain/usecases/save_register_draft_usecase.dart';
 import 'package:bawabatelhajj/features/auth/domain/usecases/load_register_draft_usecase.dart';
 import 'package:bawabatelhajj/features/auth/domain/usecases/clear_register_draft_usecase.dart';
+import 'package:bawabatelhajj/features/auth/domain/usecases/update_saudi_number_usecase.dart';
 
 import 'package:bawabatelhajj/features/auth/presentation/cubits/login/login_cubit.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
@@ -62,13 +63,14 @@ void registerAuthModule() {
   getIt.registerLazySingleton(() => SaveRegisterDraftUseCase(getIt()));
   getIt.registerLazySingleton(() => LoadRegisterDraftUseCase(getIt()));
   getIt.registerLazySingleton(() => ClearRegisterDraftUseCase(getIt()));
+  getIt.registerLazySingleton(() => UpdateSaudiNumberUseCase(getIt()));
 
   getIt.registerFactory(
     () => LoginCubit(getIt(), getIt()),
   );
 
   getIt.registerFactory(
-    () => MeCubit(getIt(), getIt()),
+    () => MeCubit(getIt(), getIt(), getIt()),
   );
 
   getIt.registerFactory(

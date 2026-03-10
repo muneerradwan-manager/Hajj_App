@@ -44,18 +44,26 @@ class ComplaintDetailsLayout extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: ComplaintDetailsHeroSection(
                           categoryKey: complaint.categoryName,
-                          createdAt: complaint.createdAt,
-                          updatedAt: '',
+                          createdAt: complaint.createdDate,
+                          updatedAt:
+                              complaint.answeredDate.isNotEmpty
+                                  ? complaint.answeredDate
+                                  : complaint.createdDate,
                         ),
                       ),
                       ComplaintDetailsContentSection(
                         overlap: overlap,
-                        status: complaint.status,
-                        sendDate: complaint.createdAt,
-                        receiveDate: '',
+                        complaintId: complaint.complaintId,
+                        statusType: complaint.statusType,
+                        sendDate: complaint.createdDate,
+                        receiveDate: complaint.closedDate.isNotEmpty
+                            ? complaint.closedDate
+                            : complaint.answeredDate,
                         subjectValueKey: complaint.subject,
-                        fullDetailsBodyKey: '',
-                        managementReplyBodyKey: complaint.hasAnswer,
+                        fullDetailsBodyKey: complaint.message,
+                        hasManagementReply: complaint.hasAnswer,
+                        managementReplyBodyKey: complaint.answer ?? '',
+                        attachments: complaint.attachments,
                       ),
                     ],
                   ),

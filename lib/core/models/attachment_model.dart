@@ -1,20 +1,20 @@
 import '../entites/attachment.dart';
 
-class ComplaintAttachmentModel {
+class AttachmentModel {
   final int id;
   final String attachName;
   final String attachPath;
   final String uploadedAt;
 
-  const ComplaintAttachmentModel({
+  const AttachmentModel({
     required this.id,
     required this.attachName,
     required this.attachPath,
     required this.uploadedAt,
   });
 
-  factory ComplaintAttachmentModel.fromJson(Map<String, dynamic> json) {
-    return ComplaintAttachmentModel(
+  factory AttachmentModel.fromJson(Map<String, dynamic> json) {
+    return AttachmentModel(
       id: json['id'] ?? 0,
       attachName: json['attachName'] ?? '',
       attachPath: json['attachPath'] ?? '',
@@ -22,17 +22,21 @@ class ComplaintAttachmentModel {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'attachName': attachName,
-        'attachPath': attachPath,
-        'uploadedAt': uploadedAt,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'attachName': attachName,
+      'attachPath': attachPath,
+      'uploadedAt': uploadedAt,
+    };
+  }
 
-  ComplaintAttachment toEntity() => ComplaintAttachment(
-        id: id,
-        attachName: attachName,
-        attachPath: attachPath,
-        uploadedAt: uploadedAt,
-      );
+  Attachment toEntity() {
+    return Attachment(
+      id: id,
+      attachName: attachName,
+      attachPath: attachPath,
+      uploadedAt: uploadedAt,
+    );
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -8,6 +9,7 @@ import '../../../../../shared/widgets/custom_container.dart';
 import '../../../../../shared/widgets/custom_text.dart';
 import '../../../../../shared/widgets/gradient_elevated_button.dart';
 import '../../../domain/entities/complaint.dart';
+import '../../cubits/complaints/complaints_cubit.dart';
 
 class ComplaintStatusCard extends StatelessWidget {
   final String title;
@@ -92,12 +94,19 @@ class ComplaintStatusCard extends StatelessWidget {
             children: [
               Flexible(
                 child: GradientElevatedButton(
-                  onPressed: () => context.pushNamed(
-                    AppRoutes.complaintDetailsName,
-                    extra: complaint,
+                  onPressed: () async {
+                    await context.pushNamed(
+                      AppRoutes.complaintDetailsName,
+                      pathParameters: {'id': complaint.complaintId.toString()},
+                    );
+                    if (context.mounted) {
+                      context.read<ComplaintsCubit>().loadComplaints();
+                    }
+                  },
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
                   ),
-
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   gradientColor: GradientColors.green,
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,

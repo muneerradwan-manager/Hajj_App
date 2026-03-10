@@ -4,9 +4,10 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../shared/widgets/custom_container.dart';
 import '../../../../../shared/widgets/custom_text.dart';
+import '../../../domain/entities/complaint.dart';
 
 class ComplaintDetailsStatusCard extends StatelessWidget {
-  final String status;
+  final ComplaintStatusType status;
   final String sendDate;
   final String receiveDate;
 
@@ -16,8 +17,6 @@ class ComplaintDetailsStatusCard extends StatelessWidget {
     required this.sendDate,
     required this.receiveDate,
   });
-
-  String get _statusName => status;
 
   @override
   Widget build(BuildContext context) {
@@ -127,102 +126,77 @@ class ComplaintDetailsStatusCard extends StatelessWidget {
   }
 
   CustomBorderColor get _borderColor {
-    switch (_statusName) {
-      case 'pending':
+    switch (status) {
+      case ComplaintStatusType.pending:
         return CustomBorderColor.gold;
-
-      case 'in_review':
+      case ComplaintStatusType.inReview:
         return CustomBorderColor.red;
-
-      case 'resolved':
+      case ComplaintStatusType.resolved:
         return CustomBorderColor.green;
-
-      default:
-        return CustomBorderColor.gold;
     }
   }
 
   String get _statusKey {
-    switch (_statusName) {
-      case 'pending':
+    switch (status) {
+      case ComplaintStatusType.pending:
         return 'complaints.status.pending';
-
-      case 'in_review':
+      case ComplaintStatusType.inReview:
         return 'complaints.status.in_review';
-
-      case 'resolved':
+      case ComplaintStatusType.resolved:
         return 'complaints.status.resolved';
-
-      default:
-        return 'complaints.status.pending';
     }
   }
 
   _TimelineValue get _reviewStageValue {
-    switch (_statusName) {
-      case 'pending':
+    switch (status) {
+      case ComplaintStatusType.pending:
         return const _TimelineValue('complaints.details.review_value_pending');
-
-      case 'in_review':
+      case ComplaintStatusType.inReview:
         return const _TimelineValue(
           'complaints.details.review_value_in_review',
         );
-
-      case 'resolved':
+      case ComplaintStatusType.resolved:
         return const _TimelineValue(
           'complaints.details.review_value_completed',
         );
-
-      default:
-        return const _TimelineValue('complaints.details.review_value_pending');
     }
   }
 
   _TimelineValue get _resultStageValue {
-    
-      return _TimelineValue(receiveDate, translate: false);
-    
-
+    return _TimelineValue(
+      receiveDate.isEmpty ? '—' : receiveDate,
+      translate: false,
+    );
   }
 
   _StatusStepVisual _reviewStepVisual(ColorScheme cs) {
-    switch (_statusName) {
-      case 'pending':
+    switch (status) {
+      case ComplaintStatusType.pending:
         return _StatusStepVisual(
           backgroundColor: cs.outlineVariant,
           icon: LucideIcons.clock,
           iconColor: cs.outline,
         );
-
-      case 'in_review':
-      case 'resolved':
+      case ComplaintStatusType.inReview:
+      case ComplaintStatusType.resolved:
         return _StatusStepVisual(
           backgroundColor: cs.brandRed,
           icon: LucideIcons.info,
           iconColor: Colors.white,
         );
-
-      default:
-        return _StatusStepVisual(
-          backgroundColor: cs.outlineVariant,
-          icon: LucideIcons.clock,
-          iconColor: cs.outline,
-        );
     }
   }
 
   _StatusStepVisual _resultStepVisual(ColorScheme cs) {
-    switch (_statusName) {
-      case 'resolved':
+    switch (status) {
+      case ComplaintStatusType.resolved:
         return _StatusStepVisual(
           backgroundColor: cs.primary,
           icon: LucideIcons.circleCheck,
           iconColor: Colors.white,
         );
-
-      case 'pending':
-      case 'in_review':
-      default:
+      case ComplaintStatusType.pending:
+      case ComplaintStatusType.inReview:
         return _StatusStepVisual(
           backgroundColor: cs.outlineVariant,
           icon: LucideIcons.circleSmall,

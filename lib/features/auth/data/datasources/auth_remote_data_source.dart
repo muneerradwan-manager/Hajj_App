@@ -57,6 +57,13 @@ class AuthRemoteDataSource {
     return UserProfileModel.fromJson(map);
   }
 
+  Future<void> updateSaudiNumber(String saudiNum) async {
+    await _dioClient.put<dynamic>(
+      AppUrls.saudiNum,
+      data: {'saudiNum': saudiNum},
+    );
+  }
+
   Future<String> logout() async {
     final response = await _dioClient.post<dynamic>(
       AppUrls.logout,

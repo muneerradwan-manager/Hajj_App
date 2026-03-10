@@ -105,6 +105,14 @@ class DioClient {
     );
   }
 
+  Future<Response<T>> put<T>(
+    String path, {
+    Object? data,
+    Options? options,
+  }) {
+    return dio.put<T>(path, data: data, options: options);
+  }
+
   Future<Response<T>> delete<T>(String path, {Object? data, Options? options}) {
     return dio.delete<T>(path, data: data, options: options);
   }

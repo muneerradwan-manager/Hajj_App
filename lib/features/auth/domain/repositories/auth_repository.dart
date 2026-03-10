@@ -34,4 +34,6 @@ abstract class AuthRepository {
   Future<Either<Failure, void>> saveRegisterDraft(RegisterDraft draft);
 
   Future<Either<Failure, void>> clearRegisterDraft();
+
+  Future<Either<Failure, void>> updateSaudiNumber(String saudiNum);
 }

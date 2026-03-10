@@ -8,16 +8,18 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_enableDevicePreview) {
-      return DevicePreview(enabled: true, builder: (_) => const AppView());
-    }
-
-    return const AppView();
+    return DevicePreview(
+      enabled: _enableDevicePreview,
+      builder: (_) => const AppView(),
+    );
   }
 }
 
 bool get _enableDevicePreview {
-  if (kDebugMode) return true;
-  if (kIsWeb) return true;
-  return false;
+  if (!kDebugMode) return false;
+  if (defaultTargetPlatform == TargetPlatform.iOS ||
+      defaultTargetPlatform == TargetPlatform.android) {
+    return false;
+  }
+  return true;
 }

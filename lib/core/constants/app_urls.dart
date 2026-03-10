@@ -13,6 +13,7 @@ class AppUrls {
   static const String resetPassword = '/Auth/reset-password';
   // Home + Profile
   static const String me = '/Auth/me';
+  static const String saudiNum = '/Auth/me/saudi-num';
   // Complaints
   static const String complaints = '/Complaints';
   static const String complaintCategories = '/ComplaintCategories';

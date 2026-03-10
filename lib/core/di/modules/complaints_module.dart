@@ -3,8 +3,12 @@ import 'package:bawabatelhajj/features/complaints/data/datasources/complaints_re
 import 'package:bawabatelhajj/features/complaints/data/repositories/complaints_repository_impl.dart';
 import 'package:bawabatelhajj/features/complaints/domain/repositories/complaints_repository.dart';
 import 'package:bawabatelhajj/features/complaints/domain/usecases/create_complaint_usecase.dart';
+import 'package:bawabatelhajj/features/complaints/domain/usecases/delete_complaint_usecase.dart';
+import 'package:bawabatelhajj/features/complaints/domain/usecases/get_cached_complaint_details_usecase.dart';
+import 'package:bawabatelhajj/features/complaints/domain/usecases/get_cached_complaints_usecase.dart';
 import 'package:bawabatelhajj/features/complaints/domain/usecases/get_complaint_details_usecase.dart';
 import 'package:bawabatelhajj/features/complaints/domain/usecases/get_complaints_usecase.dart';
+import 'package:bawabatelhajj/features/complaints/presentation/cubits/complaint_details/complaint_details_cubit.dart';
 import 'package:bawabatelhajj/features/complaints/presentation/cubits/complaints/complaints_cubit.dart';
 import 'package:bawabatelhajj/features/complaints/presentation/cubits/create_complaint/create_complaint_cubit.dart';
 
@@ -27,15 +31,28 @@ void registerComplaintsModule() {
     () => GetComplaintsUseCase(getIt()),
   );
 
+  getIt.registerLazySingleton<GetCachedComplaintsUseCase>(
+    () => GetCachedComplaintsUseCase(getIt()),
+  );
+
   getIt.registerLazySingleton<GetComplaintDetailsUseCase>(
     () => GetComplaintDetailsUseCase(getIt()),
+  );
+
+  getIt.registerLazySingleton<GetCachedComplaintDetailsUseCase>(
+    () => GetCachedComplaintDetailsUseCase(getIt()),
   );
 
   getIt.registerLazySingleton<CreateComplaintUseCase>(
     () => CreateComplaintUseCase(getIt()),
   );
 
-  getIt.registerFactory(() => ComplaintsCubit(getIt()));
+  getIt.registerLazySingleton<DeleteComplaintUseCase>(
+    () => DeleteComplaintUseCase(getIt()),
+  );
+
+  getIt.registerFactory(() => ComplaintsCubit(getIt(), getIt()));
+  getIt.registerFactory(() => ComplaintDetailsCubit(getIt(), getIt(), getIt()));
 
   getIt.registerFactory(() => CreateComplaintCubit(getIt()));
 }

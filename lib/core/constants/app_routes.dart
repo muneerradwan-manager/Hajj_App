@@ -21,5 +21,5 @@ class AppRoutes {
   static const String profilePath = '/profile';
   static const String complaintsPath = '/complaints';
   static const String createComplaintPath = '/create-complaint';
-  static const String complaintDetailsPath = '/complaint-details';
+  static const String complaintDetailsPath = '/complaint-details/:id';
 }

@@ -110,6 +110,9 @@ class _BasicInfoSection extends StatelessWidget {
     required this.isSaudiNumberEditing,
     required this.saudiNumber,
     required this.onToggleSaudiNumberEditing,
+    required this.saudiNumberController,
+    required this.onSaveSaudiNumber,
+    required this.isSaudiNumberSaving,
   });
 
   final bool isExpanded;
@@ -118,6 +121,9 @@ class _BasicInfoSection extends StatelessWidget {
   final bool isSaudiNumberEditing;
   final String? saudiNumber;
   final VoidCallback onToggleSaudiNumberEditing;
+  final TextEditingController saudiNumberController;
+  final VoidCallback onSaveSaudiNumber;
+  final bool isSaudiNumberSaving;
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +163,9 @@ class _BasicInfoSection extends StatelessWidget {
           isEditing: isSaudiNumberEditing,
           saudiNumber: saudiNumber,
           onToggleEditing: onToggleSaudiNumberEditing,
+          controller: saudiNumberController,
+          onSave: onSaveSaudiNumber,
+          isSaving: isSaudiNumberSaving,
         ),
       ],
     );
@@ -173,11 +182,17 @@ class _SaudiNumberCard extends StatelessWidget {
     required this.isEditing,
     required this.saudiNumber,
     required this.onToggleEditing,
+    required this.controller,
+    required this.onSave,
+    required this.isSaving,
   });
 
   final bool isEditing;
   final String? saudiNumber;
   final VoidCallback onToggleEditing;
+  final TextEditingController controller;
+  final VoidCallback onSave;
+  final bool isSaving;
 
   @override
   Widget build(BuildContext context) {
@@ -201,6 +216,7 @@ class _SaudiNumberCard extends StatelessWidget {
               color: CustomTextColor.green,
             ),
             TextFormField(
+              controller: controller,
               decoration: const InputDecoration(
                 hint: CustomText(
                   'profile.saudi_number_hint',
@@ -230,14 +246,17 @@ class _SaudiNumberCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () {
-                      // Save edited saudi number when API is ready.
-                    },
+                    onPressed: isSaving ? null : onSave,
                     label: const CustomText(
                       'profile.save',
                       color: CustomTextColor.white,
                     ),
-                    icon: const Icon(LucideIcons.check),
+                    icon: isSaving
+                        ? const SizedBox.square(
+                            dimension: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                          )
+                        : const Icon(LucideIcons.check),
                   ),
                 ),
               ],
