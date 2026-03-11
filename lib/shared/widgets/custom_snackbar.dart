@@ -9,7 +9,7 @@ void showMessage(
   BuildContext context,
   String message,
   SnackBarType type, {
-  bool translate = false,
+  bool translate = true,
 }) {
   final cs = Theme.of(context).colorScheme;
   ScaffoldMessenger.of(context)

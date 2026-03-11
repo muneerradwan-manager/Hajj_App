@@ -10,6 +10,7 @@ import 'package:bawabatelhajj/core/di/dependency_injection.dart';
 import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/login/login_cubit.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
+import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_state.dart';
 import 'package:bawabatelhajj/shared/widgets/exit_app_dialog.dart';
 
 import '../../../../shared/widgets/custom_text.dart';
@@ -84,7 +85,14 @@ class _NavigationBottomState extends State<NavigationBottom> {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return PopScope(
+    return BlocListener<MeCubit, MeState>(
+      listenWhen: (previous, current) =>
+          !previous.isUnauthorized && current.isUnauthorized,
+      listener: (context, state) {
+        context.read<MeCubit>().clearState();
+        context.go(AppRoutes.loginPath);
+      },
+      child: PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) return;
@@ -184,6 +192,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

@@ -34,9 +34,13 @@ class CategoriesSection extends StatelessWidget {
               if (state.status == ComplaintCategoryStatus.error)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: CustomText(
-                    state.errorMessage,
-                    color: CustomTextColor.red,
+                  child: Center(
+                    child: CustomText(
+                      state.errorMessage,
+                      translate: true,
+                      color: CustomTextColor.red,
+                      type: CustomTextType.labelMedium,
+                    ),
                   ),
                 ),
 

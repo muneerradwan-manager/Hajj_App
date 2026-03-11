@@ -7,7 +7,7 @@ class ApiErrorHandler {
       return _handleDioError(error);
     }
 
-    return const UnknownFailure('Unexpected error occurred');
+    return const UnknownFailure('app.error_unexpected');
   }
 
   static Failure _handleDioError(DioException e) {
@@ -15,22 +15,22 @@ class ApiErrorHandler {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
-        return const NetworkFailure('Connection timeout');
+        return const NetworkFailure('app.error_connection_timeout');
 
       case DioExceptionType.badResponse:
         return _handleBadResponse(e);
 
       case DioExceptionType.cancel:
-        return const NetworkFailure('Request cancelled');
+        return const NetworkFailure('app.error_request_cancelled');
 
       case DioExceptionType.badCertificate:
-        return const NetworkFailure('Bad certificate');
+        return const NetworkFailure('app.error_bad_certificate');
 
       case DioExceptionType.connectionError:
-        return const NetworkFailure('Connection error');
+        return const NetworkFailure('app.error_connection_error');
 
       case DioExceptionType.unknown:
-        return const NetworkFailure('No internet connection');
+        return const NetworkFailure('app.no_internet_connection');
     }
   }
 
@@ -42,6 +42,10 @@ class ApiErrorHandler {
     if (statusCode == 401) {
       final message = _extractMessage(data) ?? 'Unauthorized';
       return UnauthorizedFailure(message);
+    }
+
+    if (statusCode == 500) {
+      return const ServerFailure('app.server_error_contact_support');
     }
 
     // Handle validation errors (422 or errors field present)

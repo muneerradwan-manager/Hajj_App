@@ -7,7 +7,13 @@
     "exit_message": "Do you want to close Pilgrim Portal?",
     "cancel": "Cancel",
     "exit": "Exit",
-    "no_internet_connection": "There is no internet connection"
+    "no_internet_connection": "There is no internet connection",
+    "server_error_contact_support": "An error occurred. Please try again later or contact us.",
+    "error_connection_timeout": "Connection timed out",
+    "error_request_cancelled": "Request was cancelled",
+    "error_bad_certificate": "Bad certificate",
+    "error_connection_error": "Connection error",
+    "error_unexpected": "Unexpected error occurred"
   },
   "auth": {
     "login": {

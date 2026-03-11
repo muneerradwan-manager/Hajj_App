@@ -16,8 +16,7 @@ class NewComplaintButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GradientElevatedButton(
       onPressed: () async {
-        final created =
-            await context.push<bool>(AppRoutes.createComplaintPath);
+        final created = await context.push<bool>(AppRoutes.createComplaintPath);
         if (created == true) {
           context.read<ComplaintsCubit>().loadComplaints();
         }
@@ -28,10 +27,7 @@ class NewComplaintButton extends StatelessWidget {
         spacing: 10,
         children: [
           Icon(LucideIcons.plus),
-          CustomText(
-            'complaints.new_complaint',
-            color: CustomTextColor.white,
-          ),
+          CustomText('complaints.new_complaint', color: CustomTextColor.white),
         ],
       ),
     );

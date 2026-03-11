@@ -13,6 +13,7 @@ class GradientElevatedButton extends StatelessWidget {
     this.isLoading = false,
     required this.gradientColor,
     this.padding,
+    this.borderRadius = 10,
   }) : assert(
          textKey != null || child != null,
          'Either textKey or child must be provided',
@@ -24,6 +25,7 @@ class GradientElevatedButton extends StatelessWidget {
   final bool isLoading;
   final GradientColors gradientColor;
   final EdgeInsetsGeometry? padding;
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class GradientElevatedButton extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(borderRadius),
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

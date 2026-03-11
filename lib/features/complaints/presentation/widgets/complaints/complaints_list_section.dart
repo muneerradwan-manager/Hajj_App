@@ -20,7 +20,8 @@ class ComplaintsListSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BlocBuilder<ComplaintsCubit, ComplaintsState>(
         builder: (context, state) {
-          final isFirstLoad = state.complaints.isEmpty &&
+          final isFirstLoad =
+              state.complaints.isEmpty &&
               (state.status == ComplaintsStatus.loading ||
                   state.status == ComplaintsStatus.initial);
 
@@ -42,7 +43,7 @@ class ComplaintsListSection extends StatelessWidget {
                 Center(
                   child: CustomText(
                     state.errorMessage,
-                    translate: false,
+                    translate: true,
                     color: CustomTextColor.red,
                   ),
                 )

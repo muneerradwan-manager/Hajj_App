@@ -1,23 +1,23 @@
-import 'package:bawabatelhajj/features/complaints/presentation/views/complaint_details.dart';
-import 'package:bawabatelhajj/features/complaints/presentation/views/create_complaint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:bawabatelhajj/core/constants/app_routes.dart';
-import 'package:bawabatelhajj/core/di/dependency_injection.dart';
-import 'package:bawabatelhajj/features/auth/presentation/cubits/forget_password/forget_password_cubit.dart';
-import 'package:bawabatelhajj/features/auth/presentation/cubits/register/register_cubit.dart';
-import 'package:bawabatelhajj/features/auth/presentation/views/forget_password_view.dart';
-import 'package:bawabatelhajj/features/auth/presentation/views/login_view.dart';
-import 'package:bawabatelhajj/features/auth/presentation/views/register_view.dart';
-import 'package:bawabatelhajj/features/home/presentation/views/home_view.dart';
-import 'package:bawabatelhajj/features/splash/presentation/views/splash_view.dart';
-import 'package:bawabatelhajj/features/complaints/presentation/cubits/complaint_details/complaint_details_cubit.dart';
-
+import '../../features/auth/presentation/cubits/forget_password/forget_password_cubit.dart';
+import '../../features/auth/presentation/cubits/register/register_cubit.dart';
+import '../../features/auth/presentation/views/forget_password_view.dart';
+import '../../features/auth/presentation/views/login_view.dart';
+import '../../features/auth/presentation/views/register_view.dart';
+import '../../features/complaints/presentation/cubits/complaint_details/complaint_details_cubit.dart';
+import '../../features/complaints/presentation/views/complaint_details.dart';
 import '../../features/complaints/presentation/views/complaints_view.dart';
+import '../../features/complaints/presentation/views/create_complaint.dart';
+import '../../features/evaluations/presentation/views/evaluations_view.dart';
+import '../../features/home/presentation/views/home_view.dart';
 import '../../features/home/presentation/views/navigation_bottom.dart';
 import '../../features/profile/presentation/views/profile_view.dart';
+import '../../features/splash/presentation/views/splash_view.dart';
+import '../constants/app_routes.dart';
+import '../di/dependency_injection.dart';
 
 enum PageTransitionDirection {
   rightToLeft,
@@ -186,13 +186,23 @@ class AppRouter {
           return fadeSlidePage(
             state: state,
             child: BlocProvider(
-              create: (_) => getIt<ComplaintDetailsCubit>()
-                ..loadComplaint(complaintId),
+              create: (_) =>
+                  getIt<ComplaintDetailsCubit>()..loadComplaint(complaintId),
               child: const ComplaintDetails(),
             ),
             direction: PageTransitionDirection.bottomToTop,
           );
         },
+      ),
+
+      GoRoute(
+        name: AppRoutes.evaluationsName,
+        path: AppRoutes.evaluationsPath,
+        pageBuilder: (context, state) => fadeSlidePage(
+          state: state,
+          child: const EvaluationsView(),
+          direction: PageTransitionDirection.bottomToTop,
+        ),
       ),
     ],
   );

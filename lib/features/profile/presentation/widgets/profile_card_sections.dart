@@ -254,7 +254,10 @@ class _SaudiNumberCard extends StatelessWidget {
                     icon: isSaving
                         ? const SizedBox.square(
                             dimension: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
                           )
                         : const Icon(LucideIcons.check),
                   ),
@@ -285,10 +288,15 @@ class _SaudiNumberCard extends StatelessWidget {
                   child: Row(
                     spacing: 10,
                     children: [
-                      CustomText(
-                        saudiNumber ?? '',
-                        color: CustomTextColor.green,
-                        translate: false,
+                      Expanded(
+                        child: CustomText(
+                          saudiNumber ?? '',
+                          color: CustomTextColor.green,
+                          translate: false,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                        ),
                       ),
                       IconButton.filled(
                         style: IconButton.styleFrom(

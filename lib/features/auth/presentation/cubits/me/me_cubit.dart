@@ -30,6 +30,7 @@ class MeCubit extends SafeCubit<MeState> {
           profile: cachedProfile,
           errorMessage: '',
           isNetworkError: false,
+          isUnauthorized: false,
         ),
       );
     } else {
@@ -38,6 +39,7 @@ class MeCubit extends SafeCubit<MeState> {
           status: MeStatus.loading,
           errorMessage: '',
           isNetworkError: false,
+          isUnauthorized: false,
         ),
       );
     }
@@ -46,6 +48,7 @@ class MeCubit extends SafeCubit<MeState> {
     await result.fold<Future<void>>(
       (failure) async {
         final isNetworkFailure = failure is NetworkFailure;
+        final isUnauthorizedFailure = failure is UnauthorizedFailure;
         final fallbackProfile = state.profile ?? await _getCachedMeUseCase();
         final hasCachedProfile = fallbackProfile != null;
 
@@ -57,6 +60,7 @@ class MeCubit extends SafeCubit<MeState> {
             profile: fallbackProfile,
             errorMessage: failure.userMessage,
             isNetworkError: isNetworkFailure,
+            isUnauthorized: isUnauthorizedFailure,
           ),
         );
       },
@@ -85,6 +89,7 @@ class MeCubit extends SafeCubit<MeState> {
         status: MeStatus.initial,
         errorMessage: '',
         isNetworkError: false,
+        isUnauthorized: false,
         clearProfile: true,
       ),
     );

@@ -102,7 +102,7 @@ class _ProfileCardState extends State<ProfileCard> {
     final result = await context.read<MeCubit>().updateSaudiNumber(num);
     if (!mounted) return;
     result.fold(
-      (f) => showMessage(context, f.userMessage, SnackBarType.failuer, translate: false),
+      (f) => showMessage(context, f.userMessage, SnackBarType.failuer),
       (_) {
         setState(() {
           _saudiNumber = num;

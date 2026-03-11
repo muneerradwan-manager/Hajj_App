@@ -7,7 +7,13 @@
     "exit_message": "هل تريد الخروج من بوابة الحاج؟",
     "cancel": "إلغاء",
     "exit": "خروج",
-    "no_internet_connection": "لا يوجد اتصال بالإنترنت"
+    "no_internet_connection": "لا يوجد اتصال بالإنترنت",
+    "server_error_contact_support": "حدث خطأ, يرجى المحاولة لاحقا أو التواصل معنا",
+    "error_connection_timeout": "انتهت مهلة الاتصال",
+    "error_request_cancelled": "تم إلغاء الطلب",
+    "error_bad_certificate": "شهادة الاتصال غير صالحة",
+    "error_connection_error": "تعذر الاتصال بالخادم",
+    "error_unexpected": "حدث خطأ غير متوقع"
   },
   "auth": {
     "login": {

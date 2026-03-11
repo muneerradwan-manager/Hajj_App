@@ -9,25 +9,29 @@ class MeState extends Equatable {
   final UserProfile? profile;
   final String errorMessage;
   final bool isNetworkError;
+  final bool isUnauthorized;
 
   const MeState({
     required this.status,
     this.profile,
     required this.errorMessage,
     required this.isNetworkError,
+    this.isUnauthorized = false,
   });
 
   const MeState.initial()
     : status = MeStatus.initial,
       profile = null,
       errorMessage = '',
-      isNetworkError = false;
+      isNetworkError = false,
+      isUnauthorized = false;
 
   MeState copyWith({
     MeStatus? status,
     UserProfile? profile,
     String? errorMessage,
     bool? isNetworkError,
+    bool? isUnauthorized,
     bool clearProfile = false,
   }) {
     return MeState(
@@ -35,9 +39,10 @@ class MeState extends Equatable {
       profile: clearProfile ? null : (profile ?? this.profile),
       errorMessage: errorMessage ?? this.errorMessage,
       isNetworkError: isNetworkError ?? this.isNetworkError,
+      isUnauthorized: isUnauthorized ?? this.isUnauthorized,
     );
   }
 
   @override
-  List<Object?> get props => [status, profile, errorMessage, isNetworkError];
+  List<Object?> get props => [status, profile, errorMessage, isNetworkError, isUnauthorized];
 }

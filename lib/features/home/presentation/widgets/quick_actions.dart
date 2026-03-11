@@ -73,6 +73,14 @@ class QuickActions extends StatelessWidget {
               ),
             ],
           ),
+          QuickActionCard(
+            onTap: () => context.push(AppRoutes.evaluationsPath),
+            icon: LucideIcons.messageSquare,
+            titleKey: 'home.action_complaints_title',
+            subtitleKey: 'home.action_complaints_subtitle',
+            borderColor: CustomBorderColor.green,
+            containerColor: cs.primary,
+          ),
         ],
       ),
     );

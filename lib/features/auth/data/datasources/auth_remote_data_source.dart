@@ -38,8 +38,16 @@ class AuthRemoteDataSource {
     } on DioException catch (error) {
       if (!_isRetryableLoginTimeout(error)) rethrow;
 
-      // App Service can be cold on the first request; retry once with a larger
-      // receive timeout so users don't need to manually press login again.
+      // Azure App Service cold start: the server responded with 200 but Dio's
+      // timer fired first. Use the response directly if it's already valid.
+      final existingResponse = error.response;
+      if (existingResponse?.statusCode == 200 && existingResponse?.data != null) {
+        final map = _extractMap(existingResponse!.data);
+        final session = AuthSessionModel.fromJson(map);
+        if (session.token.isNotEmpty) return session;
+      }
+
+      // No valid response yet — retry with a longer timeout.
       final retryResponse = await _dioClient.post<dynamic>(
         AppUrls.login,
         data: request.toJson(),
