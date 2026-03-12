@@ -1,21 +1,17 @@
 import 'dart:io';
-
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_container.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_snackbar.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:permission_handler/permission_handler.dart';
+import '../../cubits/create_complaint/create_complaint_cubit.dart';
 
 class AttachmentsSection extends StatefulWidget {
-  const AttachmentsSection({
-    super.key,
-    required this.onAttachmentsChanged,
-  });
-
-  final ValueChanged<List<File>> onAttachmentsChanged;
+  const AttachmentsSection({super.key});
 
   @override
   State<AttachmentsSection> createState() => _AttachmentsSectionState();
@@ -23,14 +19,13 @@ class AttachmentsSection extends StatefulWidget {
 
 class _AttachmentsSectionState extends State<AttachmentsSection> {
   final ImagePicker _picker = ImagePicker();
-
   final List<XFile> _selectedImages = [];
-
   bool _isPicking = false;
 
   Future<void> _onAttachmentTap() async {
     if (_isPicking) return;
 
+    final cubit = context.read<CreateComplaintCubit>();
     if (_selectedImages.length >= 2) {
       showMessage(
         context,
@@ -44,7 +39,7 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
     final source = await _showPickSourceSheet();
     if (!mounted || source == null) return;
 
-    await _pickImage(source);
+    await _pickImage(source, cubit);
   }
 
   Future<ImageSource?> _showPickSourceSheet() {
@@ -56,60 +51,61 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (context) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 8,
-              children: [
-                const CustomText(
-                  'complaints.create.attachments_pick_source_title',
-                  type: CustomTextType.titleMedium,
-                  color: CustomTextColor.green,
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 8,
+            children: [
+              const CustomText(
+                'complaints.create.attachments_pick_source_title',
+                type: CustomTextType.titleMedium,
+                color: CustomTextColor.green,
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: cs.brandGold.withValues(alpha: 0.18),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: Icon(LucideIcons.image, color: cs.brandGold),
                 ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: cs.brandGold.withValues(alpha: 0.18),
-                    ),
-                    padding: const EdgeInsets.all(10),
-                    child: Icon(LucideIcons.image, color: cs.brandGold),
-                  ),
-                  title: const CustomText(
-                    'complaints.create.attachments_pick_gallery',
-                    type: CustomTextType.bodyLarge,
-                  ),
-                  onTap: () => Navigator.of(context).pop(ImageSource.gallery),
+                title: const CustomText(
+                  'complaints.create.attachments_pick_gallery',
+                  type: CustomTextType.bodyLarge,
                 ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: cs.primary.withValues(alpha: 0.18),
-                    ),
-                    padding: const EdgeInsets.all(10),
-                    child: Icon(LucideIcons.camera, color: cs.primary),
+                onTap: () => Navigator.of(context).pop(ImageSource.gallery),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: cs.primary.withValues(alpha: 0.18),
                   ),
-                  title: const CustomText(
-                    'complaints.create.attachments_pick_camera',
-                    type: CustomTextType.bodyLarge,
-                  ),
-                  onTap: () => Navigator.of(context).pop(ImageSource.camera),
+                  padding: const EdgeInsets.all(10),
+                  child: Icon(LucideIcons.camera, color: cs.primary),
                 ),
-              ],
-            ),
+                title: const CustomText(
+                  'complaints.create.attachments_pick_camera',
+                  type: CustomTextType.bodyLarge,
+                ),
+                onTap: () => Navigator.of(context).pop(ImageSource.camera),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
-  Future<void> _pickImage(ImageSource source) async {
+  Future<void> _pickImage(
+    ImageSource source,
+    CreateComplaintCubit cubit,
+  ) async {
     final hasPermission = await _ensurePermission(source);
     if (!hasPermission || !mounted) return;
 
@@ -125,11 +121,10 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
 
       if (!mounted || image == null) return;
 
-      setState(() {
-        _selectedImages.add(image);
-      });
-
-      _notifyCubit();
+      setState(() => _selectedImages.add(image));
+      cubit.updateAttachments(
+        _selectedImages.map((e) => File(e.path)).toList(),
+      );
     } catch (_) {
       if (!mounted) return;
       showMessage(
@@ -139,23 +134,14 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
         translate: true,
       );
     } finally {
-      if (mounted) {
-        setState(() => _isPicking = false);
-      }
+      if (mounted) setState(() => _isPicking = false);
     }
   }
 
   void _removeImage(int index) {
-    setState(() {
-      _selectedImages.removeAt(index);
-    });
-
-    _notifyCubit();
-  }
-
-  void _notifyCubit() {
-    final files = _selectedImages.map((e) => File(e.path)).toList();
-    widget.onAttachmentsChanged(files);
+    final cubit = context.read<CreateComplaintCubit>();
+    setState(() => _selectedImages.removeAt(index));
+    cubit.updateAttachments(_selectedImages.map((e) => File(e.path)).toList());
   }
 
   Future<bool> _ensurePermission(ImageSource source) async {
@@ -188,10 +174,7 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
   }
 
   Future<PermissionStatus> _requestGalleryPermission() async {
-    if (Platform.isIOS) {
-      return Permission.photos.request();
-    }
-
+    if (Platform.isIOS) return Permission.photos.request();
     if (Platform.isAndroid) {
       final photosStatus = await Permission.photos.request();
       if (_isGranted(photosStatus)) return photosStatus;
@@ -199,50 +182,40 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
       final storageStatus = await Permission.storage.request();
       if (_isGranted(storageStatus)) return storageStatus;
 
-      if (photosStatus.isPermanentlyDenied || photosStatus.isRestricted) {
-        return photosStatus;
-      }
-
       return storageStatus;
     }
-
     return PermissionStatus.granted;
   }
 
-  bool _isGranted(PermissionStatus status) {
-    return status.isGranted || status.isLimited;
-  }
+  bool _isGranted(PermissionStatus status) =>
+      status.isGranted || status.isLimited;
 
   Future<void> _showSettingsDialog(String messageKey) async {
     final shouldOpenSettings = await showDialog<bool>(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const CustomText(
-            'complaints.create.attachments_permission_title',
-            type: CustomTextType.titleMedium,
-            color: CustomTextColor.green,
+      builder: (context) => AlertDialog(
+        title: const CustomText(
+          'complaints.create.attachments_permission_title',
+          type: CustomTextType.titleMedium,
+          color: CustomTextColor.green,
+        ),
+        content: CustomText(messageKey, color: CustomTextColor.hint),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const CustomText('app.cancel'),
           ),
-          content: CustomText(messageKey, color: CustomTextColor.hint),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const CustomText('app.cancel'),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const CustomText(
+              'complaints.create.attachments_open_settings',
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const CustomText(
-                'complaints.create.attachments_open_settings',
-              ),
-            ),
-          ],
-        );
-      },
+          ),
+        ],
+      ),
     );
 
-    if (shouldOpenSettings == true) {
-      await openAppSettings();
-    }
+    if (shouldOpenSettings == true) await openAppSettings();
   }
 
   @override
@@ -255,12 +228,11 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
         children: [
           Row(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: cs.primaryContainer,
-                ),
+              CustomContainer(
+                borderRadius: 15,
+                gradientColors: [cs.primaryContainer, cs.primary],
                 padding: const EdgeInsets.all(10),
+                borderWidth: 0,
                 child: const Icon(LucideIcons.camera, color: Colors.white),
               ),
               const SizedBox(width: 10),
@@ -271,7 +243,6 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
             ],
           ),
           const SizedBox(height: 15),
-
           GestureDetector(
             onTap: _onAttachmentTap,
             child: CustomContainer(
@@ -280,7 +251,7 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
               borderWidth: 1.15,
               borderRadius: 14,
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               child: _selectedImages.isEmpty
                   ? Column(
                       children: [
@@ -301,9 +272,8 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
                         const CustomText(
                           'complaints.create.attachments_select_images',
                         ),
-                        const SizedBox(height: 8),
                         const CustomText(
-                          'complaints.create.attachments_single_image_notice',
+                          'PNG, JPG - صورة واحدة فقط',
                           color: CustomTextColor.hint,
                           textAlign: TextAlign.center,
                           type: CustomTextType.bodySmall,
@@ -318,7 +288,6 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
                       spacing: 12,
                       children: List.generate(_selectedImages.length, (index) {
                         final image = _selectedImages[index];
-
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -348,8 +317,10 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
                                     ),
                                   ),
                                   onPressed: () => _removeImage(index),
-                                  icon: Icon(LucideIcons.trash2,
-                                      color: cs.error),
+                                  icon: Icon(
+                                    LucideIcons.trash2,
+                                    color: cs.error,
+                                  ),
                                 ),
                               ],
                             ),
@@ -359,21 +330,42 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
                     ),
             ),
           ),
-
-          const SizedBox(height: 10),
-
-          Row(
-            spacing: 8,
-            children: [
-              Icon(LucideIcons.info, size: 16, color: cs.brandGold),
-              const Expanded(
-                child: CustomText(
-                  'complaints.create.attachments_single_image_limit',
-                  type: CustomTextType.bodySmall,
-                  color: CustomTextColor.hint,
+          const SizedBox(height: 20),
+          CustomContainer(
+            borderWidth: 1,
+            borderColor: CustomBorderColor.lightGold,
+            containerColor: cs.surfaceDim,
+            hasOpacity: .2,
+            hasShadow: false,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 8,
+              children: [
+                CustomContainer(
+                  containerColor: cs.brandGold,
+                  hasShadow: false,
+                  borderRadius: 12,
+                  padding: EdgeInsets.zero,
+                  child: const Icon(LucideIcons.info, color: Colors.white),
                 ),
-              ),
-            ],
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        'ملاحظة هامة',
+                        type: CustomTextType.bodyMedium,
+                      ),
+                      CustomText(
+                        'إذا كان لديك أكثر من صورة أو فيديو، يرجى الاحتفاظ بها ريثما يتم معالجة الشكوى',
+                        type: CustomTextType.labelMedium,
+                        color: CustomTextColor.hint,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -6,7 +6,7 @@ import '../../../../../shared/widgets/custom_snackbar.dart';
 import '../../../../../shared/widgets/hero_background.dart';
 import '../../cubits/create_complaint/create_complaint_cubit.dart';
 import '../../cubits/create_complaint/create_complaint_state.dart';
-import 'create_complaint_dialog.dart';
+
 import 'create_complaint_hero_section.dart';
 import 'attachments_section.dart';
 import 'categories_section.dart';
@@ -78,8 +78,7 @@ class CreateComplaintLayout extends StatelessWidget {
             final overlap = (heroHeight * 0.22).clamp(40.0, 70.0);
 
             return SingleChildScrollView(
-              keyboardDismissBehavior:
-                  ScrollViewKeyboardDismissBehavior.onDrag,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: viewportHeight),
                 child: Stack(
@@ -91,8 +90,7 @@ class CreateComplaintLayout extends StatelessWidget {
                       children: [
                         Container(
                           height: heroHeight,
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 24),
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
                           child: const CreateComplaintHeroSection(),
                         ),
 
@@ -105,82 +103,20 @@ class CreateComplaintLayout extends StatelessWidget {
                           ),
                           child: Transform.translate(
                             offset: Offset(0, -overlap),
-                            child: Column(
+                            child: const Column(
+                              spacing: 20,
                               children: [
-                                CategoriesSection(
-                                  selectedCategory: selectedCategory,
-                                  onChanged: (value) {
-                                    context
-                                        .read<CreateComplaintCubit>()
-                                        .updateCategory(value);
-                                    onCategoryChanged(value);
-                                  },
-                                ),
+                                KindsSection(),
 
-                                const SizedBox(height: 20),
-                                KindsSection(
-                                  selectedKind: selectedKind,
-                                  onChanged: (value) {
-                                    context
-                                        .read<CreateComplaintCubit>()
-                                        .updateKind(value);
-                                    onKindChanged(value);
-                                  },
-                                ),
-                                const SizedBox(height: 20),
+                                CategoriesSection(),
 
-                                SubjectSection(
-                                  controller: titleController,
-                                  errorKey: subjectErrorKey,
-                                  onChanged: (value) {
-                                    context
-                                        .read<CreateComplaintCubit>()
-                                        .updateTitle(value);
-                                    onSubjectChanged(value);
-                                  },
-                                ),
+                                SubjectSection(),
 
-                                const SizedBox(height: 20),
+                                DetailsSection(),
 
-                                DetailsSection(
-                                  controller: detailsController,
-                                  errorKey: detailsErrorKey,
-                                  onChanged: (value) {
-                                    context
-                                        .read<CreateComplaintCubit>()
-                                        .updateDetails(value);
-                                    onDetailsChanged(value);
-                                  },
-                                ),
+                                AttachmentsSection(),
 
-                                const SizedBox(height: 20),
-
-                                AttachmentsSection(
-                                  onAttachmentsChanged: (files) {
-                                    context
-                                        .read<CreateComplaintCubit>()
-                                        .updateAttachments(files);
-                                  },
-                                ),
-
-                                const SizedBox(height: 20),
-
-                                SubmitComplaintButton(
-                                  onPressed: () async {
-                                    final confirmed =
-                                        await showCreateComplaintDialog(
-                                      context,
-                                    );
-                                    if (confirmed != true ||
-                                        !context.mounted) {
-                                      return;
-                                    }
-                                    context
-                                        .read<CreateComplaintCubit>()
-                                        .submit();
-                                  },
-                                  isEnabled: isFormValid,
-                                ),
+                                SubmitComplaintButton(),
                               ],
                             ),
                           ),

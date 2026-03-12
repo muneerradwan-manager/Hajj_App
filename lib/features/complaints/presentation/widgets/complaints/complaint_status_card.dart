@@ -30,13 +30,28 @@ class ComplaintStatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
+    // Determine colors based on complaint status
+    final statusColor = complaint.statusName == 'تم الإرسال'
+        ? cs.brandGold
+        : complaint.statusName == 'قيد المراجعة'
+        ? cs.brandRed
+        : cs.primary;
+
+    final borderColor = complaint.statusName == 'تم الإرسال'
+        ? CustomBorderColor.gold
+        : complaint.statusName == 'قيد المراجعة'
+        ? CustomBorderColor.red
+        : CustomBorderColor.green;
+
+    final statusTextColor = complaint.statusName == 'تم الإرسال'
+        ? CustomTextColor.gold
+        : complaint.statusName == 'قيد المراجعة'
+        ? CustomTextColor.red
+        : CustomTextColor.green;
+
     return CustomContainer(
       borderSide: CustomBorderSide.borderRight,
-      borderColor: complaint.statusName == 'تم الإرسال'
-          ? CustomBorderColor.gold
-          : complaint.statusName == 'قيد المراجعة'
-          ? CustomBorderColor.red
-          : CustomBorderColor.green,
+      borderColor: borderColor,
       padding: const EdgeInsets.all(15),
       child: Column(
         spacing: 15,
@@ -44,55 +59,43 @@ class ComplaintStatusCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                spacing: 10,
-                children: [
-                  CustomContainer(
-                    padding: const EdgeInsets.all(5),
-                    borderRadius: 7.5,
-                    containerColor: complaint.statusName == 'تم الإرسال'
-                        ? cs.brandGold
-                        : complaint.statusName == 'قيد المراجعة'
-                        ? cs.brandRed
-                        : cs.primary,
-                    borderWidth: 1,
-                    child: Icon(icon, color: Colors.white, size: 20),
-                  ),
-                  CustomText(
-                    complaint.subject,
-                    translate: translateTitle,
-                    type: CustomTextType.titleMedium,
-                  ),
-                ],
+              Expanded(
+                child: Row(
+                  spacing: 10,
+                  children: [
+                    CustomContainer(
+                      padding: const EdgeInsets.all(5),
+                      borderRadius: 7.5,
+                      containerColor: statusColor,
+                      borderWidth: 1,
+                      child: Icon(icon, color: Colors.white, size: 20),
+                    ),
+                    Expanded(
+                      child: CustomText(
+                        complaint.subject,
+                        translate: translateTitle,
+                        type: CustomTextType.titleMedium,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               CustomContainer(
                 padding: const EdgeInsets.all(5),
                 borderRadius: 7.5,
-                containerColor: complaint.statusName == 'تم الإرسال'
-                    ? cs.brandGold
-                    : complaint.statusName == 'قيد المراجعة'
-                    ? cs.brandRed
-                    : cs.primary,
-                hasOpacity: .1,
-                borderColor: complaint.statusName == 'تم الإرسال'
-                    ? CustomBorderColor.gold
-                    : complaint.statusName == 'قيد المراجعة'
-                    ? CustomBorderColor.red
-                    : CustomBorderColor.green,
+                containerColor: statusColor.withOpacity(0.1),
+                borderColor: borderColor,
                 borderWidth: 1,
                 child: CustomText(
                   complaint.statusName,
-                  color: complaint.statusName == 'تم الإرسال'
-                      ? CustomTextColor.gold
-                      : complaint.statusName == 'قيد المراجعة'
-                      ? CustomTextColor.red
-                      : CustomTextColor.green,
+                  color: statusTextColor,
                   type: CustomTextType.labelMedium,
                 ),
               ),
             ],
           ),
-          const Divider(height: .1),
+          const Divider(height: 0.1),
           Row(
             spacing: 5,
             children: [
@@ -159,7 +162,7 @@ class ComplaintStatusCard extends StatelessWidget {
                     ],
                   ),
                 ),
-              if (complaint.createdAt.isNotEmpty)
+              if (complaint.createdAt.isNotEmpty && date != null)
                 Row(
                   spacing: 5,
                   children: [
