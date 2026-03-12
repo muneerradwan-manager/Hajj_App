@@ -84,7 +84,7 @@ class ComplaintStatusCard extends StatelessWidget {
               CustomContainer(
                 padding: const EdgeInsets.all(5),
                 borderRadius: 7.5,
-                containerColor: statusColor.withOpacity(0.1),
+                containerColor: statusColor.withValues(alpha:  0.1),
                 borderColor: borderColor,
                 borderWidth: 1,
                 child: CustomText(
