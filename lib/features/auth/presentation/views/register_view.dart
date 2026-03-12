@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:bawabatelhajj/core/constants/app_routes.dart';
+import 'package:bawabatelhajj/shared/widgets/exit_app_dialog.dart';
 import 'package:bawabatelhajj/features/auth/domain/entities/register_draft.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/register/register_cubit.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/register/register_state.dart';
@@ -43,10 +45,16 @@ class _RegisterViewState extends State<RegisterView> {
   final _formVerifyAccountKey = GlobalKey<FormState>();
   final _pinput = TextEditingController();
 
+  Future<void> _handleExitRequest() async {
+    final shouldExit = await showExitAppDialog(context);
+    if (!mounted || shouldExit != true) return;
+    await SystemNavigator.pop();
+  }
+
   void _handleBack() {
     final stepNumber = context.read<RegisterCubit>().state.stepNumber;
     if (stepNumber <= 1) {
-      _goToLogin();
+      _handleExitRequest();
       return;
     }
     context.read<RegisterCubit>().goBackStep();
@@ -147,42 +155,49 @@ class _RegisterViewState extends State<RegisterView> {
         final statusBarInset = MediaQuery.paddingOf(context).top;
         final totalHeroHeight = heroHeight + statusBarInset;
 
-        return Scaffold(
-          resizeToAvoidBottomInset: true,
-          body: SingleChildScrollView(
-            child: Stack(
-              children: [
-                ...HeroBackground.layers(context, totalHeroHeight),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    RegisterHeroHeader(
-                      height: heroHeight,
-                      stepNumber: state.stepNumber,
-                      onBack: _handleBack,
-                    ),
-                    SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Transform.translate(
-                          offset: Offset(0, -overlap),
-                          child: StepAnimatedSwitcher(
-                            child: state.isHydrated
-                                ? _buildStep(state)
-                                : const SizedBox(
-                                    key: ValueKey('register-loading'),
-                                    height: 260,
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, _) {
+            if (didPop) return;
+            _handleBack();
+          },
+          child: Scaffold(
+            resizeToAvoidBottomInset: true,
+            body: SingleChildScrollView(
+              child: Stack(
+                children: [
+                  ...HeroBackground.layers(context, totalHeroHeight),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      RegisterHeroHeader(
+                        height: heroHeight,
+                        stepNumber: state.stepNumber,
+                        onBack: _handleBack,
+                      ),
+                      SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Transform.translate(
+                            offset: Offset(0, -overlap),
+                            child: StepAnimatedSwitcher(
+                              child: state.isHydrated
+                                  ? _buildStep(state)
+                                  : const SizedBox(
+                                      key: ValueKey('register-loading'),
+                                      height: 260,
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
                                     ),
-                                  ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );

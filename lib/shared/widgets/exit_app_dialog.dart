@@ -52,13 +52,13 @@ class _ExitAppDialogState extends State<_ExitAppDialog> {
             child: Column(
               children: [
                 const CustomText(
-                  'هل تريد حقاً الخروج من التطبيق؟',
+                  'app.exit_dialog_question',
                   textAlign: TextAlign.center,
                   type: CustomTextType.titleMedium,
                 ),
                 const SizedBox(height: 10),
                 const CustomText(
-                  'ستفقد أي بيانات غير محفوظة',
+                  'app.exit_dialog_warning',
                   textAlign: TextAlign.center,
                   type: CustomTextType.titleSmall,
                   color: CustomTextColor.hint,
@@ -74,7 +74,7 @@ class _ExitAppDialogState extends State<_ExitAppDialog> {
                   icon: Icon(LucideIcons.logOut, color: cs.brandRed),
                   borderColor: cs.brandRed,
                   child: const CustomText(
-                    'تأكيد الخروج',
+                    'app.exit_dialog_confirm',
                     type: CustomTextType.bodyLarge,
                     color: CustomTextColor.red,
                   ),
@@ -130,7 +130,7 @@ class _ExitAppDialogState extends State<_ExitAppDialog> {
                     ),
                     SizedBox(height: 16),
                     CustomText(
-                      'تأكيد الخروج',
+                      'app.exit_dialog_title',
                       type: CustomTextType.titleLarge,
                       color: CustomTextColor.white,
                     ),
@@ -169,7 +169,7 @@ class _ExitAppDialogState extends State<_ExitAppDialog> {
         exit(0);
       },
       child: const CustomText(
-        'البقاء في التطبيق',
+        'app.exit_dialog_stay',
         type: CustomTextType.titleSmall,
         color: CustomTextColor.white,
       ),

@@ -1,6 +1,7 @@
 import 'package:bawabatelhajj/shared/widgets/custom_container.dart'
     show CustomContainer;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:bawabatelhajj/core/di/dependency_injection.dart';
@@ -8,16 +9,35 @@ import 'package:bawabatelhajj/features/auth/presentation/cubits/login/login_cubi
 import 'package:bawabatelhajj/features/auth/presentation/widgets/login/login_card.dart';
 import 'package:bawabatelhajj/features/auth/presentation/widgets/login/login_hero_section.dart';
 import 'package:bawabatelhajj/shared/widgets/card_entry_animation.dart';
+import 'package:bawabatelhajj/shared/widgets/exit_app_dialog.dart';
 import 'package:bawabatelhajj/shared/widgets/hero_background.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  Future<void> _handleExitRequest() async {
+    final shouldExit = await showExitAppDialog(context);
+    if (!mounted || shouldExit != true) return;
+    await SystemNavigator.pop();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<LoginCubit>(),
-      child: _loginContent(),
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) {
+          if (didPop) return;
+          _handleExitRequest();
+        },
+        child: _loginContent(),
+      ),
     );
   }
 

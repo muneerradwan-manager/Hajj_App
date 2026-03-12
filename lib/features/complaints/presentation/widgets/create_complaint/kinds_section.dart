@@ -45,7 +45,7 @@ class KindsSection extends StatelessWidget {
                       ),
                     ),
 
-                  const CustomText('نوع الطلب'),
+                  const CustomText('complaints.create.kind_label'),
                   const SizedBox(height: 10),
 
                   Row(

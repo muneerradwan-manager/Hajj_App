@@ -50,13 +50,13 @@ class EvaluationsHeroSection extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         const CustomText(
-          'تقييم مراحل الحج',
+          'evaluations.hero_title',
           color: CustomTextColor.white,
           type: CustomTextType.headlineSmall,
         ),
         const SizedBox(height: 10),
         const CustomText(
-          'قيّم تجربتك في كل محطة',
+          'evaluations.hero_subtitle',
           type: CustomTextType.labelLarge,
           color: CustomTextColor.lightGold,
         ),

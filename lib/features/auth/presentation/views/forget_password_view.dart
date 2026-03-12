@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/core/constants/app_routes.dart';
+import 'package:bawabatelhajj/shared/widgets/exit_app_dialog.dart';
 import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/core/validators/app_validators.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/forget_password/forget_password_cubit.dart';
@@ -66,6 +68,12 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
   void _goToLogin() => context.go(AppRoutes.loginPath);
 
+  Future<void> _handleExitRequest() async {
+    final shouldExit = await showExitAppDialog(context);
+    if (!mounted || shouldExit != true) return;
+    await SystemNavigator.pop();
+  }
+
   void _handleBack(ForgetPasswordState state) {
     if (state.stepNumber >= 3) {
       _goToLogin();
@@ -77,11 +85,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
       return;
     }
 
-    if (context.canPop()) {
-      context.pop();
-      return;
-    }
-    _goToLogin();
+    _handleExitRequest();
   }
 
   String? _validateEmail(String? value) => AppValidators.email(value, context);
@@ -110,43 +114,50 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
         final heroHeight = (viewport.height * 0.25).clamp(220.0, 300.0);
         final overlap = (viewport.height * 0.03).clamp(16.0, 24.0);
 
-        return Scaffold(
-          resizeToAvoidBottomInset: true,
-          body: SingleChildScrollView(
-            child: Stack(
-              children: [
-                ...HeroBackground.layers(context, heroHeight),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    ForgetPasswordHeroHeader(
-                      height: heroHeight,
-                      stepNumber: state.stepNumber,
-                      onBack: () => _handleBack(state),
-                    ),
-                    SafeArea(
-                      top: false,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Transform.translate(
-                          offset: Offset(0, -overlap),
-                          child: Column(
-                            children: [
-                              StepAnimatedSwitcher(
-                                child: _buildStep(state, cs),
-                              ),
-                              if (state.stepNumber == 1) ...[
-                                const SizedBox(height: 14),
-                                const ForgetPasswordSecurityNoteCard(),
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, _) {
+            if (didPop) return;
+            _handleBack(state);
+          },
+          child: Scaffold(
+            resizeToAvoidBottomInset: true,
+            body: SingleChildScrollView(
+              child: Stack(
+                children: [
+                  ...HeroBackground.layers(context, heroHeight),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ForgetPasswordHeroHeader(
+                        height: heroHeight,
+                        stepNumber: state.stepNumber,
+                        onBack: () => _handleBack(state),
+                      ),
+                      SafeArea(
+                        top: false,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Transform.translate(
+                            offset: Offset(0, -overlap),
+                            child: Column(
+                              children: [
+                                StepAnimatedSwitcher(
+                                  child: _buildStep(state, cs),
+                                ),
+                                if (state.stepNumber == 1) ...[
+                                  const SizedBox(height: 14),
+                                  const ForgetPasswordSecurityNoteCard(),
+                                ],
                               ],
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );

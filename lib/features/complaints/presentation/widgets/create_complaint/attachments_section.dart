@@ -72,12 +72,12 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
               const Column(
                 children: [
                   CustomText(
-                    'اختر مصدر الصورة',
+                    'complaints.create.attachments_pick_source_title',
                     type: CustomTextType.titleMedium,
                   ),
                   SizedBox(height: 5),
                   CustomText(
-                    'الكاميرا أو معرض الصور',
+                    'complaints.create.attachments_pick_source_subtitle',
                     type: CustomTextType.labelMedium,
                     color: CustomTextColor.hint,
                   ),
@@ -298,7 +298,7 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
                           'complaints.create.attachments_select_images',
                         ),
                         const CustomText(
-                          'PNG, JPG - صورة واحدة فقط',
+                          'complaints.create.attachments_formats_hint',
                           color: CustomTextColor.hint,
                           textAlign: TextAlign.center,
                           type: CustomTextType.bodySmall,
@@ -378,11 +378,11 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        'ملاحظة هامة',
+                        'complaints.create.attachments_important_note_title',
                         type: CustomTextType.bodyMedium,
                       ),
                       CustomText(
-                        'إذا كان لديك أكثر من صورة أو فيديو، يرجى الاحتفاظ بها ريثما يتم معالجة الشكوى',
+                        'complaints.create.attachments_important_note_body',
                         type: CustomTextType.labelMedium,
                         color: CustomTextColor.hint,
                       ),

@@ -88,13 +88,13 @@ class EvaluationsLayout extends StatelessWidget {
                                                   color: CustomTextColor.green,
                                                 ),
                                                 CustomText(
-                                                  ' / 10 مرحلة',
+                                                  'evaluations.progress_of_total',
                                                   color: CustomTextColor.green,
                                                 ),
                                               ],
                                             ),
                                             CustomText(
-                                              'تم إكمالها',
+                                              'evaluations.completed_label',
                                               color: CustomTextColor.green,
                                             ),
                                           ],
@@ -129,7 +129,7 @@ class EvaluationsLayout extends StatelessWidget {
                                               height: 20,
                                               containerColor: cs.primary,
                                             ),
-                                            const CustomText('مكتملة'),
+                                            const CustomText('evaluations.legend_completed'),
                                           ],
                                         ),
                                         Row(
@@ -141,7 +141,7 @@ class EvaluationsLayout extends StatelessWidget {
                                               height: 20,
                                               containerColor: cs.brandGold,
                                             ),
-                                            const CustomText('متاحة'),
+                                            const CustomText('evaluations.legend_available'),
                                           ],
                                         ),
                                         Row(
@@ -153,7 +153,7 @@ class EvaluationsLayout extends StatelessWidget {
                                               height: 20,
                                               containerColor: cs.outline,
                                             ),
-                                            const CustomText('مقفلة'),
+                                            const CustomText('evaluations.legend_locked'),
                                           ],
                                         ),
                                       ],
@@ -221,9 +221,9 @@ class EvaluationsLayout extends StatelessWidget {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    CustomText('المطار'),
+                                                    CustomText('evaluations.phase_airport'),
                                                     CustomText(
-                                                      'خدمات المطار والوصول',
+                                                      'evaluations.phase_airport_desc',
                                                       color:
                                                           CustomTextColor.hint,
                                                       type: CustomTextType
@@ -246,7 +246,7 @@ class EvaluationsLayout extends StatelessWidget {
                                             ),
                                             borderRadius: 100,
                                             child: const CustomText(
-                                              'قيم الأن',
+                                              'evaluations.rate_now',
                                               color: CustomTextColor.white,
                                               type: CustomTextType.labelMedium,
                                             ),
@@ -257,9 +257,9 @@ class EvaluationsLayout extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 10),
                                   CustomContainer(
-                                    containerColor: cs.onPrimary.withValues(
-                                      alpha: .4,
-                                    ),
+                                    containerColor: Colors.white,
+                                    hasOpacity: .5,
+                                    // hasShadow: false,
                                     padding: const EdgeInsets.all(15),
                                     child: Row(
                                       mainAxisAlignment:
@@ -313,12 +313,12 @@ class EvaluationsLayout extends StatelessWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     CustomText(
-                                                      'الفندق',
+                                                      'evaluations.phase_hotel',
                                                       color:
                                                           CustomTextColor.hint,
                                                     ),
                                                     CustomText(
-                                                      'مستوى الإقامة والخدمات الفندقية',
+                                                      'evaluations.phase_hotel_desc',
                                                       color:
                                                           CustomTextColor.hint,
                                                       type: CustomTextType
@@ -336,7 +336,7 @@ class EvaluationsLayout extends StatelessWidget {
                                           ),
                                           padding: const EdgeInsets.all(5),
                                           child: const CustomText(
-                                            'مقفلة',
+                                            'evaluations.legend_view_only',
                                             color: CustomTextColor.hint,
                                           ),
                                         ),
@@ -350,138 +350,108 @@ class EvaluationsLayout extends StatelessWidget {
                                       cs.primary.withValues(alpha: .20),
                                     ],
                                     padding: const EdgeInsets.all(15),
-                                    child: Row(
+                                    child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      spacing: 20,
                                       children: [
-                                        CustomContainer(
-                                          gradientColors: [
-                                            cs.inversePrimary,
-                                            cs.primary,
-                                          ],
-                                          padding: const EdgeInsets.all(5),
-                                          child: const Icon(
-                                            LucideIcons.lock,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        const Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              CustomText('المراحل القادمة'),
-                                              SizedBox(height: 10),
-                                              CustomText(
-                                                'المراحل المقفلة ستفتح تلقائياً عند وصولك إليها خلال رحلة الحج. ستتمكن من تقييم كل مرحلة في وقتها المناسب.',
-                                                color: CustomTextColor.hint,
-                                                type:
-                                                    CustomTextType.labelMedium,
-                                                height: 1.3,
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          spacing: 20,
+                                          children: [
+                                            CustomContainer(
+                                              gradientColors: [
+                                                cs.inversePrimary,
+                                                cs.primary,
+                                              ],
+                                              padding: const EdgeInsets.all(5),
+                                              child: const Icon(
+                                                LucideIcons.lock,
+                                                color: Colors.white,
                                               ),
-                                              SizedBox(height: 30),
-                                              Wrap(
-                                                spacing: 10,
-                                                runSpacing: 10,
+                                            ),
+                                            const Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  CustomContainer(
-                                                    borderWidth: 0,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                          vertical: 10,
-                                                          horizontal: 20,
-                                                        ),
-                                                    borderRadius: 100,
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      spacing: 5,
-                                                      children: [
-                                                        Icon(
-                                                          LucideIcons.hotel,
-                                                          color: Color(
-                                                            0xff90A1B9,
-                                                          ),
-                                                        ),
-                                                        CustomText(
-                                                          'الفندق',
-                                                          type: CustomTextType
-                                                              .labelMedium,
-                                                          color: CustomTextColor
-                                                              .hint,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  CustomContainer(
-                                                    borderWidth: 0,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                          vertical: 10,
-                                                          horizontal: 20,
-                                                        ),
-                                                    borderRadius: 100,
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      spacing: 5,
-                                                      children: [
-                                                        Icon(
-                                                          LucideIcons.compass,
-                                                          color: Color(
-                                                            0xff90A1B9,
-                                                          ),
-                                                        ),
-                                                        CustomText(
-                                                          'الإحرام',
-                                                          type: CustomTextType
-                                                              .labelMedium,
-                                                          color: CustomTextColor
-                                                              .hint,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  CustomContainer(
-                                                    borderWidth: 0,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                          vertical: 10,
-                                                          horizontal: 20,
-                                                        ),
-                                                    borderRadius: 100,
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      spacing: 5,
-                                                      children: [
-                                                        Icon(
-                                                          LucideIcons
-                                                              .navigation,
-                                                          color: Color(
-                                                            0xff90A1B9,
-                                                          ),
-                                                        ),
-                                                        CustomText(
-                                                          'السعي',
-                                                          type: CustomTextType
-                                                              .labelMedium,
-                                                          color: CustomTextColor
-                                                              .hint,
-                                                        ),
-                                                      ],
-                                                    ),
+                                                  CustomText('evaluations.upcoming_title'),
+                                                  SizedBox(height: 10),
+                                                  CustomText(
+                                                    'evaluations.upcoming_desc',
+                                                    color: CustomTextColor.hint,
+                                                    type: CustomTextType
+                                                        .labelMedium,
+                                                    height: 1.3,
                                                   ),
                                                 ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 20),
+                                        const Wrap(
+                                          spacing: 10,
+                                          runSpacing: 10,
+                                          alignment: WrapAlignment.start,
+                                          runAlignment: WrapAlignment.start,
+                                          children: [
+                                            CustomContainer(
+                                              borderWidth: 0,
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 10,
+                                                horizontal: 20,
+                                              ),
+                                              borderRadius: 100,
+                                              containerColor: Colors.white,
+                                              hasOpacity: .7,
+                                              hasShadow: false,
+                                              child: CustomText(
+                                                'evaluations.phase_hotel',
+                                                type:
+                                                    CustomTextType.labelMedium,
+                                                color: CustomTextColor.hint,
+                                              ),
+                                            ),
+                                            CustomContainer(
+                                              borderWidth: 0,
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 10,
+                                                horizontal: 20,
+                                              ),
+                                              containerColor: Colors.white,
+                                              hasOpacity: .7,
+                                              hasShadow: false,
+                                              borderRadius: 100,
+                                              child: CustomText(
+                                                'evaluations.phase_ihram',
+                                                type:
+                                                    CustomTextType.labelMedium,
+                                                color: CustomTextColor.hint,
+                                              ),
+                                            ),
+                                            CustomContainer(
+                                              borderWidth: 0,
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 10,
+                                                horizontal: 20,
+                                              ),
+                                              containerColor: Colors.white,
+                                              hasOpacity: .7,
+                                              hasShadow: false,
+                                              borderRadius: 100,
+                                              child: CustomText(
+                                                'evaluations.phase_saee',
+                                                type:
+                                                    CustomTextType.labelMedium,
+                                                color: CustomTextColor.hint,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(height: 20),
                                 ],
                               ),
                             ),

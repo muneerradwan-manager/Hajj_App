@@ -57,7 +57,7 @@ class CategoriesSection extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      const CustomText('القسم المعنى بالاقتراح'),
+                      const CustomText('complaints.create.category_label'),
                     ],
                   ),
                   const SizedBox(height: 10),
