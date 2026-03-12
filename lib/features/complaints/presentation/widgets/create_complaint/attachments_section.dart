@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bawabatelhajj/shared/widgets/gradient_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -48,6 +49,8 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
     return showModalBottomSheet<ImageSource>(
       context: context,
       showDragHandle: true,
+      backgroundColor: Colors.white,
+      elevation: 0,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -56,44 +59,66 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            spacing: 8,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: 20,
             children: [
-              const CustomText(
-                'complaints.create.attachments_pick_source_title',
-                type: CustomTextType.titleMedium,
-                color: CustomTextColor.green,
+              CustomContainer(
+                gradientColors: [cs.surfaceDim, cs.brandGold],
+                borderWidth: 0,
+                padding: const EdgeInsets.all(15),
+                borderRadius: 12,
+                child: const Icon(LucideIcons.camera, color: Colors.white),
               ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: cs.brandGold.withValues(alpha: 0.18),
+              const Column(
+                children: [
+                  CustomText(
+                    'اختر مصدر الصورة',
+                    type: CustomTextType.titleMedium,
                   ),
-                  padding: const EdgeInsets.all(10),
-                  child: Icon(LucideIcons.image, color: cs.brandGold),
-                ),
-                title: const CustomText(
-                  'complaints.create.attachments_pick_gallery',
-                  type: CustomTextType.bodyLarge,
-                ),
-                onTap: () => Navigator.of(context).pop(ImageSource.gallery),
+                  SizedBox(height: 5),
+                  CustomText(
+                    'الكاميرا أو معرض الصور',
+                    type: CustomTextType.labelMedium,
+                    color: CustomTextColor.hint,
+                  ),
+                ],
               ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: cs.primary.withValues(alpha: 0.18),
+              Column(
+                spacing: 10,
+                children: [
+                  GradientElevatedButton(
+                    onPressed: () =>
+                        Navigator.of(context).pop(ImageSource.camera),
+                    gradientColor: GradientColors.green,
+                    icon: const Icon(LucideIcons.camera),
+                    child: const CustomText(
+                      'complaints.create.attachments_pick_camera',
+                      type: CustomTextType.bodyLarge,
+                      color: CustomTextColor.white,
+                    ),
                   ),
-                  padding: const EdgeInsets.all(10),
-                  child: Icon(LucideIcons.camera, color: cs.primary),
-                ),
-                title: const CustomText(
-                  'complaints.create.attachments_pick_camera',
-                  type: CustomTextType.bodyLarge,
-                ),
-                onTap: () => Navigator.of(context).pop(ImageSource.camera),
+                  GradientElevatedButton(
+                    onPressed: () =>
+                        Navigator.of(context).pop(ImageSource.gallery),
+                    gradientColor: GradientColors.gold,
+                    icon: const Icon(LucideIcons.image),
+                    child: const CustomText(
+                      'complaints.create.attachments_pick_gallery',
+                      type: CustomTextType.bodyLarge,
+                      color: CustomTextColor.white,
+                    ),
+                  ),
+                  GradientElevatedButton(
+                    onPressed: () =>
+                        Navigator.of(context).pop(ImageSource.gallery),
+                    gradientColor: GradientColors.outline,
+                    child: const CustomText(
+                      'app.cancel',
+                      type: CustomTextType.bodyLarge,
+                      color: CustomTextColor.green,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

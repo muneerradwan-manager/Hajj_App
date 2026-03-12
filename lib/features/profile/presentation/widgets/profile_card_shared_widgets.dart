@@ -316,7 +316,11 @@ class _ProfileInfoSection extends StatelessWidget {
                     width: 40,
                     height: 40,
                     borderRadius: 12,
-                    containerColor: iconColor,
+                    gradientColors: iconColor == cs.primary
+                        ? [cs.primaryContainer, cs.primary]
+                        : iconColor == cs.brandRed
+                        ? [cs.brandRedAlt, cs.brandRed]
+                        : [cs.surfaceDim, cs.brandGold],
                     padding: EdgeInsets.zero,
                     child: Icon(icon, color: Colors.white, size: 20),
                   ),

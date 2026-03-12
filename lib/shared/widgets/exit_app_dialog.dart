@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Add this for SystemNavigator
 import 'custom_text.dart';
 
 Future<bool> showExitAppDialog(BuildContext context) async {
@@ -24,7 +27,10 @@ Future<bool> showExitAppDialog(BuildContext context) async {
             child: const CustomText('app.cancel'),
           ),
           FilledButton(
-            onPressed: () => Navigator.of(dialogContext).pop(true),
+            onPressed: () {
+              Navigator.of(dialogContext).pop(true);
+              exit(0);
+            },
             child: const CustomText('app.exit'),
           ),
         ],

@@ -163,9 +163,10 @@ class ComplaintDetailsStatusCard extends StatelessWidget {
   }
 
   _TimelineValue get _resultStageValue {
+    final isEmpty = receiveDate.isEmpty;
     return _TimelineValue(
-      receiveDate.isEmpty ? '—' : receiveDate,
-      translate: false,
+      isEmpty ? 'complaints.details.date_placeholder' : receiveDate,
+      translate: isEmpty,
     );
   }
 

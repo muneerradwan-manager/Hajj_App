@@ -59,8 +59,9 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
     return BlocListener<PrayerTimesCubit, PrayerTimesState>(
       listenWhen: (prev, curr) => prev.status != curr.status,
       listener: (context, state) {
-        if (state.status == PrayerTimesStatus.loading) {
-          _refreshController.repeat();
+        if (state.status != PrayerTimesStatus.loading) {
+          _refreshController.stop();
+          _refreshController.reset();
         } else {
           _refreshController.stop();
           _refreshController.reset();
@@ -115,9 +116,15 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
     final isLoading = state.status == PrayerTimesStatus.loading;
 
     return GestureDetector(
-      onTap: isLoading
-          ? null
-          : () => context.read<PrayerTimesCubit>().loadPrayerTimes(),
+      onTap: () {
+        if (!isLoading) {
+          // restart animation every tap
+          _refreshController
+            ..reset()
+            ..repeat();
+          context.read<PrayerTimesCubit>().loadPrayerTimes();
+        }
+      },
       child: RotationTransition(
         turns: _refreshController,
         child: Icon(LucideIcons.refreshCw, size: 16, color: cs.brandGold),

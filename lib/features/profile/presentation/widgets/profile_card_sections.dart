@@ -268,11 +268,11 @@ class _SaudiNumberCard extends StatelessWidget {
       );
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: cs.brandGold.withValues(alpha: 0.5)),
-      ),
+    return CustomContainer(
+      borderRadius: 15,
+      borderWidth: 1,
+      borderColor: CustomBorderColor.gold,
+      hasOpacity: .5,
       padding: const EdgeInsets.all(14),
       child: Row(
         children: [
@@ -956,6 +956,7 @@ class _PassportSectionState extends State<_PassportSection> {
           children: [
             Expanded(
               child: GradientElevatedButton(
+                padding: const EdgeInsets.all(5),
                 gradientColor: GradientColors.red,
                 onPressed: _hasPassportImage && !_isBusy
                     ? _downloadPassportImage
@@ -978,6 +979,7 @@ class _PassportSectionState extends State<_PassportSection> {
             ),
             Expanded(
               child: GradientElevatedButton(
+                padding: const EdgeInsets.all(5),
                 gradientColor: GradientColors.green,
                 onPressed: _hasPassportImage && !_isBusy
                     ? _sharePassportImage

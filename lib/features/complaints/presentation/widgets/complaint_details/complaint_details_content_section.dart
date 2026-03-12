@@ -67,8 +67,8 @@ class ComplaintDetailsContentSection extends StatelessWidget {
             _ComplaintSubjectCard(subjectValueKey: subjectValueKey),
 
             _ComplaintMessageCard(
-              borderColor: CustomBorderColor.red,
-              iconBackgroundColor: cs.brandRed,
+              borderColor: CustomBorderColor.green,
+              iconBackgroundColor: cs.primary,
               titleKey: 'complaints.details.full_details_title',
               titleColor: CustomTextColor.hint,
               bodyKey: fullDetailsBodyKey,
@@ -182,7 +182,7 @@ class _DeleteComplaintDialog extends StatelessWidget {
                 Expanded(
                   child: GradientElevatedButton(
                     gradientColor: GradientColors.outline,
-                    
+
                     onPressed: () => Navigator.of(context).pop(false),
                     child: const CustomText(
                       'app.cancel',
@@ -299,12 +299,12 @@ class _ComplaintSubjectCard extends StatelessWidget {
 
     return CustomContainer(
       borderSide: CustomBorderSide.borderTop,
-      borderColor: CustomBorderColor.gold,
+      borderColor: CustomBorderColor.green,
       child: Row(
         children: [
           CustomContainer(
             borderRadius: 15,
-            containerColor: cs.brandGold,
+            containerColor: cs.primary,
             padding: const EdgeInsets.all(10),
             borderWidth: 1,
             child: const Icon(LucideIcons.fileText, color: Colors.white),

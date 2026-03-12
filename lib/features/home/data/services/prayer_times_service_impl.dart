@@ -25,13 +25,15 @@ class PrayerTimesServiceImpl implements PrayerTimesService {
       if (permission == geo.LocationPermission.denied) {
         permission = await geo.Geolocator.requestPermission();
         if (permission == geo.LocationPermission.denied) {
-          return left(const LocationFailure('Location permission denied.'));
+          return left(
+            const LocationFailure('home.prayer_permission_denied'),
+          );
         }
       }
       if (permission == geo.LocationPermission.deniedForever) {
         return left(
           const LocationFailure(
-            'Location permission permanently denied. Enable it in settings.',
+            'home.prayer_permission_denied_forever',
           ),
         );
       }
@@ -109,7 +111,7 @@ class PrayerTimesServiceImpl implements PrayerTimesService {
         ),
       );
     } catch (e) {
-      return left(UnknownFailure('Failed to get prayer times: $e'));
+      return left(const UnknownFailure('home.prayer_error'));
     }
   }
 }
