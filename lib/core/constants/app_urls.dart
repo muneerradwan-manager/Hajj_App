@@ -19,4 +19,7 @@ class AppUrls {
   static const String complaintCategories = '/ComplaintCategories';
   static const String complaintKinds = '/ComplaintKinds';
   static const String complaintStatuses = '/ComplaintStatuses';
+  // Evaluations
+  static const String phases = '/Phases';
+  static const String evaluationResults = '/EvaluationResults';
 }

@@ -27,7 +27,7 @@ class _ClosedActionDialog extends StatefulWidget {
 }
 
 class _ClosedActionDialogState extends State<_ClosedActionDialog> {
-  bool _isSending = false;
+  final bool _isSending = false;
 
   @override
   Widget build(BuildContext context) {

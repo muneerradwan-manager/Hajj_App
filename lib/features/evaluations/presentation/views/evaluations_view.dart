@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/di/dependency_injection.dart';
+import '../cubits/phases/phases_cubit.dart';
 import '../widgets/evaluations_layout.dart';
 
 class EvaluationsView extends StatefulWidget {
@@ -12,9 +15,12 @@ class EvaluationsView extends StatefulWidget {
 class _EvaluationsViewState extends State<EvaluationsView> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: EvaluationsLayout(),
+    return BlocProvider(
+      create: (context) => getIt<PhasesCubit>()..loadPhases(),
+      child: const Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: EvaluationsLayout(),
+      ),
     );
   }
 }

@@ -78,7 +78,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
 
   Future<void> _handleExitRequest() async {
     final shouldExit = await showExitAppDialog(context);
-    if (!mounted || !shouldExit) return;
+    if (!mounted || !shouldExit!) return;
     await SystemNavigator.pop();
   }
 
