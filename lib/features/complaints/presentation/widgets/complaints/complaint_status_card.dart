@@ -7,16 +7,10 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../../core/constants/app_routes.dart';
 import '../../../../../shared/widgets/custom_container.dart';
 import '../../../../../shared/widgets/custom_text.dart';
-import '../../../../../shared/widgets/gradient_elevated_button.dart';
 import '../../../domain/entities/complaint.dart';
 import '../../cubits/complaints/complaints_cubit.dart';
 
 class ComplaintStatusCard extends StatelessWidget {
-  final String title;
-  final String category;
-  final String status;
-  final CustomTextColor statusColor;
-  final CustomBorderColor borderColor;
   final IconData icon;
   final Complaint complaint;
   final bool translateTitle;
@@ -25,11 +19,6 @@ class ComplaintStatusCard extends StatelessWidget {
 
   const ComplaintStatusCard({
     super.key,
-    required this.title,
-    required this.category,
-    required this.status,
-    required this.statusColor,
-    required this.borderColor,
     required this.icon,
     required this.complaint,
     this.translateTitle = true,
@@ -43,7 +32,12 @@ class ComplaintStatusCard extends StatelessWidget {
 
     return CustomContainer(
       borderSide: CustomBorderSide.borderRight,
-      borderColor: borderColor,
+      borderColor: complaint.statusName == 'تم الإرسال'
+          ? CustomBorderColor.gold
+          : complaint.statusName == 'قيد المراجعة'
+          ? CustomBorderColor.red
+          : CustomBorderColor.green,
+      padding: const EdgeInsets.all(15),
       child: Column(
         spacing: 15,
         children: [
@@ -54,87 +48,128 @@ class ComplaintStatusCard extends StatelessWidget {
                 spacing: 10,
                 children: [
                   CustomContainer(
-                    padding: const EdgeInsets.all(10),
-                    borderRadius: 15,
-                    containerColor: cs.primary,
+                    padding: const EdgeInsets.all(5),
+                    borderRadius: 7.5,
+                    containerColor: complaint.statusName == 'تم الإرسال'
+                        ? cs.brandGold
+                        : complaint.statusName == 'قيد المراجعة'
+                        ? cs.brandRed
+                        : cs.primary,
                     borderWidth: 1,
-                    child: Icon(icon, color: Colors.white),
+                    child: Icon(icon, color: Colors.white, size: 20),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(title, translate: translateTitle),
-                      CustomText(
-                        category,
-                        translate: translateCategory,
-                        type: CustomTextType.labelMedium,
-                        color: CustomTextColor.gold,
-                      ),
-                    ],
+                  CustomText(
+                    complaint.subject,
+                    translate: translateTitle,
+                    type: CustomTextType.titleMedium,
                   ),
                 ],
               ),
               CustomContainer(
-                padding: const EdgeInsets.all(10),
-                borderRadius: 15,
-                containerColor: borderColor == CustomBorderColor.lightRed
+                padding: const EdgeInsets.all(5),
+                borderRadius: 7.5,
+                containerColor: complaint.statusName == 'تم الإرسال'
+                    ? cs.brandGold
+                    : complaint.statusName == 'قيد المراجعة'
                     ? cs.brandRed
-                    : borderColor == CustomBorderColor.green
-                    ? cs.primary
-                    : cs.brandGold,
+                    : cs.primary,
                 hasOpacity: .1,
-                borderColor: borderColor,
+                borderColor: complaint.statusName == 'تم الإرسال'
+                    ? CustomBorderColor.gold
+                    : complaint.statusName == 'قيد المراجعة'
+                    ? CustomBorderColor.red
+                    : CustomBorderColor.green,
                 borderWidth: 1,
-                child: CustomText(status, color: statusColor),
+                child: CustomText(
+                  complaint.statusName,
+                  color: complaint.statusName == 'تم الإرسال'
+                      ? CustomTextColor.gold
+                      : complaint.statusName == 'قيد المراجعة'
+                      ? CustomTextColor.red
+                      : CustomTextColor.green,
+                  type: CustomTextType.labelMedium,
+                ),
               ),
             ],
           ),
+          const Divider(height: .1),
           Row(
-            spacing: 20,
+            spacing: 5,
             children: [
-              Flexible(
-                child: GradientElevatedButton(
-                  onPressed: () async {
-                    await context.pushNamed(
-                      AppRoutes.complaintDetailsName,
-                      pathParameters: {'id': complaint.complaintId.toString()},
-                    );
-                    if (context.mounted) {
-                      context.read<ComplaintsCubit>().loadComplaints();
-                    }
-                  },
+              GestureDetector(
+                onTap: () async {
+                  await context.pushNamed(
+                    AppRoutes.complaintDetailsName,
+                    pathParameters: {'id': complaint.complaintId.toString()},
+                  );
+                  if (context.mounted) {
+                    context.read<ComplaintsCubit>().loadComplaints();
+                  }
+                },
+                child: CustomContainer(
+                  gradientColors: [cs.primaryContainer, cs.primary],
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
-                    vertical: 10,
+                    vertical: 5,
                   ),
-                  gradientColor: GradientColors.green,
+                  borderWidth: 0,
+                  borderRadius: 12,
                   child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 5,
                     children: [
-                      Expanded(
-                        child: CustomText(
-                          'complaints.action.view_details',
-                          color: CustomTextColor.white,
-                        ),
+                      Icon(LucideIcons.eye, color: Colors.white, size: 20),
+                      CustomText(
+                        'complaints.action.view_details',
+                        color: CustomTextColor.white,
+                        type: CustomTextType.labelSmall,
                       ),
-                      Icon(LucideIcons.eye),
                     ],
                   ),
                 ),
               ),
-              if (date != null)
-                Flexible(
+              if (complaint.kindName.isNotEmpty)
+                CustomContainer(
+                  padding: const EdgeInsets.all(5),
+                  borderWidth: 0,
+                  borderRadius: 10,
+                  containerColor: complaint.kindName == 'شكوى'
+                      ? cs.brandRed
+                      : cs.primary,
+                  hasOpacity: .2,
+                  hasShadow: false,
                   child: Row(
                     spacing: 5,
                     children: [
-                      Icon(LucideIcons.calendar, color: cs.outline),
+                      Icon(
+                        complaint.kindName == 'شكوى'
+                            ? LucideIcons.info
+                            : LucideIcons.lightbulb,
+                        color: complaint.kindName == 'شكوى'
+                            ? cs.brandRed
+                            : cs.primary,
+                        size: 20,
+                      ),
                       CustomText(
-                        date!,
-                        translate: false,
-                        color: CustomTextColor.hint,
+                        complaint.kindName,
+                        type: CustomTextType.labelSmall,
+                        color: complaint.kindName == 'شكوى'
+                            ? CustomTextColor.red
+                            : CustomTextColor.green,
                       ),
                     ],
                   ),
+                ),
+              if (complaint.createdAt.isNotEmpty)
+                Row(
+                  spacing: 5,
+                  children: [
+                    Icon(LucideIcons.calendar, color: cs.outline),
+                    CustomText(
+                      date!,
+                      translate: false,
+                      color: CustomTextColor.hint,
+                    ),
+                  ],
                 ),
             ],
           ),

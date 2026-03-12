@@ -133,20 +133,18 @@ class _FlightNumberBadge extends StatelessWidget {
 class _MapButton extends StatelessWidget {
   const _MapButton({this.backgroundColor});
 
-  final Color? backgroundColor;
+  final GradientColors? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
+    return GradientElevatedButton(
       onPressed: () {},
-      style: backgroundColor != null
-          ? ElevatedButton.styleFrom(backgroundColor: backgroundColor)
-          : null,
-      label: const CustomText(
+      gradientColor: backgroundColor ?? GradientColors.outline,
+      icon: const Icon(LucideIcons.arrowUpRight),
+      child: const CustomText(
         'profile.open_google_maps',
         color: CustomTextColor.white,
       ),
-      icon: const Icon(LucideIcons.arrowUpRight),
     );
   }
 }

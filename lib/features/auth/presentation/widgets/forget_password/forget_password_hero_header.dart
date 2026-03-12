@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:bawabatelhajj/shared/widgets/directional_back_arrow.dart';
 
+import '../../../../../shared/widgets/custom_container.dart';
+
 class ForgetPasswordHeroHeader extends StatelessWidget {
   const ForgetPasswordHeroHeader({
     super.key,
@@ -20,9 +22,11 @@ class ForgetPasswordHeroHeader extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final statusBarInset = MediaQuery.paddingOf(context).top;
 
-    return Container(
+    return CustomContainer(
+      borderWidth: 0,
       height: height + statusBarInset,
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 18),
+      containerColor: Colors.transparent,
       child: SafeArea(
         bottom: false,
         child: Column(
@@ -78,12 +82,11 @@ class _ForgetPasswordStepProgress extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return Container(
+    return CustomContainer(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
-      decoration: BoxDecoration(
-        color: cs.onPrimary.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      containerColor: cs.onPrimary,
+      hasOpacity: .12,
+      borderRadius: 12,
       child: Column(
         children: [
           ClipRRect(

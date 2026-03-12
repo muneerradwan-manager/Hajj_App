@@ -6,11 +6,11 @@ import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/core/validators/app_validators.dart';
 import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
-import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:bawabatelhajj/shared/widgets/gradient_elevated_button.dart';
 import 'package:bawabatelhajj/shared/widgets/required_field_label.dart';
 
+import '../../../../../shared/widgets/custom_container.dart';
 import '../../../../../shared/widgets/important_note_box.dart';
 import '../../../../../shared/widgets/numbered_steps_list.dart';
 
@@ -60,9 +60,14 @@ class _ForgetPasswordResetCardState extends State<ForgetPasswordResetCard> {
       child: Form(
         key: widget.formKey,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const CircularIconBadge(icon: LucideIcons.keyRound, iconSize: 30),
+            CustomContainer(
+              gradientColors: [cs.primaryContainer, cs.primary],
+              borderRadius: 100,
+              borderWidth: 1,
+              child: const Icon(LucideIcons.keyRound, color: Colors.white),
+            ),
             const SizedBox(height: 12),
             const CustomText(
               'auth.forget.reset_card_title',
@@ -80,19 +85,19 @@ class _ForgetPasswordResetCardState extends State<ForgetPasswordResetCard> {
             const SizedBox(height: 8),
             CustomText(
               email,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.start,
               type: CustomTextType.bodySmall,
               color: CustomTextColor.hint,
               translate: false,
             ),
             const SizedBox(height: 20),
-            Container(
+            CustomContainer(
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: cs.surfaceContainerLow,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: cs.secondaryContainer),
-              ),
+              containerColor: cs.surfaceContainerLow,
+              borderRadius: 12,
+              borderSide: CustomBorderSide.allBorder,
+              borderColor: CustomBorderColor.lightGold,
+              borderWidth: 1,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

@@ -1,3 +1,5 @@
+import 'package:bawabatelhajj/shared/widgets/custom_container.dart'
+    show CustomContainer;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,7 +60,9 @@ class LoginPage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
+                        CustomContainer(
+                          borderWidth: 0,
+                          containerColor: Colors.transparent,
                           height: heroHeight,
                           padding: const EdgeInsets.symmetric(horizontal: 24),
                           child: LoginHeroSection(logoSize: logoSize),

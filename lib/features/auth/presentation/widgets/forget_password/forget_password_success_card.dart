@@ -6,6 +6,8 @@ import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:bawabatelhajj/shared/widgets/gradient_elevated_button.dart';
 
+import '../../../../../shared/widgets/custom_container.dart';
+
 class ForgetPasswordSuccessCard extends StatelessWidget {
   const ForgetPasswordSuccessCard({
     super.key,
@@ -47,13 +49,12 @@ class ForgetPasswordSuccessCard extends StatelessWidget {
           ),
 
           const SizedBox(height: 14),
-          Container(
+          CustomContainer(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: cs.primary.withValues(alpha: .1),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: cs.primary),
-            ),
+            borderWidth: 1,
+            containerColor: cs.primary,
+            hasOpacity: .1,
+            borderRadius: 12,
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               spacing: 20,

@@ -31,10 +31,7 @@ class ComplaintDetails extends StatelessWidget {
 
           if (state.status == ComplaintDetailsStatus.error) {
             return Center(
-              child: Text(
-                state.errorMessage,
-                textAlign: TextAlign.center,
-              ),
+              child: Text(state.errorMessage, textAlign: TextAlign.center),
             );
           }
 

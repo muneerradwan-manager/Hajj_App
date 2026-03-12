@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'custom_text.dart';
 
 Future<bool> showExitAppDialog(BuildContext context) async {

@@ -11,6 +11,7 @@ import 'package:bawabatelhajj/features/auth/presentation/cubits/login/login_stat
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
 import '../../../../../shared/widgets/custom_snackbar.dart';
+import '../../../../../shared/widgets/gradient_elevated_button.dart';
 import 'login_or_divider.dart';
 
 class LoginForm extends StatefulWidget {
@@ -162,8 +163,9 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
+              GradientElevatedButton(
                 onPressed: state.isSubmitting ? null : _submit,
+                gradientColor: GradientColors.green,
                 child: state.isSubmitting
                     ? SizedBox(
                         width: 20,

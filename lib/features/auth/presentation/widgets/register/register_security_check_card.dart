@@ -4,9 +4,11 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/core/validators/app_validators.dart';
 import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
-import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:bawabatelhajj/shared/widgets/required_field_label.dart';
+
+import '../../../../../shared/widgets/custom_container.dart';
+import '../../../../../shared/widgets/gradient_elevated_button.dart';
 
 class RegisterSecurityCheckCard extends StatefulWidget {
   const RegisterSecurityCheckCard({
@@ -43,9 +45,14 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
       child: Form(
         key: widget.formKey,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const CircularIconBadge(icon: LucideIcons.lock),
+            CustomContainer(
+              gradientColors: [cs.primaryContainer, cs.primary],
+              borderRadius: 100,
+              borderWidth: 1,
+              child: const Icon(LucideIcons.lock, color: Colors.white),
+            ),
             const SizedBox(height: 12),
             const CustomText(
               'auth.register.security_title',
@@ -137,7 +144,8 @@ class _RegisterSecurityCheckCardState extends State<RegisterSecurityCheckCard> {
               spacing: 10,
               children: [
                 Expanded(
-                  child: ElevatedButton(
+                  child: GradientElevatedButton(
+                    gradientColor: GradientColors.green,
                     onPressed: widget.onSend,
                     child: const CustomText(
                       'auth.register.next_button',

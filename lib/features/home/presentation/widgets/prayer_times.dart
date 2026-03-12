@@ -233,13 +233,14 @@ class _PrayerTimeCell extends StatelessWidget {
     final nameColor = isActive ? CustomTextColor.white : CustomTextColor.green;
     final timeColor = isActive ? CustomTextColor.white : CustomTextColor.gold;
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: isActive ? cs.primary : cs.brandGold),
-        color: isActive ? cs.primary : null,
-      ),
+    return CustomContainer(
+      borderRadius: 8,
+      borderSide: CustomBorderSide.allBorder,
+      borderWidth: 1,
       padding: const EdgeInsets.all(5),
+      borderColor: isActive ? CustomBorderColor.green : CustomBorderColor.gold,
+      gradientColors: isActive ? [cs.primaryContainer, cs.primary] : null,
+      hasShadow: false,
       child: Column(
         spacing: 10,
         children: [

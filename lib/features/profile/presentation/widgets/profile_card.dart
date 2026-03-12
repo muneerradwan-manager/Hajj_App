@@ -21,6 +21,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../shared/widgets/custom_container.dart';
 import '../../../../shared/widgets/custom_network_image.dart';
 import '../../../../shared/widgets/custom_snackbar.dart';
+import '../../../../shared/widgets/gradient_elevated_button.dart';
 
 part 'profile_card_sections.dart';
 part 'profile_card_shared_widgets.dart';

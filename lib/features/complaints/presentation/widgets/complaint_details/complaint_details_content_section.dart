@@ -10,6 +10,7 @@ import '../../../../../core/entites/attachment.dart';
 import '../../../../../shared/widgets/custom_container.dart';
 import '../../../../../shared/widgets/custom_snackbar.dart';
 import '../../../../../shared/widgets/custom_text.dart';
+import '../../../../../shared/widgets/gradient_elevated_button.dart';
 import '../../../domain/entities/complaint.dart';
 import '../../cubits/complaint_details/complaint_details_cubit.dart';
 import '../../cubits/complaint_details/complaint_details_state.dart';
@@ -105,19 +106,13 @@ class _DeleteComplaintButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
     return BlocBuilder<ComplaintDetailsCubit, ComplaintDetailsState>(
       builder: (context, state) {
         return SizedBox(
           width: double.infinity,
-          child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(backgroundColor: cs.brandRed),
+          child: GradientElevatedButton(
+            gradientColor: GradientColors.red,
             onPressed: state.isDeleting ? null : () => _confirmDelete(context),
-            label: const CustomText(
-              'complaints.action.delete',
-              color: CustomTextColor.white,
-            ),
             icon: state.isDeleting
                 ? const SizedBox.square(
                     dimension: 16,
@@ -127,6 +122,10 @@ class _DeleteComplaintButton extends StatelessWidget {
                     ),
                   )
                 : const Icon(LucideIcons.trash2, color: Colors.white),
+            child: const CustomText(
+              'complaints.action.delete',
+              color: CustomTextColor.white,
+            ),
           ),
         );
       },
@@ -141,9 +140,9 @@ class _DeleteComplaintButton extends StatelessWidget {
 
     if (confirmed != true || !context.mounted) return;
 
-    final result = await context
-        .read<ComplaintDetailsCubit>()
-        .deleteComplaint(complaintId);
+    final result = await context.read<ComplaintDetailsCubit>().deleteComplaint(
+      complaintId,
+    );
 
     if (!context.mounted) return;
 
@@ -181,10 +180,9 @@ class _DeleteComplaintDialog extends StatelessWidget {
               spacing: 12,
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: cs.outline,
-                    ),
+                  child: GradientElevatedButton(
+                    gradientColor: GradientColors.outline,
+                    
                     onPressed: () => Navigator.of(context).pop(false),
                     child: const CustomText(
                       'app.cancel',
@@ -193,10 +191,8 @@ class _DeleteComplaintDialog extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: cs.brandRed,
-                    ),
+                  child: GradientElevatedButton(
+                    gradientColor: GradientColors.red,
                     onPressed: () => Navigator.of(context).pop(true),
                     child: const CustomText(
                       'complaints.action.delete',
@@ -217,10 +213,7 @@ class _DeleteComplaintDialog extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         CustomContainer(
-          gradientColors: [
-            cs.brandRed.withValues(alpha: 0.75),
-            cs.brandRed,
-          ],
+          gradientColors: [cs.brandRed.withValues(alpha: 0.75), cs.brandRed],
           borderWidth: 0,
           width: double.infinity,
           padding: EdgeInsets.zero,
@@ -493,9 +486,7 @@ class _AttachmentItem extends StatelessWidget {
               ),
               errorWidget: (_, _, _) => const SizedBox(
                 height: 100,
-                child: Center(
-                  child: Icon(LucideIcons.imageOff, size: 36),
-                ),
+                child: Center(child: Icon(LucideIcons.imageOff, size: 36)),
               ),
             ),
           ),

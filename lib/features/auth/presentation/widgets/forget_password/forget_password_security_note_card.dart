@@ -1,7 +1,10 @@
+import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
+
+import '../../../../../shared/widgets/custom_container.dart';
 
 class ForgetPasswordSecurityNoteCard extends StatelessWidget {
   const ForgetPasswordSecurityNoteCard({super.key});
@@ -10,20 +13,12 @@ class ForgetPasswordSecurityNoteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return Container(
+    return CustomContainer(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            cs.secondaryContainer.withValues(alpha: 0.95),
-            cs.secondaryContainer.withValues(alpha: 0.75),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      gradientColors: [cs.surfaceDim, cs.brandGold],
+      borderRadius: 12,
+      borderWidth: 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

@@ -36,10 +36,8 @@ class _CreateComplaintDialog extends StatelessWidget {
               spacing: 12,
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: cs.outline,
-                    ),
+                  child: GradientElevatedButton(
+                    gradientColor: GradientColors.outline,
                     onPressed: () => Navigator.of(context).pop(false),
                     child: const CustomText(
                       'app.cancel',

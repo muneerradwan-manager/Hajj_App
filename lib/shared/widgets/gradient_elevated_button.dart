@@ -2,13 +2,15 @@ import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
-enum GradientColors { red, green, gold }
+enum GradientColors { red, green, gold, outline }
 
 class GradientElevatedButton extends StatelessWidget {
   const GradientElevatedButton({
     super.key,
     this.textKey,
     this.child,
+    this.icon,
+    this.iconGap = 8,
     required this.onPressed,
     this.isLoading = false,
     required this.gradientColor,
@@ -21,6 +23,8 @@ class GradientElevatedButton extends StatelessWidget {
 
   final String? textKey;
   final Widget? child;
+  final Widget? icon;
+  final double iconGap;
   final VoidCallback? onPressed;
   final bool isLoading;
   final GradientColors gradientColor;
@@ -31,10 +35,8 @@ class GradientElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    // تحويل enum إلى قائمة ألوان فعلية
     final List<Color> colors = gradientColor.resolve(cs);
 
-    // إذا كان الزر معطل، نطبق شفافية
     final bool isDisabled = onPressed == null || isLoading;
 
     final List<Color> gradientColors = colors
@@ -50,11 +52,15 @@ class GradientElevatedButton extends StatelessWidget {
           colors: gradientColors,
         ),
       ),
+
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           padding: padding,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+          ),
         ),
         onPressed: isLoading ? null : onPressed,
         child: isLoading
@@ -66,13 +72,29 @@ class GradientElevatedButton extends StatelessWidget {
                   color: Colors.white,
                 ),
               )
-            : child ??
-                  CustomText(
-                    textKey!,
-                    type: CustomTextType.titleMedium,
-                    color: CustomTextColor.white,
-                  ),
+            : _buildContent(),
       ),
+    );
+  }
+
+  Widget _buildContent() {
+    final Widget label =
+        child ??
+        CustomText(
+          textKey!,
+          type: CustomTextType.titleMedium,
+          color: CustomTextColor.white,
+        );
+
+    if (icon == null) return label;
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        icon!,
+        SizedBox(width: iconGap),
+        label,
+      ],
     );
   }
 }
@@ -87,6 +109,8 @@ extension GradientColorsX on GradientColors {
         return [cs.primaryContainer, cs.primary];
       case GradientColors.gold:
         return [cs.surfaceDim, cs.brandGold];
+      case GradientColors.outline:
+        return [cs.outlineVariant, cs.outline];
     }
   }
 }

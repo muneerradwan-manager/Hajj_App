@@ -3,8 +3,10 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
-import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
+
+import '../../../../../shared/widgets/custom_container.dart';
+import '../../../../../shared/widgets/gradient_elevated_button.dart';
 
 class ForgetPasswordEmailCard extends StatelessWidget {
   const ForgetPasswordEmailCard({
@@ -32,9 +34,14 @@ class ForgetPasswordEmailCard extends StatelessWidget {
       child: Form(
         key: formKey,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const CircularIconBadge(icon: LucideIcons.mail, iconSize: 30),
+            CustomContainer(
+              gradientColors: [cs.primaryContainer, cs.primary],
+              borderRadius: 100,
+              borderWidth: 1,
+              child: const Icon(LucideIcons.mail, color: Colors.white),
+            ),
             const SizedBox(height: 12),
             const CustomText(
               'auth.forget.email_card_title',
@@ -71,8 +78,13 @@ class ForgetPasswordEmailCard extends StatelessWidget {
               validator: validateEmail,
             ),
             const SizedBox(height: 20),
-            ElevatedButton.icon(
-              label: isLoading
+            GradientElevatedButton(
+              gradientColor: GradientColors.green,
+              onPressed: isLoading ? null : onSend,
+              icon: isLoading
+                  ? const SizedBox.shrink()
+                  : Icon(LucideIcons.send, size: 18, color: cs.onPrimary),
+              child: isLoading
                   ? SizedBox(
                       width: 18,
                       height: 18,
@@ -86,10 +98,6 @@ class ForgetPasswordEmailCard extends StatelessWidget {
                       type: CustomTextType.titleMedium,
                       color: CustomTextColor.white,
                     ),
-              onPressed: isLoading ? null : onSend,
-              icon: isLoading
-                  ? const SizedBox.shrink()
-                  : Icon(LucideIcons.send, size: 18, color: cs.onPrimary),
             ),
             const SizedBox(height: 20),
             const CustomText(

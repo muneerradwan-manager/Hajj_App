@@ -232,25 +232,20 @@ class _SaudiNumberCard extends StatelessWidget {
               spacing: 10,
               children: [
                 Expanded(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: cs.outline.withValues(alpha: .7),
-                    ),
+                  child: GradientElevatedButton(
+                    gradientColor: GradientColors.outline,
                     onPressed: onToggleEditing,
-                    label: const CustomText(
+                    icon: Icon(LucideIcons.x, color: cs.primary),
+                    child: const CustomText(
                       'app.cancel',
                       color: CustomTextColor.green,
                     ),
-                    icon: Icon(LucideIcons.x, color: cs.primary),
                   ),
                 ),
                 Expanded(
-                  child: ElevatedButton.icon(
+                  child: GradientElevatedButton(
+                    gradientColor: GradientColors.green,
                     onPressed: isSaving ? null : onSave,
-                    label: const CustomText(
-                      'profile.save',
-                      color: CustomTextColor.white,
-                    ),
                     icon: isSaving
                         ? const SizedBox.square(
                             dimension: 16,
@@ -260,6 +255,10 @@ class _SaudiNumberCard extends StatelessWidget {
                             ),
                           )
                         : const Icon(LucideIcons.check),
+                    child: const CustomText(
+                      'profile.save',
+                      color: CustomTextColor.white,
+                    ),
                   ),
                 ),
               ],
@@ -312,17 +311,15 @@ class _SaudiNumberCard extends StatelessWidget {
                   ),
                 )
               : Expanded(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: cs.brandRed,
-                    ),
+                  child: GradientElevatedButton(
+                    gradientColor: GradientColors.red,
                     onPressed: onToggleEditing,
-                    label: const CustomText(
+                    icon: const Icon(LucideIcons.pen),
+                    child: const CustomText(
                       'profile.add_saudi_number',
                       color: CustomTextColor.white,
                       type: CustomTextType.labelSmall,
                     ),
-                    icon: const Icon(LucideIcons.pen),
                   ),
                 ),
         ],
@@ -471,7 +468,7 @@ class _ResidenceSection extends StatelessWidget {
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
-              _MapButton(backgroundColor: cs.brandRed),
+              const _MapButton(backgroundColor: GradientColors.red),
             ],
           ),
           const SizedBox(height: 20),
@@ -733,7 +730,7 @@ class _RitualsSection extends StatelessWidget {
                 containerColor: Colors.white,
                 borderColor: cs.outline,
               ),
-              _MapButton(backgroundColor: cs.brandGold),
+              const _MapButton(backgroundColor: GradientColors.gold),
             ],
           ),
         ] else ...[
@@ -958,16 +955,11 @@ class _PassportSectionState extends State<_PassportSection> {
           spacing: 10,
           children: [
             Expanded(
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(backgroundColor: cs.brandRed),
+              child: GradientElevatedButton(
+                gradientColor: GradientColors.red,
                 onPressed: _hasPassportImage && !_isBusy
                     ? _downloadPassportImage
                     : null,
-                label: const CustomText(
-                  'profile.download_image',
-                  color: CustomTextColor.white,
-                  type: CustomTextType.bodySmall,
-                ),
                 icon: _isDownloading
                     ? SizedBox.square(
                         dimension: 16,
@@ -977,18 +969,19 @@ class _PassportSectionState extends State<_PassportSection> {
                         ),
                       )
                     : const Icon(LucideIcons.download),
-              ),
-            ),
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: _hasPassportImage && !_isBusy
-                    ? _sharePassportImage
-                    : null,
-                label: const CustomText(
-                  'profile.share_image',
+                child: const CustomText(
+                  'profile.download_image',
                   color: CustomTextColor.white,
                   type: CustomTextType.bodySmall,
                 ),
+              ),
+            ),
+            Expanded(
+              child: GradientElevatedButton(
+                gradientColor: GradientColors.green,
+                onPressed: _hasPassportImage && !_isBusy
+                    ? _sharePassportImage
+                    : null,
                 icon: _isSharing
                     ? SizedBox.square(
                         dimension: 16,
@@ -998,6 +991,11 @@ class _PassportSectionState extends State<_PassportSection> {
                         ),
                       )
                     : const Icon(LucideIcons.share2),
+                child: const CustomText(
+                  'profile.share_image',
+                  color: CustomTextColor.white,
+                  type: CustomTextType.bodySmall,
+                ),
               ),
             ),
           ],

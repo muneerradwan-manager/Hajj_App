@@ -5,6 +5,8 @@ import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:bawabatelhajj/shared/widgets/directional_back_arrow.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../../../../shared/widgets/custom_container.dart';
+
 class RegisterHeroHeader extends StatelessWidget {
   const RegisterHeroHeader({
     super.key,
@@ -29,9 +31,11 @@ class RegisterHeroHeader extends StatelessWidget {
       _ => 'auth.register.step_success',
     };
 
-    return Container(
+    return CustomContainer(
       height: height + statusBarInset,
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 18),
+      borderWidth: 0,
+      containerColor: Colors.transparent,
       child: SafeArea(
         bottom: false,
         child: Column(
@@ -69,13 +73,12 @@ class RegisterHeroHeader extends StatelessWidget {
                   ],
                 ),
 
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: .3),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                CustomContainer(
+                  containerColor: Colors.white,
+                  hasOpacity: .3,
                   width: 60,
                   height: 40,
+                  padding: EdgeInsets.zero,
                   child: Icon(LucideIcons.userPlus, color: cs.brandGold),
                 ),
               ],
@@ -128,12 +131,11 @@ class RegisterStepProgress extends StatelessWidget {
     final lInactive = lineInactiveColor ?? cs.outline.withValues(alpha: .35);
     final lActive = lineActiveColor ?? cs.primary;
 
-    return Container(
+    return CustomContainer(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
-      decoration: BoxDecoration(
-        color: cs.onPrimary.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      containerColor: cs.onPrimary,
+      hasOpacity: .12,
+      borderRadius: 12,
       child: Column(
         spacing: 10,
         children: [

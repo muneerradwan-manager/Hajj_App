@@ -27,7 +27,7 @@ class SendHelpButton extends StatelessWidget {
         }
       },
       child: CustomContainer(
-        gradientColors: [cs.brandRed, cs.brandRedAlt],
+        gradientColors: [cs.brandRedAlt, cs.brandRed],
         padding: const EdgeInsets.all(15),
         child: Row(
           spacing: 10,

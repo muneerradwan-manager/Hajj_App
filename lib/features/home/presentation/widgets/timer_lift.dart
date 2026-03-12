@@ -186,11 +186,10 @@ class _TimerLiftState extends State<TimerLift> {
                     translate: false,
                   ),
                 Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: cs.brandRed,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                  child: CustomContainer(
+                    gradientColors: [cs.brandRedAlt, cs.brandRed],
+                    borderRadius: 8,
+                    borderWidth: 1,
                     padding: const EdgeInsets.all(10),
                     child: Column(
                       children: [

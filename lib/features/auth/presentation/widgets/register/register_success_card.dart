@@ -3,11 +3,12 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
-import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:bawabatelhajj/shared/widgets/gradient_elevated_button.dart';
 import 'package:bawabatelhajj/shared/widgets/important_note_box.dart';
 import 'package:bawabatelhajj/shared/widgets/numbered_steps_list.dart';
+
+import '../../../../../shared/widgets/custom_container.dart';
 
 class RegisterSuccessCard extends StatelessWidget {
   const RegisterSuccessCard({super.key, required this.onContinueToLogin});
@@ -22,9 +23,14 @@ class RegisterSuccessCard extends StatelessWidget {
       padding: const EdgeInsets.all(17),
       borderColor: cs.primaryContainer,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const CircularIconBadge(icon: LucideIcons.check),
+          CustomContainer(
+            gradientColors: [cs.primaryContainer, cs.primary],
+            borderRadius: 100,
+            borderWidth: 1,
+            child: const Icon(LucideIcons.check, color: Colors.white),
+          ),
           const SizedBox(height: 14),
           const CustomText(
             'auth.register.success_title',
@@ -40,13 +46,12 @@ class RegisterSuccessCard extends StatelessWidget {
             color: CustomTextColor.green,
           ),
           const SizedBox(height: 14),
-          Container(
+          CustomContainer(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: cs.surfaceContainerLow,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: cs.secondaryContainer),
-            ),
+            borderRadius: 12,
+            containerColor: cs.surfaceContainerLow,
+            borderColor: CustomBorderColor.lightGold,
+            borderWidth: 1,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

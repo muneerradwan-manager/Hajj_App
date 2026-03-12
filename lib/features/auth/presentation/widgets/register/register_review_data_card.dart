@@ -3,10 +3,12 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
-import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:bawabatelhajj/shared/widgets/important_note_box.dart';
 import 'package:bawabatelhajj/shared/widgets/info_display_tile.dart';
+
+import '../../../../../shared/widgets/custom_container.dart';
+import '../../../../../shared/widgets/gradient_elevated_button.dart';
 
 class RegisterReviewDataCard extends StatefulWidget {
   const RegisterReviewDataCard({
@@ -57,10 +59,15 @@ class _RegisterReviewDataCardState extends State<RegisterReviewDataCard> {
       child: Form(
         key: widget.formKey,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           spacing: 12,
           children: [
-            const CircularIconBadge(icon: LucideIcons.check),
+            CustomContainer(
+              gradientColors: [cs.primaryContainer, cs.primary],
+              borderRadius: 100,
+              borderWidth: 1,
+              child: const Icon(LucideIcons.check, color: Colors.white),
+            ),
             const CustomText(
               'auth.register.review_title',
               textAlign: TextAlign.center,
@@ -136,7 +143,8 @@ class _RegisterReviewDataCardState extends State<RegisterReviewDataCard> {
               spacing: 10,
               children: [
                 Expanded(
-                  child: ElevatedButton(
+                  child: GradientElevatedButton(
+                    gradientColor: GradientColors.green,
                     onPressed: widget.onSend,
                     child: const CustomText(
                       'auth.register.create_account_button',

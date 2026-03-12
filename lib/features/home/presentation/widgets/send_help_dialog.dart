@@ -6,7 +6,9 @@ import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/core/constants/app_images.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 
+import '../../../../shared/widgets/custom_container.dart';
 import '../../../../shared/widgets/custom_snackbar.dart';
+import '../../../../shared/widgets/gradient_elevated_button.dart';
 
 /// Shows the "Send Help" confirmation dialog.
 ///
@@ -125,6 +127,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
       builder: (ctx) => AlertDialog(
         backgroundColor: AppColors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+
         title: CustomText(
           titleKey,
           type: CustomTextType.titleMedium,
@@ -165,10 +168,11 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
     final cs = Theme.of(context).colorScheme;
 
     return Dialog(
-      backgroundColor: AppColors.white,
+      backgroundColor: Colors.white,
       insetPadding: const EdgeInsets.symmetric(horizontal: 24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       clipBehavior: Clip.antiAlias,
+      elevation: 0,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -177,12 +181,12 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
           // ── Info items ──
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xffF9F8F6),
-                borderRadius: BorderRadius.circular(16),
-              ),
+            child: CustomContainer(
+              containerColor: const Color(0xffF9F8F6),
+              borderRadius: 16,
+              borderWidth: 0,
               padding: const EdgeInsets.symmetric(vertical: 8),
+              hasShadow: false,
               child: Column(
                 children: [
                   const _InfoTile(
@@ -223,18 +227,11 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
                 // Send location button
                 _buildSendButton(cs),
                 // Cancel button
-                OutlinedButton(
+                GradientElevatedButton(
                   onPressed: _isSending
                       ? null
                       : () => Navigator.of(context).pop(),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    backgroundColor: cs.surfaceDim,
-                    side: BorderSide(color: cs.brandGold.withValues(alpha: .3)),
-                  ),
+                  gradientColor: GradientColors.outline,
                   child: const CustomText(
                     'home.help_dialog_cancel',
                     type: CustomTextType.bodyLarge,
@@ -254,16 +251,11 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
       alignment: Alignment.center,
       children: [
         // Gradient + pattern background
-        Container(
+        CustomContainer(
           width: double.infinity,
-
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xff7A2631), Color(0xff672146)],
-            ),
-          ),
+          gradientColors: [cs.brandRedAlt, cs.brandRed],
+          borderWidth: 0,
+          padding: EdgeInsets.zero,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -274,39 +266,34 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
                   child: Image.asset(AppImages.background, fit: BoxFit.cover),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 40, bottom: 30),
+              const Padding(
+                padding: EdgeInsets.only(top: 40, bottom: 30),
                 child: Column(
                   children: [
                     // Location icon badge
-                    Container(
+                    CustomContainer(
                       width: 60,
                       height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.3),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: cs.shadow.withValues(alpha: 0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
+                      borderRadius: 100,
+                      borderWidth: 0,
+                      borderHasOpacity: .3,
+                      containerColor: Colors.white,
+                      hasOpacity: 0.3,
+                      padding: EdgeInsets.zero,
+                      child: Icon(
                         LucideIcons.mapPin,
                         color: AppColors.white,
                         size: 28,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    const CustomText(
+                    SizedBox(height: 16),
+                    CustomText(
                       'home.help_title',
                       type: CustomTextType.titleLarge,
                       color: CustomTextColor.white,
                     ),
-                    const SizedBox(height: 6),
-                    const Padding(
+                    SizedBox(height: 6),
+                    Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: CustomText(
                         'home.help_dialog_subtitle',
@@ -338,48 +325,30 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
   }
 
   Widget _buildSendButton(ColorScheme cs) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xff7A2631), Color(0xff672146)],
-        ),
-      ),
-      child: ElevatedButton(
-        onPressed: _isSending ? null : _sendLocation,
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          backgroundColor: Colors.transparent,
-          disabledBackgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: _isSending
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: AppColors.white,
-                ),
-              )
-            : const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 8,
-                children: [
-                  Icon(LucideIcons.mapPin, color: AppColors.white, size: 18),
-                  CustomText(
-                    'home.help_dialog_send_button',
-                    type: CustomTextType.titleSmall,
-                    color: CustomTextColor.white,
-                  ),
-                ],
+    return GradientElevatedButton(
+      gradientColor: GradientColors.red,
+      onPressed: _isSending ? null : _sendLocation,
+      child: _isSending
+          ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppColors.white,
               ),
-      ),
+            )
+          : const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 8,
+              children: [
+                Icon(LucideIcons.mapPin, color: AppColors.white, size: 18),
+                CustomText(
+                  'home.help_dialog_send_button',
+                  type: CustomTextType.titleSmall,
+                  color: CustomTextColor.white,
+                ),
+              ],
+            ),
     );
   }
 }

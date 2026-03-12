@@ -14,6 +14,7 @@ import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_state.dart
 import 'package:bawabatelhajj/shared/widgets/exit_app_dialog.dart';
 
 import '../../../../shared/widgets/custom_text.dart';
+import '../../../../shared/widgets/gradient_elevated_button.dart';
 import '../widgets/send_help_dialog.dart';
 import 'home_view.dart';
 
@@ -93,106 +94,106 @@ class _NavigationBottomState extends State<NavigationBottom> {
         context.go(AppRoutes.loginPath);
       },
       child: PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, _) {
-        if (didPop) return;
-        _handleExitRequest();
-      },
-      child: Scaffold(
-        body: PageView(
-          controller: _pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          onPageChanged: (index) {
-            if (_selectedIndex == index) return;
-            setState(() => _selectedIndex = index);
-          },
-          children: _pages,
-        ),
-        bottomNavigationBar: Stack(
-          alignment: Alignment.topCenter,
-          clipBehavior: Clip.none, // Allows the button to overflow the top
-          children: [
-            // 1. The Actual Navigation Bar
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: cs.surface,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 14,
-                    offset: const Offset(0, -4),
-                  ),
-                ],
-              ),
-              child: SafeArea(
-                top: false,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 10),
-                  child: Row(
-                    children: List.generate(_navItems.length, (index) {
-                      // Create an empty "hole" in the middle of the Row
-                      if (index == 2) {
-                        return const Expanded(child: SizedBox.shrink());
-                      }
-
-                      final item = _navItems[index];
-                      return Expanded(
-                        child: _BottomNavItem(
-                          labelKey: item.labelKey,
-                          icon: item.icon,
-                          isSelected: index == _selectedIndex,
-                          onTap: () => _onTabSelected(index),
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-              ),
-            ),
-
-            // 2. The Overlapping Button (30% above the top)
-            Positioned(
-              top: -15,
-              child: GestureDetector(
-                onTap: () => showSendHelpDialog(context),
-                child: Column(
-                  children: [
-                    Container(
-                      width: 65,
-                      height: 65,
-                      decoration: BoxDecoration(
-                        color: cs.brandRed,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
-                        boxShadow: [
-                          BoxShadow(
-                            color: cs.brandRed.withValues(alpha: 0.3),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        LucideIcons.info,
-                        color: Colors.white,
-                        size: 28,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    const CustomText(
-                      'nav.help',
-                      type: CustomTextType.labelSmall,
-                      color: CustomTextColor.red,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) {
+          if (didPop) return;
+          _handleExitRequest();
+        },
+        child: Scaffold(
+          body: PageView(
+            controller: _pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            onPageChanged: (index) {
+              if (_selectedIndex == index) return;
+              setState(() => _selectedIndex = index);
+            },
+            children: _pages,
+          ),
+          bottomNavigationBar: Stack(
+            alignment: Alignment.topCenter,
+            clipBehavior: Clip.none, // Allows the button to overflow the top
+            children: [
+              // 1. The Actual Navigation Bar
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: cs.surface,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 14,
+                      offset: const Offset(0, -4),
                     ),
                   ],
                 ),
+                child: SafeArea(
+                  top: false,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 10),
+                    child: Row(
+                      children: List.generate(_navItems.length, (index) {
+                        // Create an empty "hole" in the middle of the Row
+                        if (index == 2) {
+                          return const Expanded(child: SizedBox.shrink());
+                        }
+
+                        final item = _navItems[index];
+                        return Expanded(
+                          child: _BottomNavItem(
+                            labelKey: item.labelKey,
+                            icon: item.icon,
+                            isSelected: index == _selectedIndex,
+                            onTap: () => _onTabSelected(index),
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ],
+
+              // 2. The Overlapping Button (30% above the top)
+              Positioned(
+                top: -15,
+                child: GestureDetector(
+                  onTap: () => showSendHelpDialog(context),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 65,
+                        height: 65,
+                        decoration: BoxDecoration(
+                          color: cs.brandRed,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: cs.brandRed.withValues(alpha: 0.3),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          LucideIcons.info,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      const CustomText(
+                        'nav.help',
+                        type: CustomTextType.labelSmall,
+                        color: CustomTextColor.red,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
@@ -203,15 +204,14 @@ class MoreView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: cs.brandRed),
+          GradientElevatedButton(
+            gradientColor: GradientColors.red,
             onPressed: () async {
               await getIt<LoginCubit>().logout();
               if (context.mounted) {

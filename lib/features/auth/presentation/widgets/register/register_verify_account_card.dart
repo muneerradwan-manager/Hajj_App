@@ -8,9 +8,10 @@ import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/core/validators/app_validators.dart';
 import 'package:bawabatelhajj/shared/widgets/app_card_container.dart';
-import 'package:bawabatelhajj/shared/widgets/circular_icon_badge.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:bawabatelhajj/shared/widgets/gradient_elevated_button.dart';
+
+import '../../../../../shared/widgets/custom_container.dart';
 
 class RegisterVerifyAccountCard extends StatefulWidget {
   const RegisterVerifyAccountCard({
@@ -100,9 +101,14 @@ class _RegisterVerifyAccountCardState extends State<RegisterVerifyAccountCard> {
       padding: const EdgeInsets.all(17),
       borderColor: cs.primaryContainer,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const CircularIconBadge(icon: LucideIcons.shield),
+          CustomContainer(
+            gradientColors: [cs.primaryContainer, cs.primary],
+            borderRadius: 100,
+            borderWidth: 1,
+            child: const Icon(LucideIcons.shield, color: Colors.white),
+          ),
           const SizedBox(height: 14),
           const CustomText(
             'auth.register.verify_title',
@@ -186,13 +192,12 @@ class _RegisterVerifyAccountCardState extends State<RegisterVerifyAccountCard> {
                         ),
                 ),
           const SizedBox(height: 20),
-          Container(
+          CustomContainer(
             padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-            decoration: BoxDecoration(
-              color: cs.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(9),
-              border: Border.all(color: cs.outlineVariant),
-            ),
+            borderWidth: 1,
+            borderColor: CustomBorderColor.hint,
+            containerColor: cs.surfaceContainerHighest,
+            borderRadius: 9,
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
