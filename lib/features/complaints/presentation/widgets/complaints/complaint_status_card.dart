@@ -84,7 +84,7 @@ class ComplaintStatusCard extends StatelessWidget {
               CustomContainer(
                 padding: const EdgeInsets.all(5),
                 borderRadius: 7.5,
-                containerColor: statusColor.withValues(alpha:  0.1),
+                containerColor: statusColor.withValues(alpha: 0.1),
                 borderColor: borderColor,
                 borderWidth: 1,
                 child: CustomText(
@@ -118,6 +118,7 @@ class ComplaintStatusCard extends StatelessWidget {
                   borderWidth: 0,
                   borderRadius: 12,
                   child: const Row(
+                    mainAxisSize: MainAxisSize.min,
                     spacing: 5,
                     children: [
                       Icon(LucideIcons.eye, color: Colors.white, size: 20),
@@ -141,6 +142,7 @@ class ComplaintStatusCard extends StatelessWidget {
                   hasOpacity: .2,
                   hasShadow: false,
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     spacing: 5,
                     children: [
                       Icon(
@@ -162,15 +164,18 @@ class ComplaintStatusCard extends StatelessWidget {
                     ],
                   ),
                 ),
+              const Spacer(),
               if (complaint.createdAt.isNotEmpty && date != null)
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   spacing: 5,
                   children: [
-                    Icon(LucideIcons.calendar, color: cs.outline),
+                    Icon(LucideIcons.calendar, color: cs.outline, size: 18),
                     CustomText(
                       date!,
                       translate: false,
                       color: CustomTextColor.hint,
+                      type: CustomTextType.labelSmall,
                     ),
                   ],
                 ),

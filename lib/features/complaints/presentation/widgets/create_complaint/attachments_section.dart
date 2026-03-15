@@ -60,7 +60,7 @@ class _AttachmentsSectionState extends State<AttachmentsSection> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 20,
+            spacing: 15,
             children: [
               CustomContainer(
                 gradientColors: [cs.surfaceDim, cs.brandGold],

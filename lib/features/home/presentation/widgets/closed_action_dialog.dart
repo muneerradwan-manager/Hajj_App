@@ -39,7 +39,9 @@ class _ClosedActionDialogState extends State<_ClosedActionDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       clipBehavior: Clip.antiAlias,
       elevation: 0,
-      child: Column(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 450),
+        child: Column(
         mainAxisSize: MainAxisSize.min,
         spacing: 20,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,6 +106,7 @@ class _ClosedActionDialogState extends State<_ClosedActionDialog> {
             ),
           ),
         ],
+      ),
       ),
     );
   }

@@ -154,10 +154,12 @@ class _DateCard extends StatelessWidget {
               spacing: 5,
               children: [
                 Icon(icon, color: cs.surfaceDim),
-                CustomText(
-                  labelKey,
-                  type: CustomTextType.labelSmall,
-                  color: CustomTextColor.white,
+                Flexible(
+                  child: CustomText(
+                    labelKey,
+                    type: CustomTextType.labelSmall,
+                    color: CustomTextColor.white,
+                  ),
                 ),
               ],
             ),

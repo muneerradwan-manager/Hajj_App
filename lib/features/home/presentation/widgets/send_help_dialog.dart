@@ -173,7 +173,9 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       clipBehavior: Clip.antiAlias,
       elevation: 0,
-      child: Column(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 450),
+        child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // ── Hero header ──
@@ -242,6 +244,7 @@ class _SendHelpDialogState extends State<_SendHelpDialog> {
             ),
           ),
         ],
+      ),
       ),
     );
   }
