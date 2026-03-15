@@ -32,10 +32,11 @@ class ComplaintDetailsState extends Equatable {
     String? errorMessage,
     bool? isRefreshing,
     bool? isDeleting,
+    bool clearComplaint = false,
   }) {
     return ComplaintDetailsState(
       status: status ?? this.status,
-      complaint: complaint ?? this.complaint,
+      complaint: clearComplaint ? null : (complaint ?? this.complaint),
       errorMessage: errorMessage ?? this.errorMessage,
       isRefreshing: isRefreshing ?? this.isRefreshing,
       isDeleting: isDeleting ?? this.isDeleting,

@@ -15,8 +15,7 @@ class LoginCubit extends SafeCubit<LoginState> {
 
     safeEmit(
       state.copyWith(
-        isSubmitting: true,
-        isAuthenticated: false,
+        status: LoginStatus.submitting,
         errorMessage: '',
         infoMessage: '',
       ),
@@ -30,16 +29,14 @@ class LoginCubit extends SafeCubit<LoginState> {
     result.fold(
       (failure) => safeEmit(
         state.copyWith(
-          isSubmitting: false,
-          isAuthenticated: false,
+          status: LoginStatus.initial,
           errorMessage: failure.userMessage,
           infoMessage: '',
         ),
       ),
       (_) => safeEmit(
         state.copyWith(
-          isSubmitting: false,
-          isAuthenticated: true,
+          status: LoginStatus.authenticated,
           errorMessage: '',
           infoMessage: '',
         ),
@@ -51,23 +48,21 @@ class LoginCubit extends SafeCubit<LoginState> {
     if (state.isSubmitting) return;
 
     safeEmit(
-      state.copyWith(isSubmitting: true, errorMessage: '', infoMessage: ''),
+      state.copyWith(status: LoginStatus.submitting, errorMessage: '', infoMessage: ''),
     );
 
     final result = await _logoutUseCase();
     result.fold(
       (failure) => safeEmit(
         state.copyWith(
-          isSubmitting: false,
-          isAuthenticated: false,
+          status: LoginStatus.initial,
           errorMessage: failure.userMessage,
           infoMessage: '',
         ),
       ),
       (message) => safeEmit(
         state.copyWith(
-          isSubmitting: false,
-          isAuthenticated: false,
+          status: LoginStatus.initial,
           errorMessage: '',
           infoMessage: message,
         ),
@@ -82,6 +77,6 @@ class LoginCubit extends SafeCubit<LoginState> {
 
   void resetAuthState() {
     if (!state.isAuthenticated) return;
-    safeEmit(state.copyWith(isAuthenticated: false));
+    safeEmit(state.copyWith(status: LoginStatus.initial));
   }
 }

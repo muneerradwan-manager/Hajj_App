@@ -170,11 +170,6 @@ class _BasicInfoSection extends StatelessWidget {
       ],
     );
   }
-
-  String _fallback(String value) {
-    final normalized = value.trim();
-    return normalized.isEmpty ? '-' : normalized;
-  }
 }
 
 class _SaudiNumberCard extends StatelessWidget {
@@ -273,7 +268,8 @@ class _SaudiNumberCard extends StatelessWidget {
       borderWidth: 1,
       borderColor: CustomBorderColor.gold,
       hasOpacity: .5,
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+      hasShadow: false,
       child: Row(
         children: [
           const Expanded(
@@ -299,13 +295,18 @@ class _SaudiNumberCard extends StatelessWidget {
                       ),
                       IconButton.filled(
                         style: IconButton.styleFrom(
+                          elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
                           backgroundColor: cs.brandGold,
                         ),
                         onPressed: onToggleEditing,
-                        icon: const Icon(LucideIcons.pen, color: Colors.white),
+                        icon: const Icon(
+                          LucideIcons.pen,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ],
                   ),
@@ -397,8 +398,15 @@ class _StaffList extends StatelessWidget {
       );
     }
 
-    for (var index = 0; index < applicants.length; index++) {
-      final applicant = applicants[index];
+    final sorted = List<UserApplicant>.from(applicants)
+      ..sort(
+        (a, b) => _rolePriority(
+          a.applicantType,
+        ).compareTo(_rolePriority(b.applicantType)),
+      );
+
+    for (var index = 0; index < sorted.length; index++) {
+      final applicant = sorted[index];
       rows.add(
         _InfoRow(
           labelKey: applicant.applicantType.trim().isEmpty
@@ -408,7 +416,7 @@ class _StaffList extends StatelessWidget {
           translateLabel: applicant.applicantType.trim().isEmpty,
         ),
       );
-      if (index < applicants.length - 1) {
+      if (index < sorted.length - 1) {
         rows.add(const SizedBox(height: 10));
       }
     }
@@ -419,9 +427,11 @@ class _StaffList extends StatelessWidget {
     );
   }
 
-  String _fallback(String value) {
-    final normalized = value.trim();
-    return normalized.isEmpty ? '-' : normalized;
+  int _rolePriority(String applicantType) {
+    final type = applicantType.trim().toLowerCase();
+    if (type.contains('رئيس') || type.contains('رئيسة')) return 0;
+    if (type.contains('موجه') || type.contains('موجهة')) return 1;
+    return 2;
   }
 }
 
@@ -501,11 +511,6 @@ class _ResidenceSection extends StatelessWidget {
         ],
       ],
     );
-  }
-
-  String _fallback(String value) {
-    final normalized = value.trim();
-    return normalized.isEmpty ? '-' : normalized;
   }
 }
 
@@ -658,11 +663,6 @@ class _FlightsSection extends StatelessWidget {
     final day = date.day.toString().padLeft(2, '0');
     return '${date.year}-$month-$day';
   }
-
-  String _fallback(String value) {
-    final normalized = value.trim();
-    return normalized.isEmpty ? '-' : normalized;
-  }
 }
 
 class _RitualsSection extends StatelessWidget {
@@ -741,11 +741,6 @@ class _RitualsSection extends StatelessWidget {
         ],
       ],
     );
-  }
-
-  String _fallback(String value) {
-    final normalized = value.trim();
-    return normalized.isEmpty ? '-' : normalized;
   }
 }
 
@@ -886,11 +881,6 @@ class _LeadershipSection extends StatelessWidget {
     }
     return '';
   }
-
-  String _fallback(String value) {
-    final normalized = value.trim();
-    return normalized.isEmpty ? '-' : normalized;
-  }
 }
 
 class _PassportSection extends StatefulWidget {
@@ -1028,35 +1018,16 @@ class _PassportSectionState extends State<_PassportSection> {
     setState(() => _isDownloading = true);
 
     try {
-      final response = await Dio().get<List<int>>(
-        imageUrl,
-        options: Options(responseType: ResponseType.bytes),
-      );
-
-      final fileName = _resolveFileNameFromUrl(imageUrl);
-      final result = await SaverGallery.saveImage(
-        Uint8List.fromList(response.data!),
-        fileName: fileName,
-        androidRelativePath: 'Pictures/Hajj App',
-        skipIfExists: false,
-      );
-
+      final success = await downloadImageToGallery(imageUrl);
       if (!mounted) return;
-      if (result.isSuccess) {
-        showMessage(
-          context,
-          'profile.passport_download_success',
-          SnackBarType.success,
-          translate: true,
-        );
-      } else {
-        showMessage(
-          context,
-          'profile.passport_download_failed',
-          SnackBarType.failuer,
-          translate: true,
-        );
-      }
+      showMessage(
+        context,
+        success
+            ? 'profile.passport_download_success'
+            : 'profile.passport_download_failed',
+        success ? SnackBarType.success : SnackBarType.failuer,
+        translate: true,
+      );
     } catch (_) {
       if (!mounted) return;
       showMessage(
@@ -1066,9 +1037,7 @@ class _PassportSectionState extends State<_PassportSection> {
         translate: true,
       );
     } finally {
-      if (mounted) {
-        setState(() => _isDownloading = false);
-      }
+      if (mounted) setState(() => _isDownloading = false);
     }
   }
 
@@ -1090,19 +1059,8 @@ class _PassportSectionState extends State<_PassportSection> {
     setState(() => _isSharing = true);
 
     try {
-      final tempDirectory = await _resolveShareCacheDirectory();
-      final file = await _downloadImageToDirectory(
-        imageUrl: imageUrl,
-        directory: tempDirectory,
-      );
-
-      if (!mounted) return;
       final title = 'profile.passport_image'.tr(context);
-      final resolvedName = _resolveShareNameFromFile(file.path);
-
-      await Share.shareXFiles([
-        XFile(file.path),
-      ], text: '$resolvedName - $title');
+      await shareImage(imageUrl, title);
     } catch (_) {
       if (!mounted) return;
       showMessage(
@@ -1112,19 +1070,14 @@ class _PassportSectionState extends State<_PassportSection> {
         translate: true,
       );
     } finally {
-      if (mounted) {
-        setState(() => _isSharing = false);
-      }
+      if (mounted) setState(() => _isSharing = false);
     }
   }
 
   Future<bool> _ensureMediaPermission() async {
-    final status = await _requestMediaPermission();
+    final status = await requestMediaPermission();
 
-    if (_isPermissionGranted(status)) {
-      return true;
-    }
-
+    if (isPermissionGranted(status)) return true;
     if (!mounted) return false;
 
     if (status.isPermanentlyDenied || status.isRestricted) {
@@ -1139,31 +1092,6 @@ class _PassportSectionState extends State<_PassportSection> {
       translate: true,
     );
     return false;
-  }
-
-  Future<PermissionStatus> _requestMediaPermission() async {
-    if (Platform.isIOS) {
-      return Permission.photos.request();
-    }
-
-    if (Platform.isAndroid) {
-      final photosStatus = await Permission.photos.request();
-      if (_isPermissionGranted(photosStatus)) return photosStatus;
-
-      final storageStatus = await Permission.storage.request();
-      if (_isPermissionGranted(storageStatus)) return storageStatus;
-
-      if (photosStatus.isPermanentlyDenied || photosStatus.isRestricted) {
-        return photosStatus;
-      }
-      return storageStatus;
-    }
-
-    return PermissionStatus.granted;
-  }
-
-  bool _isPermissionGranted(PermissionStatus status) {
-    return status.isGranted || status.isLimited;
   }
 
   Future<void> _showSettingsDialog() async {
@@ -1197,54 +1125,5 @@ class _PassportSectionState extends State<_PassportSection> {
     if (shouldOpenSettings == true) {
       await openAppSettings();
     }
-  }
-
-  Future<Directory> _resolveShareCacheDirectory() async {
-    final tempDir = await getTemporaryDirectory();
-    return Directory('${tempDir.path}${Platform.pathSeparator}passport_share');
-  }
-
-  Future<File> _downloadImageToDirectory({
-    required String imageUrl,
-    required Directory directory,
-  }) async {
-    await directory.create(recursive: true);
-
-    final fileName = _resolveFileNameFromUrl(imageUrl);
-    final file = File('${directory.path}${Platform.pathSeparator}$fileName');
-
-    await Dio().download(
-      imageUrl,
-      file.path,
-      options: Options(responseType: ResponseType.bytes),
-      deleteOnError: true,
-    );
-
-    return file;
-  }
-
-  String _resolveFileNameFromUrl(String imageUrl) {
-    try {
-      final uri = Uri.parse(imageUrl);
-      if (uri.pathSegments.isNotEmpty) {
-        final lastSegment = uri.pathSegments.last.trim();
-        if (lastSegment.isNotEmpty) {
-          return lastSegment;
-        }
-      }
-    } catch (_) {}
-
-    return 'passport_${DateTime.now().millisecondsSinceEpoch}.jpg';
-  }
-
-  String _resolveShareNameFromFile(String filePath) {
-    final fileName = filePath.split(Platform.pathSeparator).last.trim();
-    if (fileName.isEmpty) return 'Passport';
-
-    final dotIndex = fileName.lastIndexOf('.');
-    if (dotIndex <= 0) return fileName;
-
-    final withoutExtension = fileName.substring(0, dotIndex).trim();
-    return withoutExtension.isEmpty ? 'Passport' : withoutExtension;
   }
 }

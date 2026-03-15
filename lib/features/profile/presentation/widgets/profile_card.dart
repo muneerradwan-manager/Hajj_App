@@ -1,21 +1,15 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bawabatelhajj/core/constants/app_colors.dart';
 import 'package:bawabatelhajj/core/constants/app_images.dart';
+import 'package:bawabatelhajj/core/functions/image_save_helper.dart';
 import 'package:bawabatelhajj/core/localization/app_localizations_setup.dart';
 import 'package:bawabatelhajj/features/auth/domain/entities/user_profile.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_cubit.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/me/me_state.dart';
 import 'package:bawabatelhajj/shared/widgets/custom_text.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:saver_gallery/saver_gallery.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../shared/widgets/custom_container.dart';
@@ -26,36 +20,10 @@ import '../../../../shared/widgets/gradient_elevated_button.dart';
 part 'profile_card_sections.dart';
 part 'profile_card_shared_widgets.dart';
 
-const UserProfile _emptyProfile = UserProfile(
-  userId: '',
-  email: '',
-  phone: '',
-  barcode: 0,
-  pilgrimId: 0,
-  fullName: '',
-  nationalityNumber: '',
-  isMale: true,
-  imgPath: '',
-  passPath: '',
-  officeName: '',
-  officePhone: '',
-  group: UserGroup(
-    groupName: '',
-    maccaHotel: '',
-    maccaHotelLocation: '',
-    madinaHotel: '',
-    madinaHotelLocation: '',
-    mutawwef: '',
-    arrafatCampNo: '',
-    arrafatCompLocation: '',
-    minaCampNo: '',
-    minaCampLocation: '',
-    applicants: [],
-  ),
-  masterGroup: UserMasterGroup(masterGroupName: '', applicants: []),
-  departureFlight: null,
-  returnFlight: null,
-);
+String _fallback(String value) {
+  final normalized = value.trim();
+  return normalized.isEmpty ? '-' : normalized;
+}
 
 class ProfileCard extends StatefulWidget {
   const ProfileCard({super.key});
@@ -109,7 +77,12 @@ class _ProfileCardState extends State<ProfileCard> {
           _saudiNumber = num;
           _isSaudiNumberEditing = false;
         });
-        showMessage(context, 'profile.saudi_number_saved', SnackBarType.success, translate: true);
+        showMessage(
+          context,
+          'profile.saudi_number_saved',
+          SnackBarType.success,
+          translate: true,
+        );
       },
     );
     if (mounted) setState(() => _isSaudiNumberSaving = false);
@@ -117,94 +90,128 @@ class _ProfileCardState extends State<ProfileCard> {
 
   @override
   Widget build(BuildContext context) {
-    final meState = context.watch<MeCubit>().state;
-    final profile = meState.profile ?? _emptyProfile;
-    final resolvedSaudiNumber =
-        _saudiNumber ??
-        _extractSaudiNumber(profile.group.applicants, profile.fullName);
-    final isResidenceAvailable = _hasResidenceData(profile.group);
-    final isFlightAvailable =
-        profile.departureFlight != null || profile.returnFlight != null;
-    final isRitualsAvailable = _hasRitualsData(profile.group);
+    return BlocBuilder<MeCubit, MeState>(
+      buildWhen: (previous, current) =>
+          previous.profile != current.profile ||
+          previous.status != current.status,
+      builder: (context, meState) {
+        final profile = meState.profile;
 
-    return CustomContainer(
-      padding: EdgeInsets.zero,
-      borderWidth: 0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const _GradientStripe(),
-          _ProfileHeader(
-            profileImage: profile.imgPath,
-            fullName: _fallback(profile.fullName),
-            pilgrimId: _pilgrimId(profile),
-          ),
-          const _ProfileDivider(),
-          if (meState.status == MeStatus.loading) ...[
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: LinearProgressIndicator(minHeight: 3),
+        if (profile == null) {
+          return CustomContainer(
+            padding: EdgeInsets.zero,
+            borderWidth: 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const _GradientStripe(),
+                if (meState.status == MeStatus.loading)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                else ...[
+                  const SizedBox(height: 30),
+                  const Icon(LucideIcons.userX, size: 48, color: Colors.grey),
+                  const SizedBox(height: 12),
+                  const CustomText(
+                    'profile.no_data',
+                    textAlign: TextAlign.center,
+                    color: CustomTextColor.hint,
+                  ),
+                  const SizedBox(height: 30),
+                ],
+                const _GradientStripe(),
+              ],
             ),
-          ],
-          _BasicInfoSection(
-            isExpanded: _expandedSections['basic'] ?? false,
-            onToggle: () => _toggleSection('basic'),
-            profile: profile,
-            isSaudiNumberEditing: _isSaudiNumberEditing,
-            saudiNumber: resolvedSaudiNumber.isEmpty ? null : resolvedSaudiNumber,
-            onToggleSaudiNumberEditing: _toggleSaudiNumberEditing,
-            saudiNumberController: _saudiNumberController,
-            onSaveSaudiNumber: _saveSaudiNumber,
-            isSaudiNumberSaving: _isSaudiNumberSaving,
-          ),
-          _CampaignGroupSection(
-            isExpanded: _expandedSections['group'] ?? false,
-            onToggle: () => _toggleSection('group'),
-            profile: profile,
-          ),
-          _CampaignMasterGroupSection(
-            isExpanded: _expandedSections['masterGroup'] ?? false,
-            onToggle: () => _toggleSection('masterGroup'),
-            profile: profile,
-          ),
-          _ResidenceSection(
-            isExpanded: _expandedSections['residence'] ?? false,
-            onToggle: () => _toggleSection('residence'),
-            profile: profile,
-            isAvailable: isResidenceAvailable,
-          ),
-          _FlightsSection(
-            isExpanded: _expandedSections['flights'] ?? false,
-            onToggle: () => _toggleSection('flights'),
-            profile: profile,
-            isAvailable: isFlightAvailable,
-          ),
-          _RitualsSection(
-            isExpanded: _expandedSections['rituals'] ?? false,
-            onToggle: () => _toggleSection('rituals'),
-            profile: profile,
-            isAvailable: isRitualsAvailable,
-          ),
-          _LeadershipSection(
-            isExpanded: _expandedSections['leadership'] ?? false,
-            onToggle: () => _toggleSection('leadership'),
-            profile: profile,
-          ),
-          _PassportSection(
-            isExpanded: _expandedSections['passport'] ?? false,
-            onToggle: () => _toggleSection('passport'),
-            passportImage: profile.passPath,
-          ),
-          const SizedBox(height: 10),
-          const _GradientStripe(),
-        ],
-      ),
-    );
-  }
+          );
+        }
 
-  String _fallback(String value) {
-    final normalized = value.trim();
-    return normalized.isEmpty ? '-' : normalized;
+        final resolvedSaudiNumber =
+            _saudiNumber ??
+            _extractSaudiNumber(profile.group.applicants, profile.fullName);
+        final isResidenceAvailable = _hasResidenceData(profile.group);
+        final isFlightAvailable =
+            profile.departureFlight != null || profile.returnFlight != null;
+        final isRitualsAvailable = _hasRitualsData(profile.group);
+
+        return CustomContainer(
+          padding: EdgeInsets.zero,
+          borderWidth: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const _GradientStripe(),
+              _ProfileHeader(
+                profileImage: profile.imgPath,
+                fullName: _fallback(profile.fullName),
+                pilgrimId: _pilgrimId(profile),
+              ),
+              const _ProfileDivider(),
+              if (meState.status == MeStatus.loading) ...[
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  child: LinearProgressIndicator(minHeight: 3),
+                ),
+              ],
+              _BasicInfoSection(
+                isExpanded: _expandedSections['basic'] ?? false,
+                onToggle: () => _toggleSection('basic'),
+                profile: profile,
+                isSaudiNumberEditing: _isSaudiNumberEditing,
+                saudiNumber: resolvedSaudiNumber.isEmpty
+                    ? null
+                    : resolvedSaudiNumber,
+                onToggleSaudiNumberEditing: _toggleSaudiNumberEditing,
+                saudiNumberController: _saudiNumberController,
+                onSaveSaudiNumber: _saveSaudiNumber,
+                isSaudiNumberSaving: _isSaudiNumberSaving,
+              ),
+              _CampaignGroupSection(
+                isExpanded: _expandedSections['group'] ?? false,
+                onToggle: () => _toggleSection('group'),
+                profile: profile,
+              ),
+              _CampaignMasterGroupSection(
+                isExpanded: _expandedSections['masterGroup'] ?? false,
+                onToggle: () => _toggleSection('masterGroup'),
+                profile: profile,
+              ),
+              _ResidenceSection(
+                isExpanded: _expandedSections['residence'] ?? false,
+                onToggle: () => _toggleSection('residence'),
+                profile: profile,
+                isAvailable: isResidenceAvailable,
+              ),
+              _FlightsSection(
+                isExpanded: _expandedSections['flights'] ?? false,
+                onToggle: () => _toggleSection('flights'),
+                profile: profile,
+                isAvailable: isFlightAvailable,
+              ),
+              _RitualsSection(
+                isExpanded: _expandedSections['rituals'] ?? false,
+                onToggle: () => _toggleSection('rituals'),
+                profile: profile,
+                isAvailable: isRitualsAvailable,
+              ),
+              _LeadershipSection(
+                isExpanded: _expandedSections['leadership'] ?? false,
+                onToggle: () => _toggleSection('leadership'),
+                profile: profile,
+              ),
+              _PassportSection(
+                isExpanded: _expandedSections['passport'] ?? false,
+                onToggle: () => _toggleSection('passport'),
+                passportImage: profile.passPath,
+              ),
+              const SizedBox(height: 10),
+              const _GradientStripe(),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   String _pilgrimId(UserProfile profile) {

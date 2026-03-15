@@ -43,9 +43,9 @@ class ProfileHeroSection extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Colors.white.withValues(alpha: .5),
                   ),
-                  child: IconButton(
-                    icon: const Icon(LucideIcons.download, color: Colors.white),
-                    onPressed: () {},
+                  child: const IconButton(
+                    icon: Icon(LucideIcons.download, color: Colors.white),
+                    onPressed: null,
                   ),
                 ),
                 Container(
@@ -53,9 +53,9 @@ class ProfileHeroSection extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Colors.white.withValues(alpha: .5),
                   ),
-                  child: IconButton(
-                    icon: const Icon(LucideIcons.share2, color: Colors.white),
-                    onPressed: () {},
+                  child: const IconButton(
+                    icon: Icon(LucideIcons.share2, color: Colors.white),
+                    onPressed: null,
                   ),
                 ),
               ],

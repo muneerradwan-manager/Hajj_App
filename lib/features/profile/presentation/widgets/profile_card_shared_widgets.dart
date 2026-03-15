@@ -138,7 +138,7 @@ class _MapButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GradientElevatedButton(
-      onPressed: () {},
+      onPressed: null,
       gradientColor: backgroundColor ?? GradientColors.outline,
       icon: const Icon(LucideIcons.arrowUpRight),
       child: const CustomText(
@@ -169,12 +169,15 @@ class _InfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
-      borderRadius: 16,
+      borderRadius: 15,
       borderSide: CustomBorderSide.allBorder,
       borderColor: CustomBorderColor.lightGold,
       borderWidth: 1,
       containerColor: containerColor,
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.symmetric(
+        horizontal: 14,
+        vertical: isPhoneNumber ? 5 : 14,
+      ),
       hasShadow: false,
       child: Row(
         spacing: 10,
@@ -213,6 +216,7 @@ class _InfoRow extends StatelessWidget {
                         icon: const Icon(
                           LucideIcons.phone,
                           color: Colors.white,
+                          size: 20,
                         ),
                       ),
                     ],

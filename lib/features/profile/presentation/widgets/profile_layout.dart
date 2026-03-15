@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../shared/widgets/card_entry_animation.dart';
 import '../../../../shared/widgets/hero_background.dart';
 import 'profile_hero_section.dart';
-import 'profile_content_section.dart';
+import 'profile_card.dart';
 
 class ProfileLayout extends StatelessWidget {
   const ProfileLayout({super.key});
@@ -46,7 +46,10 @@ class ProfileLayout extends StatelessWidget {
                         ),
                         CardEntryAnimation(
                           overlap: overlap,
-                          child: const ProfileContentSection(),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: ProfileCard(),
+                          ),
                         ),
                       ],
                     ),

@@ -28,10 +28,11 @@ class PrayerTimesState extends Equatable {
     PrayerTimesModel? prayerTimes,
     String? errorMessage,
     bool? isLocationError,
+    bool clearPrayerTimes = false,
   }) {
     return PrayerTimesState(
       status: status ?? this.status,
-      prayerTimes: prayerTimes ?? this.prayerTimes,
+      prayerTimes: clearPrayerTimes ? null : (prayerTimes ?? this.prayerTimes),
       errorMessage: errorMessage ?? this.errorMessage,
       isLocationError: isLocationError ?? this.isLocationError,
     );

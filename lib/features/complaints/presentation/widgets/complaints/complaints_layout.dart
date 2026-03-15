@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../cubits/complaints/complaints_cubit.dart';
 import '../../../../../shared/widgets/card_entry_animation.dart';
 import '../../../../../shared/widgets/hero_background.dart';
 import 'complaints_hero_section.dart';
@@ -26,31 +28,34 @@ class ComplaintsLayout extends StatelessWidget {
 
           final overlap = (viewportHeight * 0.08).clamp(50.0, 80.0);
 
-          return SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: viewportHeight),
-              child: Stack(
-                children: [
-                  ...HeroBackground.layers(context, heroHeight),
+          return RefreshIndicator(
+            onRefresh: () => context.read<ComplaintsCubit>().loadComplaints(),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: viewportHeight),
+                child: Stack(
+                  children: [
+                    ...HeroBackground.layers(context, heroHeight),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        height: heroHeight,
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: const ComplaintsHeroSection(),
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          height: heroHeight,
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: const ComplaintsHeroSection(),
+                        ),
 
-                      CardEntryAnimation(
-                        overlap: overlap,
-                        child: const ComplaintsListSection(),
-                      ),
-                    ],
-                  ),
-                ],
+                        CardEntryAnimation(
+                          overlap: overlap,
+                          child: const ComplaintsListSection(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );

@@ -39,13 +39,14 @@ class EvaluationState extends Equatable {
     SubmitStatus? submitStatus,
     SubmitPhaseResult? submitResult,
     String? submitErrorMessage,
+    bool clearSubmitResult = false,
   }) {
     return EvaluationState(
       status: status ?? this.status,
       questions: questions ?? this.questions,
       errorMessage: errorMessage ?? this.errorMessage,
       submitStatus: submitStatus ?? this.submitStatus,
-      submitResult: submitResult ?? this.submitResult,
+      submitResult: clearSubmitResult ? null : (submitResult ?? this.submitResult),
       submitErrorMessage: submitErrorMessage ?? this.submitErrorMessage,
     );
   }

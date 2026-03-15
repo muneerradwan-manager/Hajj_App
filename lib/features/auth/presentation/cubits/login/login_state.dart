@@ -1,33 +1,33 @@
 import 'package:equatable/equatable.dart';
 
+enum LoginStatus { initial, submitting, authenticated }
+
 class LoginState extends Equatable {
-  final bool isSubmitting;
-  final bool isAuthenticated;
+  final LoginStatus status;
   final String errorMessage;
   final String infoMessage;
 
   const LoginState({
-    required this.isSubmitting,
-    required this.isAuthenticated,
+    required this.status,
     required this.errorMessage,
     required this.infoMessage,
   });
 
   const LoginState.initial()
-    : isSubmitting = false,
-      isAuthenticated = false,
+    : status = LoginStatus.initial,
       errorMessage = '',
       infoMessage = '';
 
+  bool get isSubmitting => status == LoginStatus.submitting;
+  bool get isAuthenticated => status == LoginStatus.authenticated;
+
   LoginState copyWith({
-    bool? isSubmitting,
-    bool? isAuthenticated,
+    LoginStatus? status,
     String? errorMessage,
     String? infoMessage,
   }) {
     return LoginState(
-      isSubmitting: isSubmitting ?? this.isSubmitting,
-      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+      status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       infoMessage: infoMessage ?? this.infoMessage,
     );
@@ -35,8 +35,7 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
-    isSubmitting,
-    isAuthenticated,
+    status,
     errorMessage,
     infoMessage,
   ];
