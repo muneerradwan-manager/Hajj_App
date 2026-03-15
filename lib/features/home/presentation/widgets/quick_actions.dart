@@ -25,45 +25,56 @@ class QuickActions extends StatelessWidget {
             color: CustomTextColor.green,
           ),
           const SizedBox(height: 20),
-          GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.zero,
-            children: [
-              const QuickActionCard(
-                icon: LucideIcons.bookOpen,
-                titleKey: 'home.action_rituals_title',
-                borderColor: CustomBorderColor.red,
-              ),
-              QuickActionCard(
-                onTap: () => context.push(AppRoutes.complaintsPath),
-                icon: LucideIcons.phone,
-                titleKey: 'home.action_complaints_title',
-                borderColor: CustomBorderColor.green,
-              ),
-              QuickActionCard(
-                onTap: () => context.push(AppRoutes.evaluationsPath),
-                icon: LucideIcons.star,
-                titleKey: 'home.action_evaluations_title',
-                borderColor: CustomBorderColor.green,
-              ),
-              QuickActionCard(
-                onTap: () => showClosedActionDialog(context),
-                icon: LucideIcons.messageSquare,
-                titleKey: 'home.action_survey_title',
-                borderColor: CustomBorderColor.gold,
-              ),
-              QuickActionCard(
-                onTap: () => showClosedActionDialog(context),
-                icon: LucideIcons.award,
-                titleKey: 'home.action_certificate_title',
-                borderColor: CustomBorderColor.gold,
-                isClosed: true,
-              ),
-            ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final crossAxisCount =
+                  constraints.maxWidth >= 400 && constraints.maxWidth < 600
+                  ? 3
+                  : constraints.maxWidth >= 600
+                  ? 4
+                  : 2;
+              return GridView.count(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                children: [
+                  const QuickActionCard(
+                    icon: LucideIcons.bookOpen,
+                    titleKey: 'home.action_rituals_title',
+                    borderColor: CustomBorderColor.red,
+                  ),
+                  QuickActionCard(
+                    onTap: () => context.push(AppRoutes.complaintsPath),
+                    icon: LucideIcons.phone,
+                    titleKey: 'home.action_complaints_title',
+                    borderColor: CustomBorderColor.green,
+                  ),
+                  QuickActionCard(
+                    onTap: () => context.push(AppRoutes.evaluationsPath),
+                    icon: LucideIcons.star,
+                    titleKey: 'home.action_evaluations_title',
+                    borderColor: CustomBorderColor.green,
+                  ),
+                  QuickActionCard(
+                    onTap: () => showClosedActionDialog(context),
+                    icon: LucideIcons.messageSquare,
+                    titleKey: 'home.action_survey_title',
+                    borderColor: CustomBorderColor.gold,
+                    isClosed: true,
+                  ),
+                  QuickActionCard(
+                    onTap: () => showClosedActionDialog(context),
+                    icon: LucideIcons.award,
+                    titleKey: 'home.action_certificate_title',
+                    borderColor: CustomBorderColor.gold,
+                    isClosed: true,
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),

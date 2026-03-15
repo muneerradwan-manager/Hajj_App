@@ -51,16 +51,8 @@ class _LoginPageState extends State<LoginPage> {
             final viewportHeight = constraints.maxHeight;
             final viewportWidth = constraints.maxWidth;
             final isTabletLayout = viewportWidth >= 700;
-            final isDesktopLayout = viewportWidth >= 1024;
-
-            final heroHeight = isDesktopLayout
-                ? (viewportHeight * 0.50).clamp(360.0, 500.0)
-                : (viewportHeight * 0.45).clamp(320.0, 420.0);
-
-            final overlap = isDesktopLayout
-                ? (viewportHeight * 0.04).clamp(0.0, 28.0)
-                : (viewportHeight * 0.10).clamp(60.0, 90.0);
-
+            final heroHeight = (viewportHeight * 0.45).clamp(320.0, 420.0);
+            final overlap = (viewportHeight * 0.10).clamp(60.0, 90.0);
             final horizontalPadding = viewportWidth < 390
                 ? 24.0
                 : isTabletLayout
@@ -68,7 +60,6 @@ class _LoginPageState extends State<LoginPage> {
                 : 18.0;
 
             final logoSize = (viewportWidth * 0.30).clamp(90.0, 120.0);
-            final cardMaxWidth = isDesktopLayout ? 560.0 : 720.0;
 
             return SingleChildScrollView(
               child: ConstrainedBox(
@@ -93,14 +84,9 @@ class _LoginPageState extends State<LoginPage> {
                             padding: EdgeInsets.symmetric(
                               horizontal: horizontalPadding,
                             ),
-                            child: Align(
+                            child: const Align(
                               alignment: Alignment.topCenter,
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxWidth: cardMaxWidth,
-                                ),
-                                child: const LoginCard(),
-                              ),
+                              child: LoginCard(),
                             ),
                           ),
                         ),

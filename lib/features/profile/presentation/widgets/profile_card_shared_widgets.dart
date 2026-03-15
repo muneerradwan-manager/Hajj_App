@@ -15,8 +15,9 @@ class _UnavailableInfoCard extends StatelessWidget {
     return CustomContainer(
       borderSide: CustomBorderSide.allBorder,
       borderColor: CustomBorderColor.gold,
-      gradientColors: const [Color(0xffF9F8F6), Color(0xffE3DDD2)],
+      gradientColors: [cs.surfaceDim, cs.brandGold],
       borderWidth: 1,
+      hasOpacity: .3,
       padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

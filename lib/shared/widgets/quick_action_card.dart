@@ -32,6 +32,8 @@ class QuickActionCard extends StatelessWidget {
       borderSide: CustomBorderSide.borderTop,
       borderColor: borderColor,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         spacing: 10,
         children: [
           CustomContainer(

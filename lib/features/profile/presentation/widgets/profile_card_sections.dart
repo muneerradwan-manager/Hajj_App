@@ -266,7 +266,7 @@ class _SaudiNumberCard extends StatelessWidget {
     return CustomContainer(
       borderRadius: 15,
       borderWidth: 1,
-      borderColor: CustomBorderColor.gold,
+      borderColor: CustomBorderColor.lightGold,
       hasOpacity: .5,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
       hasShadow: false,

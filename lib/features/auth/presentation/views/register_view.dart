@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:bawabatelhajj/core/constants/app_routes.dart';
-import 'package:bawabatelhajj/shared/widgets/exit_app_dialog.dart';
 import 'package:bawabatelhajj/features/auth/domain/entities/register_draft.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/register/register_cubit.dart';
 import 'package:bawabatelhajj/features/auth/presentation/cubits/register/register_state.dart';
@@ -45,16 +43,10 @@ class _RegisterViewState extends State<RegisterView> {
   final _formVerifyAccountKey = GlobalKey<FormState>();
   final _pinput = TextEditingController();
 
-  Future<void> _handleExitRequest() async {
-    final shouldExit = await showExitAppDialog(context);
-    if (!mounted || shouldExit != true) return;
-    await SystemNavigator.pop();
-  }
-
   void _handleBack() {
     final stepNumber = context.read<RegisterCubit>().state.stepNumber;
     if (stepNumber <= 1) {
-      _handleExitRequest();
+      context.pop();
       return;
     }
     context.read<RegisterCubit>().goBackStep();
